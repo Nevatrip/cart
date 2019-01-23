@@ -1,12 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import MobileDetect from 'mobile-detect';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const md = new MobileDetect( window.navigator.userAgent );
+const platform = md.mobile() ? 'touch' : 'desktop';
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
+require(`./view/platforms/${ platform }`);

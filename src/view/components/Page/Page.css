@@ -1,0 +1,15 @@
+.Page {
+  margin: 0;
+  padding: 0;
+
+  font-family: 'Open Sans';
+
+  background-color: #F3F7FA;
+}
+
+.Page-Header {
+  padding-top: 33px;
+  padding-bottom: 33px;
+
+  text-align: center;
+}
