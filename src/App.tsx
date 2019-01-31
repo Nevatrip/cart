@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Calendar from './components/calendar'
 
 class App extends Component {
   render() {
@@ -19,6 +20,7 @@ class App extends Component {
           >
             Learn React
           </a>
+          <Calendar url="http://188.166.34.157/service/jazz/dates"></Calendar>
         </header>
       </div>
     );
