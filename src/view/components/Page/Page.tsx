@@ -6,6 +6,8 @@ import { IStore } from "../../../typings";
 import "./Page.css";
 import { IExampleProps, cnExample } from "../Example/Example";
 
+import {Order} from '../Order/Order'
+
 export const cnPage = cn("Page");
 
 export interface IPageProps {
@@ -22,7 +24,7 @@ export const Page: React.SFC<IPageProps> = props => (
         <>
           <div className={cnPage("Header")}>Header!</div>
           <div className={cnPage("Content")}>
-            <Example myProp="hello" />
+            <Order isLoading={true} />
           </div>
         </>
       );

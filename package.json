@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@bem-react/classname": "^1.4.3",
+    "@bem-react/core": "^1.6.3",
     "@bem-react/di": "^1.5.1",
     "@types/jest": "23.3.13",
     "@types/node": "10.12.18",
