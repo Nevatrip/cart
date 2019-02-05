@@ -12,3 +12,7 @@ export interface IServiceProps extends IClassNameProps {
   periods?: IPeriod[];
   dates?: string[];
 }
+
+export interface IServiceState {
+
+}
