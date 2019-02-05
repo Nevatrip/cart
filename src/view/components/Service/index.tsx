@@ -14,5 +14,16 @@ export interface IServiceProps extends IClassNameProps {
 }
 
 export interface IServiceState {
-
+  title?: string;
+  periods?: IPeriod[];
+  period?: string;
+  dates?: string[];
+  isOpenDate?: boolean;
+  date?: number; // epoch
+  direction?: string;
+  point?: string;
+  isOpenTime?: boolean;
+  time?: number; // epoch
+  place?: string;
+  places?: string[];
 }
