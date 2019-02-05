@@ -14,11 +14,16 @@ export class Service extends React.PureComponent<IServiceProps, IServiceState> {
 
     this.state = props;
 
-    this.handleOpenDate = this.handleOpenDate.bind( this );
+    this.handleOpenDate = this.handleOpenDate.bind(this);
+    this.handleOpenTime = this.handleOpenTime.bind(this);
   }
 
   handleOpenDate() {
     this.setState({ isOpenDate: !this.state.isOpenDate });
+  }
+
+  handleOpenTime() {
+    this.setState({ isOpenTime: !this.state.isOpenTime });
   }
 
   render() {
@@ -26,7 +31,11 @@ export class Service extends React.PureComponent<IServiceProps, IServiceState> {
       title,
       dates,
       periods,
-      isOpenDate
+      isOpenDate,
+      direction,
+      point,
+      place,
+      isOpenTime
     } = this.state
 
     return (
@@ -46,17 +55,85 @@ export class Service extends React.PureComponent<IServiceProps, IServiceState> {
           </div>
         )}
         {!isOpenDate && dates && <Calendar dates={dates} />}
-        {isOpenDate && periods && periods.length && (
-          <select>
-            {periods.map((period, key) => (
-              <option key={key}>
-                since{" "}
-                {new Date(period.start * 1000).toLocaleDateString("ru")} to{" "}
-                {new Date(period.end * 1000).toLocaleDateString("ru")}
-              </option>
-            ))}
-          </select>
+        {isOpenDate && periods && (
+          <div className={cnService("Period")}>
+            <select>
+              {periods.map((period, key) => (
+                <option key={key}>
+                  since{" "}
+                  {new Date(period.start * 1000).toLocaleDateString("ru")}{" "}
+                  to {new Date(period.end * 1000).toLocaleDateString("ru")}
+                </option>
+              ))}
+            </select>
+          </div>
         )}
+        <div className={cnService("Directions")}>
+          <select>
+            <option>Санкт-Петербург → Петергоф</option>
+            <option>Петергоф → Санкт-Петербург</option>
+            <option>Санкт-Петербург → Петергоф → Санкт-Петербург</option>
+            <option>Москва → Петушки</option>
+          </select>
+        </div>
+        <div className={cnService("Direction")}>
+          <div className={cnService("PointAndPlace")}>
+            <div className={cnService("Point")}>
+              <select>
+                <option>Дворцовая пристань</option>
+              </select>
+            </div>
+            <div className={cnService("Place")}>
+              <select>
+                <option>Трансатлантический пароход «Титаник»</option>
+              </select>
+            </div>
+          </div>
+          <div className={cnService("TimeAndType")}>
+            <div className={cnService("TimeType")}>
+              <label>
+                <input
+                  type="checkbox"
+                  name="TimeType"
+                  onChange={this.handleOpenTime}
+                  defaultChecked={isOpenTime}
+                />
+                Открытое время
+              </label>
+            </div>
+            {isOpenTime ? (
+              <div className={cnService("Time", { type: "open" })}>
+                <p>
+                  Текстовое описание расписания: каждые 2 часа с 12 до 18:
+                </p>
+                <ul>
+                  <li>12</li>
+                  <li>14</li>
+                  <li>16</li>
+                  <li>18</li>
+                </ul>
+              </div>
+            ) : (
+              <div className={cnService("Time", { type: "fixed" })}>
+                <div className={cnService("RadioGroup")}>
+                  <label>
+                    <input
+                      type="radio"
+                      name="time"
+                      // onChange={this.handleOpenDate}
+                      // defaultChecked={isOpenDate}
+                    />
+                    18:00
+                    <br />
+                    Сенатская пристань
+                    <br />
+                    «Титаник»
+                  </label>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     );
   }
