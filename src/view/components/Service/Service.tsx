@@ -7,7 +7,6 @@ import { Calendar } from "../Calendar/Calendar";
 import "./Service.css";
 
 import serviceFixtures from './service.json';
-import { async } from "q";
 
 const cnService = cn('Service');
 
