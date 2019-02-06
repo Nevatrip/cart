@@ -1,0 +1,494 @@
+{
+  "41b1283d-2ad1-4894-b03e-368042e5d301": {
+    "title": "Джазовый теплоход Музыкальный пароход Джаз 2019",
+    "periods": {
+      "11111111a": {
+        "eventId": "11111111a",
+        "start": 1548849600,
+        "end": 1551528000
+      },
+      "22222222a": {
+        "eventId": "22222222a",
+        "start": 1549022400,
+        "end": 1551528000
+      },
+      "33333333a": {
+        "eventId": "33333333a",
+        "start": 1546344000,
+        "end": 1553947200
+      }
+    },
+    "dates": {
+      "02.02.2019": {
+        "directions": {
+          "direction-0": {
+            "title": "Lorem ipsum → dolores 0",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "0-point",
+                "place": "0-place"
+              }
+            ]
+          },
+          "direction-3": {
+            "title": "Lorem ipsum → dolores 1",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "1-point",
+                "place": "1-place"
+              }
+            ]
+          }
+        }
+      },
+      "03.02.2019": {
+        "directions": {
+          "direction-1": {
+            "title": "Lorem ipsum → dolores 2",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "2-point",
+                "place": "2-place"
+              }
+            ]
+          },
+          "direction-4": {
+            "title": "Lorem ipsum → dolores 3",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "3-point",
+                "place": "3-place"
+              }
+            ]
+          }
+        }
+      },
+      "05.02.2019": {
+        "directions": {
+          "direction-2": {
+            "title": "Lorem ipsum → dolores 4",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "4-point",
+                "place": "4-place"
+              }
+            ]
+          },
+          "direction-5": {
+            "title": "Lorem ipsum → dolores 5",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "5-point",
+                "place": "5-place"
+              }
+            ]
+          }
+        }
+      },
+      "06.02.2019": {
+        "directions": {
+          "direction-3": {
+            "title": "Lorem ipsum → dolores 6",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "6-point",
+                "place": "6-place"
+              }
+            ]
+          },
+          "direction-6": {
+            "title": "Lorem ipsum → dolores 7",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "7-point",
+                "place": "7-place"
+              }
+            ]
+          }
+        }
+      },
+      "12.02.2019": {
+        "directions": {
+          "direction-4": {
+            "title": "Lorem ipsum → dolores 8",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "8-point",
+                "place": "8-place"
+              }
+            ]
+          },
+          "direction-7": {
+            "title": "Lorem ipsum → dolores 9",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "9-point",
+                "place": "9-place"
+              }
+            ]
+          }
+        }
+      },
+      "14.02.2019": {
+        "directions": {
+          "direction-5": {
+            "title": "Lorem ipsum → dolores 10",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "10-point",
+                "place": "10-place"
+              }
+            ]
+          },
+          "direction-8": {
+            "title": "Lorem ipsum → dolores 11",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "11-point",
+                "place": "11-place"
+              }
+            ]
+          }
+        }
+      },
+      "17.02.2019": {
+        "directions": {
+          "direction-6": {
+            "title": "Lorem ipsum → dolores 12",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "12-point",
+                "place": "12-place"
+              }
+            ]
+          },
+          "direction-9": {
+            "title": "Lorem ipsum → dolores 13",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "13-point",
+                "place": "13-place"
+              }
+            ]
+          }
+        }
+      },
+      "18.02.2019": {
+        "directions": {
+          "direction-7": {
+            "title": "Lorem ipsum → dolores 14",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "14-point",
+                "place": "14-place"
+              }
+            ]
+          },
+          "direction-10": {
+            "title": "Lorem ipsum → dolores 15",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "15-point",
+                "place": "15-place"
+              }
+            ]
+          }
+        }
+      },
+      "19.02.2019": {
+        "directions": {
+          "direction-8": {
+            "title": "Lorem ipsum → dolores 16",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "16-point",
+                "place": "16-place"
+              }
+            ]
+          },
+          "direction-11": {
+            "title": "Lorem ipsum → dolores 17",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "17-point",
+                "place": "17-place"
+              }
+            ]
+          }
+        }
+      },
+      "22.02.2019": {
+        "directions": {
+          "direction-9": {
+            "title": "Lorem ipsum → dolores 18",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "18-point",
+                "place": "18-place"
+              }
+            ]
+          },
+          "direction-12": {
+            "title": "Lorem ipsum → dolores 19",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "19-point",
+                "place": "19-place"
+              }
+            ]
+          }
+        }
+      },
+      "23.02.2019": {
+        "directions": {
+          "direction-10": {
+            "title": "Lorem ipsum → dolores 20",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "20-point",
+                "place": "20-place"
+              }
+            ]
+          },
+          "direction-13": {
+            "title": "Lorem ipsum → dolores 21",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "21-point",
+                "place": "21-place"
+              }
+            ]
+          }
+        }
+      },
+      "24.02.2019": {
+        "directions": {
+          "direction-11": {
+            "title": "Lorem ipsum → dolores 22",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "22-point",
+                "place": "22-place"
+              }
+            ]
+          },
+          "direction-14": {
+            "title": "Lorem ipsum → dolores 23",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "23-point",
+                "place": "23-place"
+              }
+            ]
+          }
+        }
+      },
+      "28.02.2019": {
+        "directions": {
+          "direction-12": {
+            "title": "Lorem ipsum → dolores 24",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "24-point",
+                "place": "24-place"
+              }
+            ]
+          },
+          "direction-15": {
+            "title": "Lorem ipsum → dolores 25",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "25-point",
+                "place": "25-place"
+              }
+            ]
+          }
+        }
+      },
+      "01.03.2019": {
+        "directions": {
+          "direction-13": {
+            "title": "Lorem ipsum → dolores 26",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "26-point",
+                "place": "26-place"
+              }
+            ]
+          },
+          "direction-16": {
+            "title": "Lorem ipsum → dolores 27",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "27-point",
+                "place": "27-place"
+              }
+            ]
+          }
+        }
+      },
+      "02.03.2019": {
+        "directions": {
+          "direction-14": {
+            "title": "Lorem ipsum → dolores 28",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "28-point",
+                "place": "28-place"
+              }
+            ]
+          },
+          "direction-17": {
+            "title": "Lorem ipsum → dolores 29",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "29-point",
+                "place": "29-place"
+              }
+            ]
+          }
+        }
+      },
+      "14.03.2019": {
+        "directions": {
+          "direction-15": {
+            "title": "Lorem ipsum → dolores 30",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "30-point",
+                "place": "30-place"
+              }
+            ]
+          },
+          "direction-18": {
+            "title": "Lorem ipsum → dolores 31",
+            "schedule": [
+              {
+                "start": 123,
+                "end": 128,
+                "isAllDay": false,
+                "point": "31-point",
+                "place": "31-place"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "points": {},
+    "places": {}
+  },
+  "7e990163-7bc3-4dfa-bdea-def666db01c5": {
+    "title": "Что-то там повисло над Невой…",
+    "periods": {
+      "11111111b": {
+        "eventId": "11111111b",
+        "start": 1548849600,
+        "end": 1551528000
+      },
+      "22222222b": {
+        "eventId": "22222222b",
+        "start": 1549022400,
+        "end": 1551528000
+      },
+      "33333333b": {
+        "eventId": "33333333b",
+        "start": 1546344000,
+        "end": 1553947200
+      }
+    }
+  }
+}

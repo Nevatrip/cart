@@ -7,7 +7,7 @@ interface IPeriod {
 }
 
 export interface IServiceProps extends IClassNameProps {
-  id?: string;
+  id: string;
   title?: string;
   periods?: IPeriod[];
   dates?: string[];
@@ -26,4 +26,8 @@ export interface IServiceState {
   time?: number; // epoch
   place?: string;
   places?: string[];
+}
+
+export interface IServiceData {
+
 }

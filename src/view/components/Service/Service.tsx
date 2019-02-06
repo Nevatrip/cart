@@ -6,6 +6,9 @@ import { Calendar } from "../Calendar/Calendar";
 
 import "./Service.css";
 
+import serviceFixtures from './service.json';
+import { async } from "q";
+
 const cnService = cn('Service');
 
 export class Service extends React.PureComponent<IServiceProps, IServiceState> {
@@ -24,6 +27,22 @@ export class Service extends React.PureComponent<IServiceProps, IServiceState> {
 
   handleOpenTime() {
     this.setState({ isOpenTime: !this.state.isOpenTime });
+  }
+
+  getService() {
+    return new Promise( (resolve, reject) => {
+      setTimeout(() => {
+        if (serviceFixtures.hasOwnProperty(this.props.id)) {
+          resolve((serviceFixtures as any)[this.props.id]);
+        }
+      }, 100);
+    } );
+  }
+
+  componentDidMount() {
+    this.getService().then( data => {
+      this.setState(data);
+    } );
   }
 
   render() {
