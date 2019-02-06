@@ -12,8 +12,8 @@ const cnOrder = cn('Order');
 export const Order: React.FunctionComponent<IOrderProps> = ({
   className
 }) => (
-  <form className={cnOrder()}>
+  <div className={cnOrder()}>
     <OrderContent/>
     <OrderAside />
-  </form>
+  </div>
 );

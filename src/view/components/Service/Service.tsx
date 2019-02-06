@@ -4,7 +4,7 @@ import { IServiceProps, IServiceState } from './index';
 
 import { Calendar } from "../Calendar/Calendar";
 
-// import "./Service.css";
+import "./Service.css";
 
 const cnService = cn('Service');
 
@@ -12,7 +12,7 @@ export class Service extends React.PureComponent<IServiceProps, IServiceState> {
   constructor(props: IServiceProps){
     super(props)
 
-    this.state = props;
+    this.state = Object.assign({}, props);
 
     this.handleOpenDate = this.handleOpenDate.bind(this);
     this.handleOpenTime = this.handleOpenTime.bind(this);
@@ -28,19 +28,20 @@ export class Service extends React.PureComponent<IServiceProps, IServiceState> {
 
   render() {
     const {
+      id
+    } = this.props
+
+    const {
       title,
       dates,
       periods,
       isOpenDate,
-      direction,
-      point,
-      place,
       isOpenTime
     } = this.state
 
     return (
-      <div className={cnService()}>
-        {title && <div className={cnService("Title")}>{title}</div>}
+      <fieldset className={cnService()}>
+        {title && <h3 className={cnService("Title")}>{title}</h3>}
         {dates && periods && (
           <div className={cnService("DateType")}>
             <label>
@@ -54,9 +55,9 @@ export class Service extends React.PureComponent<IServiceProps, IServiceState> {
             </label>
           </div>
         )}
-        {!isOpenDate && dates && <Calendar dates={dates} />}
-        {isOpenDate && periods && (
-          <div className={cnService("Period")}>
+        {
+          isOpenDate
+          ? periods && (<div className={cnService("Period")}>
             <select>
               {periods.map((period, key) => (
                 <option key={key}>
@@ -66,8 +67,9 @@ export class Service extends React.PureComponent<IServiceProps, IServiceState> {
                 </option>
               ))}
             </select>
-          </div>
-        )}
+          </div>)
+          : dates && <Calendar dates={dates} />
+        }
         <div className={cnService("Directions")}>
           <select>
             <option>Санкт-Петербург → Петергоф</option>
@@ -101,8 +103,9 @@ export class Service extends React.PureComponent<IServiceProps, IServiceState> {
                 Открытое время
               </label>
             </div>
-            {isOpenTime ? (
-              <div className={cnService("Time", { type: "open" })}>
+            {
+              isOpenTime
+              ? (<div className={cnService("Time", { type: "open" })}>
                 <p>
                   Текстовое описание расписания: каждые 2 часа с 12 до 18:
                 </p>
@@ -112,29 +115,34 @@ export class Service extends React.PureComponent<IServiceProps, IServiceState> {
                   <li>16</li>
                   <li>18</li>
                 </ul>
-              </div>
-            ) : (
-              <div className={cnService("Time", { type: "fixed" })}>
-                <div className={cnService("RadioGroup")}>
-                  <label>
-                    <input
-                      type="radio"
-                      name="time"
-                      // onChange={this.handleOpenDate}
-                      // defaultChecked={isOpenDate}
-                    />
-                    18:00
-                    <br />
-                    Сенатская пристань
-                    <br />
-                    «Титаник»
-                  </label>
-                </div>
-              </div>
-            )}
+              </div>)
+              : (<fieldset className={cnService("Time", { type: "fixed" })}>
+                <ul className={cnService("Times")}>
+                  {
+                    [12,14,16,18].map( (hour, key) => (
+                      <li className={cnService("TimeItem")} key={key}>
+                        <label className={cnService("TimeItemInner")}>
+                          <input
+                            defaultChecked={key===0}
+                            type="radio"
+                            name={'time-' + id}
+                            // onChange={this.handleOpenDate}
+                          />
+                          {hour}:00
+                          <br />
+                          Сенатская пристань
+                          <br />
+                          «Титаник»
+                        </label>
+                      </li>
+                    ) )
+                  }
+                </ul>
+              </fieldset>)
+            }
           </div>
         </div>
-      </div>
+      </fieldset>
     );
   }
 }

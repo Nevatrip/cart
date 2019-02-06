@@ -18,6 +18,9 @@ export const OrderContent: React.FunctionComponent = () => (
     </ul>
     <fieldset className={cnOrder("User")}>
       <blockquote>Personal data</blockquote>
+      <input type="text" placeholder="email" />
+      <input type="text" placeholder="name" />
+      <input type="text" placeholder="phone" />
     </fieldset>
   </div>
 );

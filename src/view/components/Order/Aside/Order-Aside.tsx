@@ -11,8 +11,9 @@ export const OrderAside: React.FunctionComponent = () => (
     <div className={cnOrder('Tickets')}>
       <blockquote>Ticket's preview</blockquote>
     </div>
-    <div className={cnOrder('Footer')}>
+    <form className={cnOrder('Footer')}>
       <blockquote>Sum, promocode, submit</blockquote>
-    </div>
+      <button>Оплатить</button>
+    </form>
   </div>
 )
