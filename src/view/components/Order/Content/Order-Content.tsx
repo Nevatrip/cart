@@ -11,7 +11,7 @@ export const OrderContent: React.FunctionComponent = () => (
     <blockquote>Cart's content…</blockquote>
     <ul className={cnOrder("List")}>
       {cart.items.map((cartItem, index) => (
-        <li className={cnOrder("Item")} key={index}>
+        <li className={cnOrder("Item")} key={cartItem.id || String(index)}>
           <Service {...cartItem} />
         </li>
       ))}
