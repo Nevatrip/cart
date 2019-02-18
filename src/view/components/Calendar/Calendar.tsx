@@ -16,11 +16,14 @@ export class Calendar extends React.Component<any, any> {
 
   onChange (selected: any) {
     console.log(selected)
+    this.props.onChange( selected.getTime() )
     this.setState({ selected })
   }
 
   componentDidMount () {
-    const dates = this.props.dates ? new Set(this.props.dates) : new Set();
+    const dates = this.props.dates
+      ? new Set(this.props.dates)
+      : new Set();
     this.setState({ dates });
   }
 

@@ -1,15 +1,35 @@
 import { IClassNameProps } from "@bem-react/core";
 
-export interface ICart {
+interface ICartItem {
+  id: string;
+}
+
+interface ICart {
   user?: Object;
-  items?: Object[]
+  items?: ICartItem[]
 }
 
 export interface IOrderProps extends IClassNameProps {
-  isLoading: boolean;
-  cart?: ICart;
+  cart: ICart;
+  isLoading?: boolean;
   validation?: boolean;
-  project?: "nevatrip";
-  lang?: "ru";
+  project?: "nevatrip" | "moskvatrip" | "busguide";
+  lang?: "ru" | "en" | "zh";
 }
 
+export interface IOrder {
+  title: string;
+  date?: Date;
+  time?: Date;
+  isOpenDate?: boolean;
+  isOpenTime?: boolean;
+  point?: {
+    title: string;
+    map: string;
+  };
+  tickets?: {
+    count: number;
+    type: string;
+    price: number;
+  }[]
+}

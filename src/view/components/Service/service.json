@@ -1,5 +1,6 @@
 {
   "41b1283d-2ad1-4894-b03e-368042e5d301": {
+    "id": "41b1283d-2ad1-4894-b03e-368042e5d301",
     "title": "Джазовый теплоход Музыкальный пароход Джаз 2019",
     "periods": {
       "11111111a": {
@@ -25,11 +26,46 @@
             "title": "Lorem ipsum → dolores 0",
             "schedule": [
               {
-                "start": 123,
-                "end": 128,
+                "start": 1549094400,
+                "end": 1549100400,
                 "isAllDay": false,
                 "point": "0-point",
                 "place": "0-place"
+              },
+              {
+                "start": 1549094400,
+                "end": 1549100400,
+                "isAllDay": false,
+                "point": "1-point",
+                "place": "0-place"
+              },
+              {
+                "start": 1549094400,
+                "end": 1549100400,
+                "isAllDay": false,
+                "point": "2-point",
+                "place": "0-place"
+              },
+              {
+                "start": 1549098000,
+                "end": 1549104000,
+                "isAllDay": false,
+                "point": "0-point",
+                "place": "0-place"
+              },
+              {
+                "start": 1549098000,
+                "end": 1549104000,
+                "isAllDay": false,
+                "point": "0-point",
+                "place": "1-place"
+              },
+              {
+                "start": 1549098000,
+                "end": 1549104000,
+                "isAllDay": false,
+                "point": "0-point",
+                "place": "2-place"
               }
             ]
           },
@@ -472,23 +508,10 @@
     "places": {}
   },
   "7e990163-7bc3-4dfa-bdea-def666db01c5": {
+    "id": "7e990163-7bc3-4dfa-bdea-def666db01c5",
     "title": "Что-то там повисло над Невой…",
-    "periods": {
-      "11111111b": {
-        "eventId": "11111111b",
-        "start": 1548849600,
-        "end": 1551528000
-      },
-      "22222222b": {
-        "eventId": "22222222b",
-        "start": 1549022400,
-        "end": 1551528000
-      },
-      "33333333b": {
-        "eventId": "33333333b",
-        "start": 1546344000,
-        "end": 1553947200
-      }
+    "dates": {
+      "14.02.2019": {}
     }
   }
 }
