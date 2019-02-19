@@ -1,0 +1,14 @@
+{
+  "user": {
+    "sessionId": "123123123asd",
+    "name": "Ivan Ivanov"
+  },
+  "items": [
+    {
+      "id": "41b1283d-2ad1-4894-b03e-368042e5d301"
+    },
+    {
+      "id": "fea7f5c0-4c97-4a60-af87-3c916986786f"
+    }
+  ]
+}

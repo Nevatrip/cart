@@ -1,7 +1,10 @@
-.Page {
+html,
+body {
   margin: 0;
   padding: 0;
+}
 
+.Page {
   font-family: 'Open Sans';
 
   background-color: #F3F7FA;
