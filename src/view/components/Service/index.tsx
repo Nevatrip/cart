@@ -26,6 +26,7 @@ export interface IServiceProps extends IClassNameProps {
   title?: localeTitleSlug;
   periods?: IPeriod[];
   dates?: string[];
+  serviceUpdate?: Function;
 }
 
 export interface ISchedule {
@@ -105,7 +106,14 @@ interface order {
   time?: Date; // epoch
 }
 
+interface tickets {
+  _key?: string;
+  count?: number;
+  price?: string;
+}
+
 export interface IServiceState {
   service: service;
   order: order;
+  tickets: tickets;
 }

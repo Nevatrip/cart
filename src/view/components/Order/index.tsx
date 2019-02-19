@@ -11,6 +11,7 @@ interface ICart {
 
 export interface IOrderProps extends IClassNameProps {
   cart: ICart;
+  orderUpdate: Function;
   isLoading?: boolean;
   validation?: boolean;
   project?: "nevatrip" | "moskvatrip" | "busguide";

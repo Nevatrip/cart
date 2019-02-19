@@ -31,7 +31,7 @@ export class Order extends PureComponent<IOrderProps, { order?: IOrder[]}> {
       <div className={cnOrder()}>
         {
           isLoading
-          ? <OrderContent cart={cart}/>
+          ? <OrderContent cart={cart} orderUpdate={(order: any) => {this.setState({order})}}/>
           : 'Loading…'
         }
         <OrderAside order={order || []} />

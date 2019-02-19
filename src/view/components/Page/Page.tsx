@@ -29,7 +29,7 @@ export const Page: React.FunctionComponent<IPageProps> = props => (
               При инициализации страницы запрашиваем по сессии корзину
               текущего пользователя, которую пропсом передаём в Order
             */}
-            <Order isLoading={!!cart} cart={cart} />
+            <Order isLoading={!!cart} cart={cart} orderUpdate={() => {}}/>
           </div>
         </>
       );

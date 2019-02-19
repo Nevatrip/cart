@@ -7,7 +7,7 @@ import {IOrderProps} from '../index'
 
 const cnOrder = cn("Order");
 
-export const OrderContent: React.FunctionComponent<IOrderProps> = ({cart}) => (
+export const OrderContent: React.FunctionComponent<IOrderProps> = ({cart, orderUpdate}) => (
   <div className={cnOrder("Content")}>
     <blockquote>Cart's content…</blockquote>
     <fieldset className={cnOrder("User")}>
@@ -19,7 +19,7 @@ export const OrderContent: React.FunctionComponent<IOrderProps> = ({cart}) => (
     <ul className={cnOrder("List")}>
       {(cart.items || []).map((cartItem, index) => (
         <li className={cnOrder("Item")} key={cartItem.id || String(index)}>
-          <Service {...cartItem} />
+          <Service {...cartItem} serviceUpdate={orderUpdate}/>
         </li>
       ))}
     </ul>

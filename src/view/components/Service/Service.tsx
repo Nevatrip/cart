@@ -20,6 +20,7 @@ import serviceFixtures from './service.json';
 
 const cnService = cn('Service');
 import { ServiceTicket } from "./Ticket/Service-Ticket";
+import { throws } from "assert";
 
 export class Service extends React.PureComponent<IServiceProps, IServiceState> {
   constructor(props: IServiceProps){
@@ -27,13 +28,15 @@ export class Service extends React.PureComponent<IServiceProps, IServiceState> {
 
     this.state = {
       service: {},
-      order: {}
+      order: {},
+      tickets: {}
     }
 
     // this.handleOpenDate = this.handleOpenDate.bind(this);
     // this.handleOpenTime = this.handleOpenTime.bind(this);
     this.handleDate = this.handleDate.bind(this);
     this.handleDirection = this.handleDirection.bind(this);
+    this.handleTicket = this.handleTicket.bind(this);
     this.handleTime = this.handleTime.bind(this);
   }
 
@@ -70,6 +73,17 @@ export class Service extends React.PureComponent<IServiceProps, IServiceState> {
         time: time
       }
     }, () => console.log( this.state ) )
+  }
+
+  handleTicket(ticket: any) {
+    const tickets: any = Object.assign({}, this.state.tickets, {[ticket._key]: ticket})
+    this.setState({tickets})
+  }
+
+  componentDidUpdate () {
+    if (this.props && this.props.serviceUpdate) {
+      this.props.serviceUpdate(this.state)
+    }
   }
 
   getService() {
@@ -180,7 +194,7 @@ export class Service extends React.PureComponent<IServiceProps, IServiceState> {
                   <h4>{category}</h4>
                   <ul>
                     {
-                      ticketGroup[ category ].map((ticket: any) => <ServiceTicket ticket={ticket} key={ticket._key} /> )
+                      ticketGroup[ category ].map((ticket: any) => <ServiceTicket ticket={ticket} key={ticket._key} handleTicket={this.handleTicket}/> )
                     }
                   </ul>
                 </li>
