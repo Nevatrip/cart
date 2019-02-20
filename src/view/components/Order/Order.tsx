@@ -34,7 +34,7 @@ export class Order extends PureComponent<IOrderProps, { order?: IOrder[]}> {
           ? <OrderContent cart={cart}/>
           : 'Loading…'
         }
-        <OrderAside order={order || []} />
+        <OrderAside/>
       </div>
     )
   }

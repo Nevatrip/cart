@@ -25,6 +25,10 @@ export class ServiceTicket extends PureComponent<IServiceTicketProps, IServiceTi
     })
   }
 
+  componentDidUpdate () {
+    this.props.handleTicket(Object.assign({}, this.props.ticket, {...this.state}))
+  }
+
   render() {
     const { ticket } = this.props;
     const { count } = this.state;

@@ -1,12 +1,12 @@
 import * as React from "react";
 import { cn } from "@bem-react/classname";
-
+import { connect } from 'react-redux';
 import { IOrder } from "../index";
 
 import './Order-Aside.css';
 const cnOrder = cn('Order');
 
-export const OrderAside: React.FunctionComponent<{order: IOrder[]}> = ({order}) => (
+const OrderAsideClass: React.FunctionComponent<{order: IOrder[]}> = ({order}) => (
   <div className={cnOrder('Aside')}>
     <blockquote>Sidebar</blockquote>
     <div className={cnOrder('Tickets')}>
@@ -15,7 +15,7 @@ export const OrderAside: React.FunctionComponent<{order: IOrder[]}> = ({order}) 
         {
           order.map( orderItem => {
             return (
-              <li>
+              <li key={orderItem.title}>
                 <h4>{orderItem.title}</h4>
                 <dl>
                   {orderItem.date && <div><dt>Дата</dt><dd>{orderItem.isOpenDate ? 'isOpenDate' : orderItem.date.toLocaleDateString()}</dd></div>}
@@ -28,7 +28,7 @@ export const OrderAside: React.FunctionComponent<{order: IOrder[]}> = ({order}) 
                         <dl>
                           {
                             orderItem.tickets.map(ticket => (
-                              <div>
+                              <div key={JSON.stringify(ticket)}>
                                 <dt>{ticket.count} {ticket.type}</dt>
                                 <dd>{ticket.price}</dd>
                               </div>
@@ -52,3 +52,11 @@ export const OrderAside: React.FunctionComponent<{order: IOrder[]}> = ({order}) 
     </form>
   </div>
 )
+
+const mapStateToProps = (state: any, ownProps: any) => {
+  console.log(state.order.order)
+  return {
+  order: state.order.orders
+}}
+
+export const OrderAside = connect(mapStateToProps)(OrderAsideClass)

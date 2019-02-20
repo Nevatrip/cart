@@ -2,6 +2,10 @@ import * as React from "react";
 import { cn } from "@bem-react/classname";
 import { IServiceProps, IServiceState, IDates, IDirections } from './index';
 
+import { connect } from 'react-redux';
+
+import { bindActionCreators } from 'redux';
+
 import { Calendar } from "../Calendar/Calendar";
 
 import "./Service.css";
@@ -20,20 +24,23 @@ import serviceFixtures from './service.json';
 
 const cnService = cn('Service');
 import { ServiceTicket } from "./Ticket/Service-Ticket";
+import { throws } from "assert";
 
-export class Service extends React.PureComponent<IServiceProps, IServiceState> {
+class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
   constructor(props: IServiceProps){
     super(props)
 
     this.state = {
       service: {},
-      order: {}
+      order: {},
+      tickets: {}
     }
 
     // this.handleOpenDate = this.handleOpenDate.bind(this);
     // this.handleOpenTime = this.handleOpenTime.bind(this);
     this.handleDate = this.handleDate.bind(this);
     this.handleDirection = this.handleDirection.bind(this);
+    this.handleTicket = this.handleTicket.bind(this);
     this.handleTime = this.handleTime.bind(this);
   }
 
@@ -70,6 +77,17 @@ export class Service extends React.PureComponent<IServiceProps, IServiceState> {
         time: time
       }
     }, () => console.log( this.state ) )
+  }
+
+  handleTicket(ticket: any) {
+    const tickets: any = Object.assign({}, this.state.tickets, {[ticket._key]: ticket})
+    this.setState({tickets})
+  }
+
+  componentDidUpdate () {
+    if (this.props && this.props.serviceUpdate) {
+      this.props.serviceUpdate(this.state)
+    }
   }
 
   getService() {
@@ -180,7 +198,7 @@ export class Service extends React.PureComponent<IServiceProps, IServiceState> {
                   <h4>{category}</h4>
                   <ul>
                     {
-                      ticketGroup[ category ].map((ticket: any) => <ServiceTicket ticket={ticket} key={ticket._key} /> )
+                      ticketGroup[ category ].map((ticket: any) => <ServiceTicket ticket={ticket} key={ticket._key} handleTicket={this.handleTicket}/> )
                     }
                   </ul>
                 </li>
@@ -298,3 +316,14 @@ export class Service extends React.PureComponent<IServiceProps, IServiceState> {
     */
   }
 }
+
+const mapStateToProps = (state: any, ownProps: any) => ({})
+
+const mapDispatchToProps = (dispatch: any) => ({
+  serviceUpdate: (payload: any) => dispatch({
+    type: "SERVICE_UPDATE",
+    payload
+  }),
+});
+
+export const Service = connect(mapStateToProps, mapDispatchToProps)(ServiceClass)

@@ -10,7 +10,8 @@ export interface ITicket {
 }
 
 export interface IServiceTicketProps {
-  ticket: ITicket
+  ticket: ITicket,
+  handleTicket: Function
 }
 
 export interface IServiceTicketState {
