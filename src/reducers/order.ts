@@ -5,17 +5,18 @@ export interface orderState {
 }
 
 export const orderReducer = function (state: any = {orders: []}, action: any) {
-    console.log(state)
     if (action.type === "SERVICE_UPDATE") {
-        return Object.assign({}, state, {
-            orders: [{
-                title: action.payload.service.title.ru.name,
-                date: action.payload.order.date,
-                isOpenDate: false,
-                isOpenTime: false,
-                tickets: Object.values(action.payload.tickets)
-            }]
-        })
+        if (Object.keys(action.payload.tickets).length) {
+            return Object.assign({}, state, {
+                orders: state.orders.concat([{
+                    title: action.payload.service.title.ru.name,
+                    date: new Date(action.payload.order.date),
+                    isOpenDate: false,
+                    isOpenTime: false,
+                    tickets: Object.values(action.payload.tickets)
+                }])
+            })
+        }
     }
     return state
 }

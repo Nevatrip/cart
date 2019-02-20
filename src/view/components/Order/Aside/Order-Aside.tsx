@@ -54,7 +54,7 @@ const OrderAsideClass: React.FunctionComponent<{order: IOrder[]}> = ({order}) =>
 )
 
 const mapStateToProps = (state: any, ownProps: any) => {
-  console.log(state.order.order)
+  console.log(state.order.orders)
   return {
   order: state.order.orders
 }}

@@ -85,9 +85,7 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
   }
 
   componentDidUpdate () {
-    if (this.props && this.props.serviceUpdate) {
-      this.props.serviceUpdate(this.state)
-    }
+    this.props.serviceUpdate(this.state)
   }
 
   getService() {

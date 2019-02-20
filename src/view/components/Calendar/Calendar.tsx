@@ -21,10 +21,21 @@ export class Calendar extends React.Component<any, any> {
   }
 
   componentDidMount () {
-    const dates = this.props.dates
-      ? new Set(this.props.dates)
-      : new Set();
-    this.setState({ dates });
+    if (this.props.dates) {
+      const now = new Date()
+      var today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).valueOf()
+      const isAcive = ( date: any ) => {
+        return today <= this.dateFromApiFormat(date).valueOf()
+      }
+
+      const resDates = this.props.dates.filter(isAcive)
+      if (resDates.length) {
+        this.onChange(this.dateFromApiFormat(resDates[0]))
+      }
+      const dates = new Set(resDates)
+
+      this.setState({ dates });
+    }
   }
 
   toTwoCharacterFormat (value: number) {
@@ -40,6 +51,15 @@ export class Calendar extends React.Component<any, any> {
       return `${this.toTwoCharacterFormat(date.getDate())}.${this.toTwoCharacterFormat(date.getMonth() + 1)}.${String(date.getFullYear())}`
     } else {
       return ''
+    }
+  }
+
+  dateFromApiFormat (date: string) {
+    const items = date.split('.')
+    if (items.length === 3) {
+      return new Date(Number(items[2]), Number(items[1]) - 1, Number(items[0]))
+    } else {
+      return 0
     }
   }
 
