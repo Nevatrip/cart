@@ -11,6 +11,7 @@ export const orderReducer = function (state: any = {orders: []}, action: any) {
             const orders = state.orders.filter((item: any) => (item.title !== action.payload.service.title.ru.name)).concat([{
                 title: action.payload.service.title.ru.name,
                 date: new Date(action.payload.order.date),
+                time: action.payload.order.time,
                 isOpenDate: false,
                 isOpenTime: false,
                 tickets

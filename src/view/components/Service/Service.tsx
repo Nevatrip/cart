@@ -135,6 +135,12 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
       .flatMap(event => event.actions.map(action => new Date(action.start)))
       .filter(time => new Date(date) < time && new Date(date + 1000 * 60 * 60 * 24) >= time);
 
+    if (times && times.length) {
+      const stateTime = this.state.order.time
+      if (!stateTime || (this.state.order && !times.find(item => (item.valueOf() === stateTime.valueOf())))) {
+        setTimeout(() => this.handleTime(times[0]), 1) // TODO: move to componentDidMount or constructor
+      }
+    }
     const ticketGroup = selectedDirection && selectedDirection.tickets && selectedDirection.tickets.reduce(function (r, a) {
       r[a.category.name.current] = r[a.category.name.current] || [];
       r[a.category.name.current].push(a);

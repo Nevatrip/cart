@@ -47,7 +47,9 @@ const OrderAsideClass: React.FunctionComponent<{order: IOrder[]}> = ({order}) =>
       </ul>
     </div>
     <form className={cnOrder('Footer')} action="https://money.yandex.ru/eshop.xml" method="post">
-      <blockquote>Sum, promocode, submit</blockquote>
+      <blockquote>Sum: {order.reduce((accum, curr) => {
+        return accum + (curr && curr.tickets ? curr.tickets.reduce((accum, curr) => (accum + (curr.count * Number(curr.price))), 0) : 0)
+      }, 0)}, promocode, submit</blockquote>
       <button>Оплатить</button>
     </form>
   </div>
