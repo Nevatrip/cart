@@ -2,6 +2,7 @@ import * as React from "react";
 import { cn } from "@bem-react/classname";
 import { connect } from 'react-redux';
 import { IOrder } from "../index";
+import { ApplicationState } from "../../../../reducers/index"
 
 import './Order-Aside.css';
 const cnOrder = cn('Order');
@@ -55,7 +56,7 @@ const OrderAsideClass: React.FunctionComponent<{order: IOrder[]}> = ({order}) =>
   </div>
 )
 
-const mapStateToProps = (state: any, ownProps: any) => {
+const mapStateToProps = (state: ApplicationState) => {
   console.log(state.order.orders)
   return {
   order: state.order.orders

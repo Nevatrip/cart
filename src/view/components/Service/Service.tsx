@@ -321,10 +321,10 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
   }
 }
 
-const mapStateToProps = (state: any, ownProps: any) => ({})
+const mapStateToProps = () => ({})
 
-const mapDispatchToProps = (dispatch: any) => ({
-  serviceUpdate: (payload: any) => dispatch({
+const mapDispatchToProps = (dispatch: Function) => ({
+  serviceUpdate: (payload: IServiceState) => dispatch({
     type: "SERVICE_UPDATE",
     payload
   }),
