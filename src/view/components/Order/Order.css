@@ -1,0 +1,10 @@
+.Order {
+  background-color: #aaa;
+  display: flex;
+}
+
+.Order-Item + .Order-Item {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #429;
+}

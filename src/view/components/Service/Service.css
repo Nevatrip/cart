@@ -1,0 +1,35 @@
+.Service-Direction {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  background-color: #727;
+}
+
+.Service-PointAndPlace {
+  width: 30%;
+}
+
+.Service-PointAndPlace + .Service-TimeAndType {
+  margin-left: 15px;
+}
+
+.Service-TimeAndType {
+  flex: 1;
+}
+
+.Service-TimeItem {
+  display: block;
+  padding: 4px;
+  border-radius: 4px;
+  border: 1px solid #123;
+  width: 240px;
+}
+
+.Service-TimeItemInner {
+  display: block;
+}
+
+.Service-Times {
+  display: flex;
+  flex-wrap: nowrap;
+}
