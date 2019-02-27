@@ -1,13 +1,13 @@
 import * as React from "react";
 import { cn } from "@bem-react/classname";
 import { connect } from 'react-redux';
-import { IOrder } from "../index";
+import { ICompileTicket } from "../../";
 import { ApplicationState } from "../../../../reducers/index"
 
 import './Order-Aside.css';
 const cnOrder = cn('Order');
 
-const OrderAsideClass: React.FunctionComponent<{order: IOrder[]}> = ({order}) => (
+const OrderAsideClass: React.FunctionComponent<{order: ICompileTicket[]}> = ({order}) => (
   <div className={cnOrder('Aside')}>
     <blockquote>Sidebar</blockquote>
     <div className={cnOrder('Tickets')}>
@@ -49,7 +49,7 @@ const OrderAsideClass: React.FunctionComponent<{order: IOrder[]}> = ({order}) =>
     </div>
     <form className={cnOrder('Footer')} action="https://money.yandex.ru/eshop.xml" method="post">
       <blockquote>Sum: {order.reduce((accum, curr) => {
-        return accum + (curr && curr.tickets ? curr.tickets.reduce((accum, curr) => (accum + (curr.count * Number(curr.price))), 0) : 0)
+        return accum + (curr && curr.tickets ? curr.tickets.reduce((accum, curr) => (accum + ((curr.count ? curr.count : 0) * Number(curr.price))), 0) : 0)
       }, 0)}, promocode, submit</blockquote>
       <button>Оплатить</button>
     </form>
