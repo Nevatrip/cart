@@ -26,7 +26,7 @@ export class ServiceTicket extends PureComponent<IServiceTicketProps, IServiceTi
   }
 
   componentDidUpdate () {
-    this.props.handleTicket(Object.assign({}, this.props.ticket, {...this.state}))
+    this.props.handleTicket(Object.assign({}, {...this.props.ticket, ticket: this.props.ticket.ticket[0]}, {...this.state}))
   }
 
   render() {
