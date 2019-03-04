@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { IOrderProps, IOrder } from './index';
+import { IOrderProps } from './index';
 import { cn } from "@bem-react/classname";
 
 import { OrderAside } from './Aside/Order-Aside';
@@ -9,13 +9,10 @@ import "./Order.css";
 
 const cnOrder = cn('Order');
 
-export class Order extends PureComponent<IOrderProps, { order?: IOrder[]}> {
+export class Order extends PureComponent<IOrderProps, {}> {
   constructor(props: IOrderProps) {
     super(props);
 
-    this.state = {
-      order: []
-    }
   }
 
   render() {
@@ -24,9 +21,6 @@ export class Order extends PureComponent<IOrderProps, { order?: IOrder[]}> {
       isLoading
     } = this.props;
 
-    // В `order` передаём выбранные значения каждого <Service>
-    const { order } = this.state;
-
     return (
       <div className={cnOrder()}>
         {
@@ -34,7 +28,7 @@ export class Order extends PureComponent<IOrderProps, { order?: IOrder[]}> {
           ? <OrderContent cart={cart}/>
           : 'Loading…'
         }
-        <OrderAside order={order || []} />
+        <OrderAside/>
       </div>
     )
   }

@@ -1,10 +1,15 @@
 import * as React from "react";
 import { cn } from "@bem-react/classname";
-import { IServiceProps, IServiceState, IDates, IDirections } from './index';
+import { IServiceProps, IServiceState, IDates, IDirections, service } from './index';
+
+import { connect } from 'react-redux';
+
+import { bindActionCreators } from 'redux';
 
 import { Calendar } from "../Calendar/Calendar";
 
 import "./Service.css";
+import { ICompileTicket, IOneTicket } from ".."
 
 const sanityClient = require("@sanity/client");
 
@@ -20,20 +25,23 @@ import serviceFixtures from './service.json';
 
 const cnService = cn('Service');
 import { ServiceTicket } from "./Ticket/Service-Ticket";
+import { throws } from "assert";
 
-export class Service extends React.PureComponent<IServiceProps, IServiceState> {
+class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
   constructor(props: IServiceProps){
     super(props)
 
     this.state = {
       service: {},
-      order: {}
+      order: {},
+      tickets: {}
     }
 
     // this.handleOpenDate = this.handleOpenDate.bind(this);
     // this.handleOpenTime = this.handleOpenTime.bind(this);
     this.handleDate = this.handleDate.bind(this);
     this.handleDirection = this.handleDirection.bind(this);
+    this.handleTicket = this.handleTicket.bind(this);
     this.handleTime = this.handleTime.bind(this);
   }
 
@@ -72,24 +80,28 @@ export class Service extends React.PureComponent<IServiceProps, IServiceState> {
     }, () => console.log( this.state ) )
   }
 
+  handleTicket(ticket: IOneTicket) {
+    const tickets = Object.assign({}, this.state.tickets, {[String(ticket._key)]: ticket})
+    this.setState({tickets})
+  }
+
+  componentDidUpdate () {
+    this.props.serviceUpdate(this.state)
+  }
+
   getService() {
-    // return client.getDocument(this.props.id).then((response: any) => {
-    //   return response;
-    // });
 
     const query = `*[_id == "${this.props.id}"] {title, "directions": directions[]{..., "tickets": tickets[]{..., "category": category->, "ticket": ticket[]->}}}[0]`;
     const params = {}
 
-    return client.fetch(query, params).then((response: any) => {
-      return response;
-    });
+    return client.fetch(query, params);
   }
 
   componentDidMount() {
-    this.getService().then( (response: any) => {
+    this.getService().then( (response: service) => {
       const newState = { ...this.state };
       newState.service = response;
-      newState.order.direction = response.directions[0]._key;
+      newState.order.direction = response.directions ? response.directions[0]._key : '';
       this.setState( newState );
     } );
   }
@@ -119,6 +131,12 @@ export class Service extends React.PureComponent<IServiceProps, IServiceState> {
       .flatMap(event => event.actions.map(action => new Date(action.start)))
       .filter(time => new Date(date) < time && new Date(date + 1000 * 60 * 60 * 24) >= time);
 
+    if (times && times.length) {
+      const stateTime = this.state.order.time
+      if (!stateTime || (this.state.order && !times.find(item => (item.valueOf() === stateTime.valueOf())))) {
+        setTimeout(() => this.handleTime(times[0]), 1) // TODO: move to componentDidMount or constructor
+      }
+    }
     const ticketGroup = selectedDirection && selectedDirection.tickets && selectedDirection.tickets.reduce(function (r, a) {
       r[a.category.name.current] = r[a.category.name.current] || [];
       r[a.category.name.current].push(a);
@@ -180,7 +198,7 @@ export class Service extends React.PureComponent<IServiceProps, IServiceState> {
                   <h4>{category}</h4>
                   <ul>
                     {
-                      ticketGroup[ category ].map((ticket: any) => <ServiceTicket ticket={ticket} key={ticket._key} /> )
+                      ticketGroup[ category ].map((ticket: any) => <ServiceTicket ticket={ticket} key={ticket._key} handleTicket={this.handleTicket}/> )
                     }
                   </ul>
                 </li>
@@ -298,3 +316,14 @@ export class Service extends React.PureComponent<IServiceProps, IServiceState> {
     */
   }
 }
+
+const mapStateToProps = () => ({})
+
+const mapDispatchToProps = (dispatch: Function) => ({
+  serviceUpdate: (payload: IServiceState) => dispatch({
+    type: "SERVICE_UPDATE",
+    payload
+  }),
+});
+
+export const Service = connect(mapStateToProps, mapDispatchToProps)(ServiceClass)

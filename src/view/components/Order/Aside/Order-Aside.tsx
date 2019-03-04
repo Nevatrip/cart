@@ -1,12 +1,13 @@
 import * as React from "react";
 import { cn } from "@bem-react/classname";
-
-import { IOrder } from "../index";
+import { connect } from 'react-redux';
+import { ICompileTicket } from "../../";
+import { ApplicationState } from "../../../../reducers/index"
 
 import './Order-Aside.css';
 const cnOrder = cn('Order');
 
-export const OrderAside: React.FunctionComponent<{order: IOrder[]}> = ({order}) => (
+const OrderAsideClass: React.FunctionComponent<{order: ICompileTicket[]}> = ({order}) => (
   <div className={cnOrder('Aside')}>
     <blockquote>Sidebar</blockquote>
     <div className={cnOrder('Tickets')}>
@@ -15,7 +16,7 @@ export const OrderAside: React.FunctionComponent<{order: IOrder[]}> = ({order}) 
         {
           order.map( orderItem => {
             return (
-              <li>
+              <li key={orderItem.title}>
                 <h4>{orderItem.title}</h4>
                 <dl>
                   {orderItem.date && <div><dt>Дата</dt><dd>{orderItem.isOpenDate ? 'isOpenDate' : orderItem.date.toLocaleDateString()}</dd></div>}
@@ -28,9 +29,8 @@ export const OrderAside: React.FunctionComponent<{order: IOrder[]}> = ({order}) 
                         <dl>
                           {
                             orderItem.tickets.map(ticket => (
-                              <div>
-                                <dt>{ticket.count} {ticket.type}</dt>
-                                <dd>{ticket.price}</dd>
+                              <div key={JSON.stringify(ticket)}>
+                                <dt>{ticket.ticket.title} ({ticket.category.title}), {ticket.count}x {ticket.price}р.</dt>
                               </div>
                             ) )
                           }
@@ -47,8 +47,18 @@ export const OrderAside: React.FunctionComponent<{order: IOrder[]}> = ({order}) 
       </ul>
     </div>
     <form className={cnOrder('Footer')} action="https://money.yandex.ru/eshop.xml" method="post">
-      <blockquote>Sum, promocode, submit</blockquote>
+      <blockquote>Sum: {order.reduce((accum, curr) => {
+        return accum + (curr && curr.tickets ? curr.tickets.reduce((accum, curr) => (accum + ((curr.count ? curr.count : 0) * Number(curr.price))), 0) : 0)
+      }, 0)}, promocode, submit</blockquote>
       <button>Оплатить</button>
     </form>
   </div>
 )
+
+const mapStateToProps = (state: ApplicationState) => {
+  console.log(state.order.orders)
+  return {
+  order: state.order.orders
+}}
+
+export const OrderAside = connect(mapStateToProps)(OrderAsideClass)
