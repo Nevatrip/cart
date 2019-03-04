@@ -5,6 +5,8 @@ import "./Order-Content.css";
 import {Service} from '../../Service/Service'
 import {IOrderProps} from '../index'
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';
+import {Fieldset} from "../../Fieldset/Fieldset";
+import {FormField} from "../../FormField/FormField";
 
 const cnOrder = cn("Order");
 
@@ -34,15 +36,17 @@ export class OrderContent extends React.Component<IOrderProps, {}> {
 
     return (
       <div className={cnOrder("Content")}>
-        <blockquote>Cart's content…</blockquote>
-        <fieldset className={cnOrder("User")}>
-          <TextField label="Email" type="email" onChange={this.handleEmail} />
-          <TextField label="Name" type="text" onChange={this.handleName} />
-          <TextField label="Phone" type="tel" onChange={this.handlePhone} />
-          {/* <input type="text" placeholder="email" /> */}
-          {/* <input type="text" placeholder="name" /> */}
-          {/* <input type="text" placeholder="phone" /> */}
-        </fieldset>
+        <Fieldset title="Персональные данные">
+          <FormField title="Ваш email">
+            <TextField placeholder="info@email.com" type="email" onChange={this.handleEmail} />
+          </FormField>
+          <FormField title="Ваше имя и&nbsp;фамилия">
+            <TextField placeholder="Иван Иванов" type="text" onChange={this.handleName} />
+          </FormField>
+          <FormField title="Ваш телефон">
+            <TextField placeholder="+7 (9__) ___-__-__" type="tel" onChange={this.handlePhone} />
+          </FormField>
+        </Fieldset>
         <ul className={cnOrder("List")}>
           {(cart.items || []).map((cartItem, index) => (
             <li className={cnOrder("Item")} key={cartItem.id || String(index)}>

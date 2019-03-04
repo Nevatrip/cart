@@ -1,18 +1,18 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i&subset=cyrillic-ext');
+
 html,
 body {
   margin: 0;
   padding: 0;
+  background-color: #DBEBFF;
 }
 
-.Page {
-  font-family: 'Open Sans';
-
-  background-color: #F3F7FA;
-}
-
-.Page-Header {
-  padding-top: 33px;
-  padding-bottom: 33px;
-
-  text-align: center;
+.Page-Content {
+  position: relative;
+  box-sizing: border-box;
+  min-height: 100vh;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: 'Open Sans', sans-serif;
+  max-width: 1190px;
 }

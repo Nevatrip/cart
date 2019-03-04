@@ -3,7 +3,6 @@ import { cn } from "@bem-react/classname";
 import { connect } from 'react-redux';
 import { ICompileTicket } from "../../";
 import { ApplicationState } from "../../../../reducers/index"
-import { Button } from "../../Button/Button";
 import ButtonMUI from '@material-ui/core/Button';
 
 import './Order-Aside.css';
