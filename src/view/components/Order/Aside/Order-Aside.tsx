@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { ICompileTicket } from "../../";
 import { ApplicationState } from "../../../../reducers/index"
 import { Button } from "../../Button/Button";
+import ButtonMUI from '@material-ui/core/Button';
 
 import './Order-Aside.css';
 const cnOrder = cn('Order');
@@ -51,7 +52,7 @@ const OrderAsideClass: React.FunctionComponent<{order: ICompileTicket[]}> = ({or
       <blockquote>Sum: {order.reduce((accum, curr) => {
         return accum + (curr && curr.tickets ? curr.tickets.reduce((accum, curr) => (accum + ((curr.count ? curr.count : 0) * Number(curr.price))), 0) : 0)
       }, 0)}, promocode, submit</blockquote>
-      <Button>Оплатить</Button>
+      <ButtonMUI>Оплатить</ButtonMUI>
     </form>
   </div>
 )
