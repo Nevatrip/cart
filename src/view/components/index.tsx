@@ -1,10 +1,15 @@
 export interface IOneTicket {
-    category?: Object;
+    category: {
+        title: string
+    };
     count?: number
     price?: string
     type?: string;
-    ticket?: Object[]
+    ticket: {
+        title: string
+    };
     _key?: string;
+    title?: string;
 }
 
 export interface ICompileTicket {

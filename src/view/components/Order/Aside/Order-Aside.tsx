@@ -30,8 +30,7 @@ const OrderAsideClass: React.FunctionComponent<{order: ICompileTicket[]}> = ({or
                           {
                             orderItem.tickets.map(ticket => (
                               <div key={JSON.stringify(ticket)}>
-                                <dt>{ticket.count} {ticket.type}</dt>
-                                <dd>{ticket.price}</dd>
+                                <dt>{ticket.ticket.title} ({ticket.category.title}), {ticket.count}x {ticket.price}р.</dt>
                               </div>
                             ) )
                           }
