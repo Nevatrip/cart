@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "@bem-react/classname";
-import { IServiceProps, IServiceState, IDates, IDirections } from './index';
+import { IServiceProps, IServiceState, IDates, IDirections, service } from './index';
 
 import { connect } from 'react-redux';
 
@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux';
 import { Calendar } from "../Calendar/Calendar";
 
 import "./Service.css";
+import { ICompileTicket, IOneTicket } from ".."
 
 const sanityClient = require("@sanity/client");
 
@@ -79,8 +80,8 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
     }, () => console.log( this.state ) )
   }
 
-  handleTicket(ticket: any) {
-    const tickets: any = Object.assign({}, this.state.tickets, {[ticket._key]: ticket})
+  handleTicket(ticket: IOneTicket) {
+    const tickets = Object.assign({}, this.state.tickets, {[String(ticket._key)]: ticket})
     this.setState({tickets})
   }
 
@@ -89,23 +90,18 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
   }
 
   getService() {
-    // return client.getDocument(this.props.id).then((response: any) => {
-    //   return response;
-    // });
 
     const query = `*[_id == "${this.props.id}"] {title, "directions": directions[]{..., "tickets": tickets[]{..., "category": category->, "ticket": ticket[]->}}}[0]`;
     const params = {}
 
-    return client.fetch(query, params).then((response: any) => {
-      return response;
-    });
+    return client.fetch(query, params);
   }
 
   componentDidMount() {
-    this.getService().then( (response: any) => {
+    this.getService().then( (response: service) => {
       const newState = { ...this.state };
       newState.service = response;
-      newState.order.direction = response.directions[0]._key;
+      newState.order.direction = response.directions ? response.directions[0]._key : '';
       this.setState( newState );
     } );
   }
@@ -321,10 +317,10 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
   }
 }
 
-const mapStateToProps = (state: any, ownProps: any) => ({})
+const mapStateToProps = () => ({})
 
-const mapDispatchToProps = (dispatch: any) => ({
-  serviceUpdate: (payload: any) => dispatch({
+const mapDispatchToProps = (dispatch: Function) => ({
+  serviceUpdate: (payload: IServiceState) => dispatch({
     type: "SERVICE_UPDATE",
     payload
   }),

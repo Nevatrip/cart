@@ -87,7 +87,7 @@ interface direction {
   schedule: event[];
 }
 
-interface service {
+export interface service {
   title?: localeTitleSlug;
   directions?: direction[];
   periods?: IPeriod[];

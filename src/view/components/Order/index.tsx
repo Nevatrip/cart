@@ -17,6 +17,12 @@ export interface IOrderProps extends IClassNameProps {
   lang?: "ru" | "en" | "zh";
 }
 
+export interface ITicket {
+  count: number;
+  type: string;
+  price: number;
+}
+
 export interface IOrder {
   title: string;
   date?: Date;
@@ -27,9 +33,5 @@ export interface IOrder {
     title: string;
     map: string;
   };
-  tickets?: {
-    count: number;
-    type: string;
-    price: number;
-  }[]
+  tickets?: ITicket[]
 }
