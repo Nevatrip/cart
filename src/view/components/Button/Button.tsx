@@ -32,5 +32,4 @@ const ButtonPresenter: React.SFC<IButtonProps> = props => (
   </button>
 );
 
-  export const Button = withHover(ButtonPresenter);
-
+export const Button = withHover(ButtonPresenter);
