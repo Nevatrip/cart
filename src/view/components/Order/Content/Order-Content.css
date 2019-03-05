@@ -1,5 +1,6 @@
 .Order-Content {
   position: relative;
+  z-index: 3;
   color: #fff;
   background-color: #4A90E2;
   flex: 1;
