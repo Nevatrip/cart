@@ -18,7 +18,18 @@
   left: 0;
   right: 0;
   bottom: 0;
-  padding-left: 71.7%;
+}
+.Order-Aside-Fixed-Inner{
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 28.3%;
+  padding-left: 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 .Order-Tickets-Ul {
@@ -120,7 +131,7 @@
   box-sizing: border-box;
   position: absolute;
   bottom: 0;
-  left: 71.7%;
+  left: 0;
   margin: 0 0 0 -53px;
   height: 30vh;
   overflow-y: auto;
