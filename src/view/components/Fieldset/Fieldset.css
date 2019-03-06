@@ -1,0 +1,19 @@
+.Fieldset{
+  position: relative;
+  margin: 21px 0 30px 0;
+  padding: 0;
+  border: none;
+  outline: none;
+}
+.Fieldset-Legend {
+  box-sizing: border-box;
+  font-size: 16.6px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+.Fieldset-Content{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}

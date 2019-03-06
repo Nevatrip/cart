@@ -30,7 +30,6 @@ export const Page: React.FunctionComponent<IPageProps> = props => (
 
         return (
           <>
-            <div className={cnPage("Header")}>Header!</div>
             <div className={cnPage("Content")}>
               {/*
                 При инициализации страницы запрашиваем по сессии корзину
