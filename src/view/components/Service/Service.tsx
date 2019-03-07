@@ -34,7 +34,7 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
     this.state = {
       service: {},
       order: {},
-      tickets: {}
+      tickets: []
     }
 
     // this.handleOpenDate = this.handleOpenDate.bind(this);
@@ -77,17 +77,18 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
         ...this.state.order,
         time: time
       }
-    }, () => console.log( this.state ) )
+    })
   }
 
   handleTicket(ticket: IOneTicket) {
-    const tickets = Object.assign({}, this.state.tickets, {[String(ticket._key)]: ticket})
-    this.setState({tickets})
+    console.log('ticket ', ticket)
+    const tickets = this.state.tickets.filter(item => (item._key !== ticket._key)).concat(ticket)
+    console.log('tickets ', tickets)
+    this.setState({tickets}, () => {
+      this.props.serviceUpdate(this.state)
+    })
   }
 
-  componentDidUpdate () {
-    this.props.serviceUpdate(this.state)
-  }
 
   getService() {
 
@@ -198,7 +199,11 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
                   <h4>{category}</h4>
                   <ul>
                     {
-                      ticketGroup[ category ].map((ticket: any) => <ServiceTicket ticket={ticket} key={ticket._key} handleTicket={this.handleTicket}/> )
+                      ticketGroup[ category ].map((ticket: any) => {
+                        const exist = this.state.tickets.find(item => (item._key === ticket._key))
+                        const count = (exist && exist.count) ? exist.count : 0
+                        return (<ServiceTicket ticket={ticket} count={count} key={ticket._key} handleTicket={this.handleTicket}/>)
+                      })
                     }
                   </ul>
                 </li>

@@ -115,5 +115,5 @@ interface tickets {
 export interface IServiceState {
   service: service;
   order: order;
-  tickets: tickets;
+  tickets: Array<tickets>;
 }
