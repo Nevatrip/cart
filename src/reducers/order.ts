@@ -9,7 +9,9 @@ export const orderReducer = function (state: orderState = {orders: []}, action: 
         if (Object.keys(action.payload.tickets).length && action.payload.order.date) {
             console.log('action.payload ' , action.payload)
             const tickets = Object.values(<IOneTicket[]> action.payload.tickets).filter((item: IOneTicket) => (item.count))
-            let orders = state.orders.filter((item: ICompileTicket) => (item.title !== action.payload.service.title.ru.name))
+            let orders = state.orders.filter((item: ICompileTicket) => {
+                return !((item.id === action.payload.id) && (String(item.time) === String(action.payload.order.time)) && (item.direction === action.payload.order.direction))
+            })
             if (tickets.length) {
                 orders = orders.concat({
                     title: action.payload.service.title.ru.name,

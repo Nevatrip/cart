@@ -69,11 +69,12 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
   // }
 
   handleDate(date: number) {
+    const cur = new Date(date)
     this.setState({
       tickets: [],
       order: {
         ...this.state.order,
-        date: date
+        date: new Date(cur.getFullYear(), cur.getMonth(), cur.getDate()).valueOf()
       }
     }, this.updateFromStore)
   }
