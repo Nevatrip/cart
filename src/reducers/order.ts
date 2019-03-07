@@ -17,7 +17,8 @@ export const orderReducer = function (state: orderState = {orders: []}, action: 
                     time: action.payload.order.time,
                     isOpenDate: false,
                     isOpenTime: false,
-                    tickets
+                    tickets,
+                    id: action.payload.id,
                 })
             }
             return {

@@ -20,4 +20,5 @@ export interface ICompileTicket {
     time?: Date;
     title?: string;
     point?: any;
+    id: string;
 }

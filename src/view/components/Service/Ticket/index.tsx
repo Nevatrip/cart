@@ -12,7 +12,7 @@ export interface ITicket {
 export interface IServiceTicketProps {
   ticket: ITicket,
   handleTicket: Function,
-  count: number
+  count: number,
 }
 
 export interface IServiceTicketState {
