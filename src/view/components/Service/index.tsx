@@ -28,7 +28,7 @@ export interface IServiceProps extends IClassNameProps {
   periods?: IPeriod[];
   dates?: string[];
   serviceUpdate: Function;
-  order: ICompileTicket | null;
+  orders: ICompileTicket[];
 }
 
 export interface ISchedule {

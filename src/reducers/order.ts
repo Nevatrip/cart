@@ -18,6 +18,7 @@ export const orderReducer = function (state: orderState = {orders: []}, action: 
                     isOpenDate: false,
                     isOpenTime: false,
                     tickets,
+                    direction: action.payload.order.direction,
                     id: action.payload.id,
                 })
             }

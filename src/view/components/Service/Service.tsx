@@ -47,11 +47,13 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
     this.handleTime = this.handleTime.bind(this);
   }
 
-  componentDidUpdate(oldProps: IServiceProps) {
-    const newProps = this.props
-    if(oldProps.order !== newProps.order) {
-      if (newProps.order) {
-        const order = newProps.order
+  updateFromStore() {
+    if (this.props.orders) {
+      const order = this.props.orders.find(item => {
+        const {time, direction} = this.state.order
+        return (String(time) === String(item.time)) && (direction === item.direction)
+      }) || null
+      if (order) {
         const tickets = order.tickets || []
         this.setState({tickets})
       }
@@ -68,29 +70,32 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
 
   handleDate(date: number) {
     this.setState({
+      tickets: [],
       order: {
         ...this.state.order,
         date: date
       }
-    })
+    }, this.updateFromStore)
   }
 
   handleDirection(event: React.ChangeEvent<HTMLSelectElement>) {
     this.setState({
+      tickets: [],
       order: {
         ...this.state.order,
         direction: event.target.value
       }
-    })
+    }, this.updateFromStore)
   }
 
   handleTime(time: Date) {
     this.setState({
+      tickets: [],
       order: {
         ...this.state.order,
         time: time
       }
-    })
+    }, this.updateFromStore)
   }
 
   handleTicket(ticket: IOneTicket) {
@@ -334,9 +339,9 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
 }
 
 const mapStateToProps = (state: ApplicationState, props: any) => {
-  const order = state.order.orders.find(item => (item.id === props.id)) || null
+  const orders = state.order.orders.filter(item => (item.id === props.id)) || []
   return {
-    order 
+    orders
   }
 }
 
