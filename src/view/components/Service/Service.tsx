@@ -179,7 +179,7 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
                         type="radio"
                         id={time.toLocaleTimeString()}
                         value={time.toLocaleTimeString()}
-                        name={(date && date.toString()) || ''}
+                        name={title ? (title[ lang as any ].name + direction) : ''}
                         defaultChecked={!index}
                         onChange={() => this.handleTime(time)}
                       />

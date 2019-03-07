@@ -10,6 +10,7 @@ export interface ICalendarState {
   visible: boolean;
   selected: Date | undefined;
   dates: Set<string>;
+  datesDefault: string[];
 }
 
 export class Calendar extends React.Component<ICalendarProps, ICalendarState> {
@@ -23,6 +24,7 @@ export class Calendar extends React.Component<ICalendarProps, ICalendarState> {
     selected: undefined,
     visible: false,
     dates: new Set(),
+    datesDefault: [],
   }
 
   onChange (selected: Date) {
@@ -31,22 +33,49 @@ export class Calendar extends React.Component<ICalendarProps, ICalendarState> {
     this.setState({ selected })
   }
 
-  componentDidMount () {
-    if (this.props.dates) {
+  updateProps(nextProps: ICalendarProps) {
+    if (nextProps.dates) {
       const now = new Date()
       var today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).valueOf()
       const isAcive = ( date: string ) => {
         return today <= this.dateFromApiFormat(date).valueOf()
       }
 
-      const resDates = this.props.dates.filter(isAcive)
-      if (resDates.length) {
-        this.onChange(this.dateFromApiFormat(resDates[0]))
-      }
+      const resDates = nextProps.dates.filter(isAcive)
       const dates = new Set(resDates)
 
       this.setState({ dates });
+      if (resDates.length) {
+        this.onChange(this.dateFromApiFormat(resDates[0]))
+      }
     }
+  }
+
+  isEqualArrays (arr1: string[], arr2: string[]) {
+    if (arr1.length !== arr2.length) {
+      return false
+    } else {
+      for (let i in arr1) {
+        if (arr1.hasOwnProperty(i) && arr2.hasOwnProperty(i)) {
+          if (arr1[i] !== arr2[i]) {
+            return false
+          }
+        } else {
+          return false
+        }
+      }
+    }
+    return true
+  }
+
+  componentWillReceiveProps(nextProps: ICalendarProps) {
+    if (!this.isEqualArrays(nextProps.dates, this.state.datesDefault)) {
+      this.setState({ datesDefault: nextProps.dates }, () => this.updateProps(nextProps))
+    }
+  }
+
+  componentDidMount () {
+    this.setState({ datesDefault: this.props.dates }, () => this.updateProps(this.props))
   }
 
   toTwoCharacterFormat (value: number) {
