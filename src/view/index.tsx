@@ -18,8 +18,10 @@ export const render = (
     hello: ["world"]
   };
 
+  const root = document.getElementById("root");
+
   ReactDOM.render(
-    <Platformed store={store} />,
-    document.getElementById("root")
+    <Platformed store={store} sessionId={root && root.dataset.sessionId} />,
+    root
   );
 };

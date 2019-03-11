@@ -13,6 +13,7 @@ export const cnPage = cn("Page");
 
 export interface IPageProps {
   store: IStore;
+  sessionId?: string | null;
 }
 
 import { Provider } from 'react-redux'
