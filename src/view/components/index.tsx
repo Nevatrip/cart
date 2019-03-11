@@ -18,6 +18,8 @@ export interface ICompileTicket {
     isOpenTime?: boolean;
     tickets?: IOneTicket[];
     time?: Date;
+    direction?: string;
     title?: string;
     point?: any;
+    id: string;
 }

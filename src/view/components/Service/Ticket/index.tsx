@@ -11,7 +11,8 @@ export interface ITicket {
 
 export interface IServiceTicketProps {
   ticket: ITicket,
-  handleTicket: Function
+  handleTicket: Function,
+  count: number,
 }
 
 export interface IServiceTicketState {

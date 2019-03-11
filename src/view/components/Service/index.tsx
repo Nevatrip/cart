@@ -1,4 +1,5 @@
 import { IClassNameProps } from "@bem-react/core";
+import { ICompileTicket } from "../";
 
 interface Slug {
   _type: 'slug';
@@ -27,6 +28,7 @@ export interface IServiceProps extends IClassNameProps {
   periods?: IPeriod[];
   dates?: string[];
   serviceUpdate: Function;
+  orders: ICompileTicket[];
 }
 
 export interface ISchedule {
@@ -115,5 +117,6 @@ interface tickets {
 export interface IServiceState {
   service: service;
   order: order;
-  tickets: tickets;
+  tickets: Array<tickets>;
+  id: string;
 }

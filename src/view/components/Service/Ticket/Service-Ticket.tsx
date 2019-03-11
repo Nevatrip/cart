@@ -5,33 +5,15 @@ export class ServiceTicket extends PureComponent<IServiceTicketProps, IServiceTi
   constructor(props: IServiceTicketProps) {
     super(props);
 
-    this.state = {
-      count: 0
-    }
-
-    this.incrementCount = this.incrementCount.bind(this);
-    this.decrementCount = this.decrementCount.bind(this);
+    this.updateValue = this.updateValue.bind(this);
   }
 
-  incrementCount(count: number) {
-    this.setState({
-      count: count++
-    })
-  }
-
-  decrementCount(count: number) {
-    this.setState({
-      count: count--
-    })
-  }
-
-  componentDidUpdate () {
-    this.props.handleTicket(Object.assign({}, {...this.props.ticket, ticket: this.props.ticket.ticket[0]}, {...this.state}))
+  updateValue (count: number) {
+    this.props.handleTicket(Object.assign({}, {...this.props.ticket, ticket: this.props.ticket.ticket[0]}, {count}))
   }
 
   render() {
-    const { ticket } = this.props;
-    const { count } = this.state;
+    const { ticket, count } = this.props;
 
     return (
       <li>
@@ -41,11 +23,11 @@ export class ServiceTicket extends PureComponent<IServiceTicketProps, IServiceTi
         &nbsp;&nbsp;
         {ticket.price} ₽
         &nbsp;&nbsp;
-        <button disabled={this.state.count === 0} onClick={() => this.setState({ count: this.state.count > 0 ? this.state.count - 1 : 0 })}>-</button>
+        <button disabled={count === 0} onClick={() => this.updateValue(count > 0 ? count - 1 : 0)}>-</button>
         &nbsp;&nbsp;
         {count}
         &nbsp;&nbsp;
-        <button onClick={() => this.setState({ count: this.state.count + 1 })}>+</button>
+        <button onClick={() => this.updateValue(count + 1)}>+</button>
       </li>
     )
   }

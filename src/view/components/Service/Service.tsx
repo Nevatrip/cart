@@ -1,6 +1,7 @@
 import * as React from "react";
 import { cn } from "@bem-react/classname";
 import { IServiceProps, IServiceState, IDates, IDirections, service } from './index';
+import { ApplicationState } from "../../../reducers/index"
 
 import { connect } from 'react-redux';
 
@@ -34,7 +35,8 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
     this.state = {
       service: {},
       order: {},
-      tickets: {}
+      tickets: [],
+      id: this.props.id,
     }
 
     // this.handleOpenDate = this.handleOpenDate.bind(this);
@@ -45,6 +47,19 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
     this.handleTime = this.handleTime.bind(this);
   }
 
+  updateFromStore() {
+    if (this.props.orders) {
+      const order = this.props.orders.find(item => {
+        const {time, direction} = this.state.order
+        return (String(time) === String(item.time)) && (direction === item.direction)
+      }) || null
+      if (order) {
+        const tickets = order.tickets || []
+        this.setState({tickets})
+      }
+    }
+  }
+  
   // handleOpenDate() {
   //   this.setState({ isOpenDate: !this.state.isOpenDate });
   // }
@@ -54,40 +69,43 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
   // }
 
   handleDate(date: number) {
+    const cur = new Date(date)
     this.setState({
+      tickets: [],
       order: {
         ...this.state.order,
-        date: date
+        date: new Date(cur.getFullYear(), cur.getMonth(), cur.getDate()).valueOf()
       }
-    })
+    }, this.updateFromStore)
   }
 
   handleDirection(event: React.ChangeEvent<HTMLSelectElement>) {
     this.setState({
+      tickets: [],
       order: {
         ...this.state.order,
         direction: event.target.value
       }
-    })
+    }, this.updateFromStore)
   }
 
   handleTime(time: Date) {
     this.setState({
+      tickets: [],
       order: {
         ...this.state.order,
         time: time
       }
-    }, () => console.log( this.state ) )
+    }, this.updateFromStore)
   }
 
   handleTicket(ticket: IOneTicket) {
-    const tickets = Object.assign({}, this.state.tickets, {[String(ticket._key)]: ticket})
-    this.setState({tickets})
+    const tickets = this.state.tickets.filter(item => (item._key !== ticket._key)).concat(ticket)
+    this.setState({tickets}, () => {
+      this.props.serviceUpdate({...this.state})
+    })
   }
 
-  componentDidUpdate () {
-    this.props.serviceUpdate(this.state)
-  }
 
   getService() {
 
@@ -198,7 +216,11 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
                   <h4>{category}</h4>
                   <ul>
                     {
-                      ticketGroup[ category ].map((ticket: any) => <ServiceTicket ticket={ticket} key={ticket._key} handleTicket={this.handleTicket}/> )
+                      ticketGroup[ category ].map((ticket: any) => {
+                        const exist = this.state.tickets.find(item => (item._key === ticket._key))
+                        const count = (exist && exist.count) ? exist.count : 0
+                        return (<ServiceTicket ticket={ticket} count={count} key={ticket._key} handleTicket={this.handleTicket}/>)
+                      })
                     }
                   </ul>
                 </li>
@@ -317,7 +339,12 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
   }
 }
 
-const mapStateToProps = () => ({})
+const mapStateToProps = (state: ApplicationState, props: any) => {
+  const orders = state.order.orders.filter(item => (item.id === props.id)) || []
+  return {
+    orders
+  }
+}
 
 const mapDispatchToProps = (dispatch: Function) => ({
   serviceUpdate: (payload: IServiceState) => dispatch({
