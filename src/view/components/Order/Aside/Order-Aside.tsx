@@ -24,11 +24,11 @@ const OrderAsideClass: React.FunctionComponent<{order: ICompileTicket[]}> = ({or
                     <dl>
                       {orderItem.date && <div className={cnOrder('Tickets-Row')}>
                         <dt className={cnOrder('Tickets-Row-Title')}>Дата:</dt>
-                        <dd className={cnOrder('Tickets-Row-Content')}>{orderItem.isOpenDate ? 'isOpenDate' : orderItem.date.toLocaleDateString()}</dd>
+                        <dd className={cnOrder('Tickets-Row-Content')}>{orderItem.isOpenDate ? 'isOpenDate' : new Date(orderItem.date).toLocaleDateString()}</dd>
                       </div>}
                       {orderItem.time && <div className={cnOrder('Tickets-Row')}>
                         <dt className={cnOrder('Tickets-Row-Title')}>Время:</dt>
-                        <dd className={cnOrder('Tickets-Row-Content')}>{orderItem.isOpenTime ? 'isOpenTime' : orderItem.time.toLocaleTimeString()}</dd>
+                        <dd className={cnOrder('Tickets-Row-Content')}>{orderItem.isOpenTime ? 'isOpenTime' : new Date(orderItem.time).toLocaleTimeString()}</dd>
                       </div>}
                       {orderItem.point && <div className={cnOrder('Tickets-Row')}>
                         <dt className={cnOrder('Tickets-Row-Title')}>Причал:</dt>
@@ -79,7 +79,6 @@ const OrderAsideClass: React.FunctionComponent<{order: ICompileTicket[]}> = ({or
 )
 
 const mapStateToProps = (state: ApplicationState) => {
-  console.log(state.order.orders)
   return {
   order: state.order.orders
 }}

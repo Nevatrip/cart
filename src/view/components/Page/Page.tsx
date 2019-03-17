@@ -2,6 +2,7 @@ import * as React from "react";
 import { cn } from "@bem-react/classname";
 import { RegistryConsumer } from "@bem-react/di";
 import { IStore } from "../../../typings";
+import { getService } from '../../../actions/order'
 
 import "./Page.css";
 import { IExampleProps, cnExample } from "../Example/Example";
@@ -13,14 +14,18 @@ export const cnPage = cn("Page");
 
 export interface IPageProps {
   store: IStore;
-  sessionId?: string | null;
 }
 
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
-import { rootReducer } from '../../../reducers'
+import { rootReducer, ApplicationState } from '../../../reducers'
 
-const store = createStore(rootReducer)
+const root = document.getElementById("root");
+const sessionId = root && root.dataset.sessionid
+
+export const store = createStore(rootReducer, {session: {sessionId}})
+
+getService(store.dispatch, sessionId || null)
 
 export const Page: React.FunctionComponent<IPageProps> = props => (
   <Provider store={store}>

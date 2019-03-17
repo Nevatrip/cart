@@ -28,7 +28,6 @@ export class Calendar extends React.Component<ICalendarProps, ICalendarState> {
   }
 
   onChange (selected: Date) {
-    console.log(selected)
     this.props.onChange( selected.getTime() )
     this.setState({ selected })
   }

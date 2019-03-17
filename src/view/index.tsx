@@ -21,7 +21,7 @@ export const render = (
   const root = document.getElementById("root");
 
   ReactDOM.render(
-    <Platformed store={store} sessionId={root && root.dataset.sessionId} />,
+    <Platformed store={store}/>,
     root
   );
 };
