@@ -71,6 +71,7 @@ const OrderAsideClass: React.FunctionComponent<{order: ICompileTicket[]}> = ({or
           <blockquote>Итого к оплате: {order.reduce((accum, curr) => {
             return accum + (curr && curr.tickets ? curr.tickets.reduce((accum, curr) => (accum + ((curr.count ? curr.count : 0) * Number(curr.price))), 0) : 0)
           }, 0)}, promocode, submit</blockquote>
+          {/*JSON.stringify(order)*/}
           <ButtonMUI>Оплатить</ButtonMUI>
         </form>
       </div>

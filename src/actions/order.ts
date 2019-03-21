@@ -1,15 +1,16 @@
 import { IServiceState } from '../view/components/Service/index';
-import { store } from '../view/components/Page/Page'
+import { store } from '../view'
 import { ICompileTicket, IOneTicket, IResponce } from "../view/components"
 
 export const updateService = function (dispatch: Function, payload: IServiceState, sessionId: string | null) {
+    console.log(sessionId)
     if (sessionId) {
         const state = store.getState().order
         const created = state.created;
         if (Object.keys(payload.tickets).length && payload.order.date) {
             const tickets = Object.values(<IOneTicket[]> payload.tickets).filter((item: IOneTicket) => (item.count))
             let orders = state.orders.filter((item: ICompileTicket) => {
-                return !((item.id === payload.id) && (String(new Date(item.time || 0)) === String(new Date(payload.order.time || 0))) && (item.direction === payload.order.direction))
+                return !(item.id === payload.id)
             })
             if (tickets.length && payload.service.title) {
                 orders = orders.concat({
@@ -67,7 +68,11 @@ export const getService = function (dispatch: Function, sessionId: string | null
             method: "GET",
             headers: {},
         })
-            .then(response => response.json().then(data => (data && data.items) && setService(dispatch, data.items.map((item: IResponce) => (item.options || {})), new Date(data.created))))
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json().then(data => (data && data.items) && setService(dispatch, data.items.map((item: IResponce) => (item.options || {})), new Date(data.created)))
+                }
+            })
     }
 }
 

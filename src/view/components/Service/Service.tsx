@@ -33,7 +33,7 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
     super(props)
 
     this.state = {
-      orders: [],
+      orders: null,
       service: {},
       order: {},
       tickets: [],
@@ -49,13 +49,28 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
   }
 
   updateFromStore() {
-    if (this.props.orders) {
-      const order = this.props.orders.find(item => {
-        const {time, direction} = this.state.order
-        return (String(new Date(item.time || 0)) === String(new Date(time || 0))) && (direction === item.direction)
-      }) || null
-      console.log({order})
+    if (this.props.order) {
+      const order = this.props.order || null
       if (order) {
+        console.log(JSON.stringify(order))
+        const {
+          service: {
+            directions,
+          },
+          order: {
+            date,
+          }
+        } = this.state
+        const selectedDirection = directions && directions.filter(item => item._key === order.direction)[0]
+    
+        const times = date && selectedDirection && selectedDirection.schedule
+          .filter(event => {
+            console.log(JSON.stringify(event))
+            event.actions.forEach(action => {
+              const time = new Date(action.start)
+              return new Date(date) < time && new Date(date + 1000 * 60 * 60 * 24) >= time
+            })
+          });
         const tickets = order.tickets || []
         this.setState({tickets})
       }
@@ -121,9 +136,9 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
   }
 
   componentWillReceiveProps (newProps: IServiceProps) {
-    if (this.state.orders !== newProps.orders) {
+    if (this.state.orders !== newProps.order) {
       this.setState({
-        orders: newProps.orders
+        orders: newProps.order
       }, this.updateFromStore)
     }
   }
@@ -353,10 +368,9 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
 }
 
 const mapStateToProps = (state: ApplicationState, props: any) => {
-  console.log(state.order.orders)
-  const orders = state.order.orders.filter(item => (item.id === props.id)) || []
+  const order = state.order.orders.find(item => (item.id === props.id)) || null
   return {
-    orders,
+    order,
     sessionId: state.session.sessionId
   }
 }
