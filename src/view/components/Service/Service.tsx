@@ -52,7 +52,6 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
     if (this.props.order) {
       const order = this.props.order || null
       if (order) {
-        console.log(JSON.stringify(order))
         const {
           service: {
             directions,
@@ -64,15 +63,23 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
         const selectedDirection = directions && directions.filter(item => item._key === order.direction)[0]
     
         const times = date && selectedDirection && selectedDirection.schedule
-          .filter(event => {
-            console.log(JSON.stringify(event))
-            event.actions.forEach(action => {
-              const time = new Date(action.start)
-              return new Date(date) < time && new Date(date + 1000 * 60 * 60 * 24) >= time
-            })
-          });
+          .flatMap(event => event.actions.map(action => new Date(action.start)))
+          .filter(time => new Date(date) < time && new Date(date + 1000 * 60 * 60 * 24) >= time);
+
+        console.log(JSON.stringify(selectedDirection && selectedDirection.tickets))
+        console.log(JSON.stringify(order.tickets))
         const tickets = order.tickets || []
-        this.setState({tickets})
+        this.setState({tickets: tickets.filter(item => {
+          console.log('item ', item._key)
+          if (selectedDirection) {
+            return selectedDirection.tickets.find(elem => {
+              console.log('elem ', elem._key)
+              return elem._key === item._key
+            })
+          } else {
+            return false
+          }
+        })})
       }
     }
   }
@@ -260,110 +267,6 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
         </div>
       </div>
     )
-
-    /*
-    const dateFormat: string = date ? new Date(date).toLocaleDateString("ru") : '';
-    const directions: IDirections = dates && dateFormat && dates[dateFormat].directions || {};
-    const directionData = directions && direction && directions[direction];
-
-    return (
-      <fieldset className={cnService()}>
-        {dates && periods && (
-          <div className={cnService("DateType")}>
-            <label>
-              <input
-                type="checkbox"
-                name="dateTime"
-                onChange={this.handleOpenDate}
-                defaultChecked={isOpenDate}
-              />
-              Открытая дата
-            </label>
-          </div>
-        )}
-        {
-          isOpenDate
-          ? periods && (<div className={cnService("Period")}>
-              <select>
-                {Object.values(periods).map((period, key) => (
-                  <option key={key}>
-                    since{" "}
-                    {new Date(period.start * 1000).toLocaleDateString("ru")}{" "}
-                    to {new Date(period.end * 1000).toLocaleDateString("ru")}
-                  </option>
-                ))}
-              </select>
-            </div>)
-          : dates && <Calendar dates={dates} onChange={this.handleDate} />
-        }
-
-        <div className={cnService("Direction")}>
-          <div className={cnService("PointAndPlace")}>
-            <div className={cnService("Point")}>
-              <select>
-                <option>Дворцовая пристань</option>
-              </select>
-            </div>
-            <div className={cnService("Place")}>
-              <select>
-                <option>Трансатлантический пароход «Титаник»</option>
-              </select>
-            </div>
-          </div>
-          <div className={cnService("TimeAndType")}>
-            <div className={cnService("TimeType")}>
-              <label>
-                <input
-                  type="checkbox"
-                  name="TimeType"
-                  onChange={this.handleOpenTime}
-                  defaultChecked={isOpenTime}
-                />
-                Открытое время
-              </label>
-            </div>
-            {
-              isOpenTime
-              ? (<div className={cnService("Time", { type: "open" })}>
-                <p>
-                  Текстовое описание расписания: каждые 2 часа с 12 до 18:
-                </p>
-                <ul>
-                  <li>12</li>
-                  <li>14</li>
-                  <li>16</li>
-                  <li>18</li>
-                </ul>
-              </div>)
-              : (<fieldset className={cnService("Time", { type: "fixed" })}>
-                <ul className={cnService("Times")}>
-                  {
-                    [12,14,16,18].map( (hour, key) => (
-                      <li className={cnService("TimeItem")} key={key}>
-                        <label className={cnService("TimeItemInner")}>
-                          <input
-                            defaultChecked={key===0}
-                            type="radio"
-                            name={'time-' + id}
-                            // onChange={this.handleOpenDate}
-                          />
-                          {hour}:00
-                          <br />
-                          Сенатская пристань
-                          <br />
-                          «Титаник»
-                        </label>
-                      </li>
-                    ) )
-                  }
-                </ul>
-              </fieldset>)
-            }
-          </div>
-        </div>
-      </fieldset>
-    );
-    */
   }
 }
 
