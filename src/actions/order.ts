@@ -3,7 +3,6 @@ import { store } from '../view'
 import { ICompileTicket, IOneTicket, IResponce } from "../view/components"
 
 export const updateService = function (dispatch: Function, payload: IServiceState, sessionId: string | null) {
-    console.log(sessionId)
     if (sessionId) {
         const state = store.getState().order
         const created = state.created;

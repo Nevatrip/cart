@@ -57,23 +57,15 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
             directions,
           },
           order: {
-            date,
+            direction
           }
         } = this.state
-        const selectedDirection = directions && directions.filter(item => item._key === order.direction)[0]
+        const selectedDirection = directions && directions.filter(item => item._key === direction)[0]
     
-        const times = date && selectedDirection && selectedDirection.schedule
-          .flatMap(event => event.actions.map(action => new Date(action.start)))
-          .filter(time => new Date(date) < time && new Date(date + 1000 * 60 * 60 * 24) >= time);
-
-        console.log(JSON.stringify(selectedDirection && selectedDirection.tickets))
-        console.log(JSON.stringify(order.tickets))
         const tickets = order.tickets || []
         this.setState({tickets: tickets.filter(item => {
-          console.log('item ', item._key)
           if (selectedDirection) {
             return selectedDirection.tickets.find(elem => {
-              console.log('elem ', elem._key)
               return elem._key === item._key
             })
           } else {
@@ -93,7 +85,6 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
   // }
 
   handleDate(date: number) {
-    console.log('handleDate')
     const cur = new Date(date)
     this.setState({
       tickets: [],
@@ -105,7 +96,6 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
   }
 
   handleDirection(event: React.ChangeEvent<HTMLSelectElement>) {
-    console.log('handleDirection')
     this.setState({
       tickets: [],
       order: {
@@ -116,12 +106,11 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
   }
 
   handleTime(time: Date) {
-    console.log('handleTime')
     this.setState({
       tickets: [],
       order: {
         ...this.state.order,
-        time: time
+        time: time,
       }
     }, this.updateFromStore)
   }
