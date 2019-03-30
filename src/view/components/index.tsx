@@ -23,3 +23,10 @@ export interface ICompileTicket {
     point?: any;
     id: string;
 }
+
+export interface IResponce {
+    sessionId: string,
+    created: string,
+    lastUpdated: string,
+    options: ICompileTicket
+}

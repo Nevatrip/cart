@@ -2,11 +2,18 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { withRegistry, Registry } from "@bem-react/di";
 
-import { IStore } from "../typings";
 import * as serviceWorker from "./components/ServiceWorker/ServiceWorker";
 import { IPageProps } from "./components/Page/Page";
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+import { rootReducer, ApplicationState } from '../reducers/index'
+import { getService } from '../actions/order'
 
 serviceWorker.unregister();
+const root = document.getElementById("root")
+const sessionId = root && root.dataset.sessionid
+export const store = createStore(rootReducer, {session: {sessionId}})
+getService(store.dispatch, sessionId || null)
 
 export const render = (
   Component: React.ComponentType<IPageProps>,
@@ -14,14 +21,10 @@ export const render = (
 ) => {
   const Platformed = withRegistry(registry)(Component);
 
-  const store: IStore = {
-    hello: ["world"]
-  };
-
-  const root = document.getElementById("root");
-
   ReactDOM.render(
-    <Platformed store={store} sessionId={root && root.dataset.sessionId} />,
+    <Provider store={store}>
+      <Platformed store={store}/>
+    </Provider>,
     root
   );
 };

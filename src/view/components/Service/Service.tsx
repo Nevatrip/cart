@@ -5,7 +5,7 @@ import { ApplicationState } from "../../../reducers/index"
 
 import { connect } from 'react-redux';
 
-import { bindActionCreators } from 'redux';
+import { updateService } from '../../../actions/order';
 
 import { Calendar } from "../Calendar/Calendar";
 
@@ -33,6 +33,7 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
     super(props)
 
     this.state = {
+      orders: null,
       service: {},
       order: {},
       tickets: [],
@@ -48,14 +49,29 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
   }
 
   updateFromStore() {
-    if (this.props.orders) {
-      const order = this.props.orders.find(item => {
-        const {time, direction} = this.state.order
-        return (String(time) === String(item.time)) && (direction === item.direction)
-      }) || null
+    if (this.props.order) {
+      const order = this.props.order || null
       if (order) {
+        const {
+          service: {
+            directions,
+          },
+          order: {
+            direction
+          }
+        } = this.state
+        const selectedDirection = directions && directions.filter(item => item._key === direction)[0]
+    
         const tickets = order.tickets || []
-        this.setState({tickets})
+        this.setState({tickets: tickets.filter(item => {
+          if (selectedDirection) {
+            return selectedDirection.tickets.find(elem => {
+              return elem._key === item._key
+            })
+          } else {
+            return false
+          }
+        })})
       }
     }
   }
@@ -94,7 +110,7 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
       tickets: [],
       order: {
         ...this.state.order,
-        time: time
+        time: time,
       }
     }, this.updateFromStore)
   }
@@ -102,7 +118,7 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
   handleTicket(ticket: IOneTicket) {
     const tickets = this.state.tickets.filter(item => (item._key !== ticket._key)).concat(ticket)
     this.setState({tickets}, () => {
-      this.props.serviceUpdate({...this.state})
+      this.props.serviceUpdate({...this.state}, this.props.sessionId)
     })
   }
 
@@ -115,6 +131,14 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
     return client.fetch(query, params);
   }
 
+  componentWillReceiveProps (newProps: IServiceProps) {
+    if (this.state.orders !== newProps.order) {
+      this.setState({
+        orders: newProps.order
+      }, this.updateFromStore)
+    }
+  }
+  
   componentDidMount() {
     this.getService().then( (response: service) => {
       const newState = { ...this.state };
@@ -232,125 +256,19 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
         </div>
       </div>
     )
-
-    /*
-    const dateFormat: string = date ? new Date(date).toLocaleDateString("ru") : '';
-    const directions: IDirections = dates && dateFormat && dates[dateFormat].directions || {};
-    const directionData = directions && direction && directions[direction];
-
-    return (
-      <fieldset className={cnService()}>
-        {dates && periods && (
-          <div className={cnService("DateType")}>
-            <label>
-              <input
-                type="checkbox"
-                name="dateTime"
-                onChange={this.handleOpenDate}
-                defaultChecked={isOpenDate}
-              />
-              Открытая дата
-            </label>
-          </div>
-        )}
-        {
-          isOpenDate
-          ? periods && (<div className={cnService("Period")}>
-              <select>
-                {Object.values(periods).map((period, key) => (
-                  <option key={key}>
-                    since{" "}
-                    {new Date(period.start * 1000).toLocaleDateString("ru")}{" "}
-                    to {new Date(period.end * 1000).toLocaleDateString("ru")}
-                  </option>
-                ))}
-              </select>
-            </div>)
-          : dates && <Calendar dates={dates} onChange={this.handleDate} />
-        }
-
-        <div className={cnService("Direction")}>
-          <div className={cnService("PointAndPlace")}>
-            <div className={cnService("Point")}>
-              <select>
-                <option>Дворцовая пристань</option>
-              </select>
-            </div>
-            <div className={cnService("Place")}>
-              <select>
-                <option>Трансатлантический пароход «Титаник»</option>
-              </select>
-            </div>
-          </div>
-          <div className={cnService("TimeAndType")}>
-            <div className={cnService("TimeType")}>
-              <label>
-                <input
-                  type="checkbox"
-                  name="TimeType"
-                  onChange={this.handleOpenTime}
-                  defaultChecked={isOpenTime}
-                />
-                Открытое время
-              </label>
-            </div>
-            {
-              isOpenTime
-              ? (<div className={cnService("Time", { type: "open" })}>
-                <p>
-                  Текстовое описание расписания: каждые 2 часа с 12 до 18:
-                </p>
-                <ul>
-                  <li>12</li>
-                  <li>14</li>
-                  <li>16</li>
-                  <li>18</li>
-                </ul>
-              </div>)
-              : (<fieldset className={cnService("Time", { type: "fixed" })}>
-                <ul className={cnService("Times")}>
-                  {
-                    [12,14,16,18].map( (hour, key) => (
-                      <li className={cnService("TimeItem")} key={key}>
-                        <label className={cnService("TimeItemInner")}>
-                          <input
-                            defaultChecked={key===0}
-                            type="radio"
-                            name={'time-' + id}
-                            // onChange={this.handleOpenDate}
-                          />
-                          {hour}:00
-                          <br />
-                          Сенатская пристань
-                          <br />
-                          «Титаник»
-                        </label>
-                      </li>
-                    ) )
-                  }
-                </ul>
-              </fieldset>)
-            }
-          </div>
-        </div>
-      </fieldset>
-    );
-    */
   }
 }
 
 const mapStateToProps = (state: ApplicationState, props: any) => {
-  const orders = state.order.orders.filter(item => (item.id === props.id)) || []
+  const order = state.order.orders.find(item => (item.id === props.id)) || null
   return {
-    orders
+    order,
+    sessionId: state.session.sessionId
   }
 }
 
 const mapDispatchToProps = (dispatch: Function) => ({
-  serviceUpdate: (payload: IServiceState) => dispatch({
-    type: "SERVICE_UPDATE",
-    payload
-  }),
+  serviceUpdate: (payload: IServiceState, sessionId: string | null) => updateService(dispatch, payload, sessionId),
 });
 
 export const Service = connect(mapStateToProps, mapDispatchToProps)(ServiceClass)
