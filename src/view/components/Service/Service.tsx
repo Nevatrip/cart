@@ -22,8 +22,6 @@ const client = sanityClient({
   ignoreBrowserWarning: true
 })
 
-import serviceFixtures from './service.json';
-
 const cnService = cn('Service');
 import { ServiceTicket } from "./Ticket/Service-Ticket";
 import { throws } from "assert";
