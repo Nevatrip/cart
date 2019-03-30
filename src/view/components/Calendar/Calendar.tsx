@@ -3,6 +3,7 @@ import ReactCalendar from 'react-calendar'
 
 export interface ICalendarProps {
   dates: string[];
+  value: Date | undefined;
   onChange: Function;
 }
 
@@ -21,15 +22,22 @@ export class Calendar extends React.Component<ICalendarProps, ICalendarState> {
   }
 
   state = {
-    selected: undefined,
+    selected: this.props.value,
     visible: false,
     dates: new Set(),
     datesDefault: [],
   }
 
-  onChange (selected: Date) {
-    this.props.onChange( selected.getTime() )
-    this.setState({ selected })
+  onChange (selected: Date, byProps: boolean) {
+    if (byProps) {
+      if (!this.state.selected) {
+        this.props.onChange( selected.getTime() )
+        this.setState({ selected })
+      }
+    } else {
+      this.props.onChange( selected.getTime() )
+      this.setState({ selected })
+    }
   }
 
   updateProps(nextProps: ICalendarProps) {
@@ -45,7 +53,7 @@ export class Calendar extends React.Component<ICalendarProps, ICalendarState> {
 
       this.setState({ dates });
       if (resDates.length) {
-        this.onChange(this.dateFromApiFormat(resDates[0]))
+        this.onChange(this.dateFromApiFormat(resDates[0]), true)
       }
     }
   }
@@ -119,7 +127,7 @@ export class Calendar extends React.Component<ICalendarProps, ICalendarState> {
             minDate={new Date()}
             onChange={(date) => {
               if (date instanceof Date) {
-                this.onChange(date)
+                this.onChange(date, false)
               }
             }}
             value={this.state.selected}

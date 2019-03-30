@@ -5,12 +5,12 @@ import { ApplicationState } from "../../../reducers/index"
 
 import { connect } from 'react-redux';
 
-import { updateService } from '../../../actions/order';
+import { initialService, changeDate, changeDirection, changeTime, changeTickets } from '../../../actions/order';
 
 import { Calendar } from "../Calendar/Calendar";
 
 import "./Service.css";
-import { ICompileTicket, IOneTicket } from ".."
+import { IOneTicket, ICompileTicket} from ".."
 
 const sanityClient = require("@sanity/client");
 
@@ -31,93 +31,34 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
     super(props)
 
     this.state = {
-      orders: null,
+      tickets: [],
       service: {},
       order: {},
-      tickets: [],
       id: this.props.id,
     }
 
-    // this.handleOpenDate = this.handleOpenDate.bind(this);
-    // this.handleOpenTime = this.handleOpenTime.bind(this);
     this.handleDate = this.handleDate.bind(this);
     this.handleDirection = this.handleDirection.bind(this);
     this.handleTicket = this.handleTicket.bind(this);
     this.handleTime = this.handleTime.bind(this);
   }
-
-  updateFromStore() {
-    if (this.props.order) {
-      const order = this.props.order || null
-      if (order) {
-        const {
-          service: {
-            directions,
-          },
-          order: {
-            direction
-          }
-        } = this.state
-        const selectedDirection = directions && directions.filter(item => item._key === direction)[0]
-    
-        const tickets = order.tickets || []
-        this.setState({tickets: tickets.filter(item => {
-          if (selectedDirection) {
-            return selectedDirection.tickets.find(elem => {
-              return elem._key === item._key
-            })
-          } else {
-            return false
-          }
-        })})
-      }
-    }
-  }
   
-  // handleOpenDate() {
-  //   this.setState({ isOpenDate: !this.state.isOpenDate });
-  // }
-
-  // handleOpenTime() {
-  //   this.setState({ isOpenTime: !this.state.isOpenTime });
-  // }
 
   handleDate(date: number) {
-    const cur = new Date(date)
-    this.setState({
-      tickets: [],
-      order: {
-        ...this.state.order,
-        date: new Date(cur.getFullYear(), cur.getMonth(), cur.getDate()).valueOf()
-      }
-    }, this.updateFromStore)
+    this.props.changeDate(date, this.props.sessionId, this.props.id, this.state.service)
   }
 
   handleDirection(event: React.ChangeEvent<HTMLSelectElement>) {
-    this.setState({
-      tickets: [],
-      order: {
-        ...this.state.order,
-        direction: event.target.value
-      }
-    }, this.updateFromStore)
+    this.props.changeDirection(event.target.value, this.props.sessionId, this.props.id, this.state.service)
   }
 
   handleTime(time: Date) {
-    this.setState({
-      tickets: [],
-      order: {
-        ...this.state.order,
-        time: time,
-      }
-    }, this.updateFromStore)
+    this.props.changeTime(time, this.props.sessionId, this.props.id, this.state.service)
   }
 
   handleTicket(ticket: IOneTicket) {
-    const tickets = this.state.tickets.filter(item => (item._key !== ticket._key)).concat(ticket)
-    this.setState({tickets}, () => {
-      this.props.serviceUpdate({...this.state}, this.props.sessionId)
-    })
+    const tickets = (this.props.order && this.props.order.tickets) ? this.props.order.tickets.filter(item => (item._key !== ticket._key)).concat(ticket) : [ticket]
+    this.props.changeTickets(tickets, this.props.sessionId, this.props.id, this.state.service)
   }
 
 
@@ -129,13 +70,6 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
     return client.fetch(query, params);
   }
 
-  componentWillReceiveProps (newProps: IServiceProps) {
-    if (this.state.orders !== newProps.order) {
-      this.setState({
-        orders: newProps.order
-      }, this.updateFromStore)
-    }
-  }
   
   componentDidMount() {
     this.getService().then( (response: service) => {
@@ -154,29 +88,25 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
         title,
         directions,
       },
-      order: {
-        isOpenDate,
-        isOpenTime,
-        date,
-        direction,
-      }
     } = this.state
+    
+    const {
+      date,
+      direction,
+    } = this.props.order
 
     // TODO: update dates on changed direction
     const selectedDirection = directions && directions.filter(item => item._key === direction)[0]
 
     const dates = selectedDirection && selectedDirection.schedule.flatMap(event => event.actions.map(action => new Date(action.start).toLocaleDateString()));
 
-    const times = date && selectedDirection && selectedDirection.schedule
+    const dateInFormst = date && new Date(date)
+    const times = date && dateInFormst && selectedDirection && selectedDirection.schedule
       .flatMap(event => event.actions.map(action => new Date(action.start)))
-      .filter(time => new Date(date) < time && new Date(date + 1000 * 60 * 60 * 24) >= time);
+      .filter(item => {
+        return item.getFullYear() === dateInFormst.getFullYear() && item.getMonth() === dateInFormst.getMonth() && item.getDate() === dateInFormst.getDate()
+      })
 
-    if (times && times.length) {
-      const stateTime = this.state.order.time
-      if (!stateTime || (this.state.order && !times.find(item => (item.valueOf() === stateTime.valueOf())))) {
-        setTimeout(() => this.handleTime(times[0]), 1) // TODO: move to componentDidMount or constructor
-      }
-    }
     const ticketGroup = selectedDirection && selectedDirection.tickets && selectedDirection.tickets.reduce(function (r, a) {
       r[a.category.name.current] = r[a.category.name.current] || [];
       r[a.category.name.current].push(a);
@@ -186,7 +116,7 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
     return (
       <div className={cnService()}>
         {title && <h3 className={cnService("Title")}>{title[ lang as any ].name}</h3>}
-        {dates && <Calendar dates={dates} onChange={this.handleDate} />}
+        {dates && <Calendar dates={dates} onChange={this.handleDate} value={dateInFormst}/>}
         <div className={cnService("Directions")}>
           {
             directions && directions.length > 1
@@ -239,7 +169,7 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
                   <ul>
                     {
                       ticketGroup[ category ].map((ticket: any) => {
-                        const exist = this.state.tickets.find(item => (item._key === ticket._key))
+                        const exist = (this.props.order && this.props.order.tickets) ? this.props.order.tickets.find(item => (item._key === ticket._key)) : null
                         const count = (exist && exist.count) ? exist.count : 0
                         return (<ServiceTicket ticket={ticket} count={count} key={ticket._key} handleTicket={this.handleTicket}/>)
                       })
@@ -248,8 +178,6 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
                 </li>
               ) )
             }
-
-
           </ul>
         </div>
       </div>
@@ -258,7 +186,7 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
 }
 
 const mapStateToProps = (state: ApplicationState, props: any) => {
-  const order = state.order.orders.find(item => (item.id === props.id)) || null
+  const order = state.order.orders.find(item => (item.id === props.id)) || ({id: props.id})
   return {
     order,
     sessionId: state.session.sessionId
@@ -266,7 +194,11 @@ const mapStateToProps = (state: ApplicationState, props: any) => {
 }
 
 const mapDispatchToProps = (dispatch: Function) => ({
-  serviceUpdate: (payload: IServiceState, sessionId: string | null) => updateService(dispatch, payload, sessionId),
+  serviceUpdate: (payload: IServiceState, sessionId: string | null) => initialService(dispatch, payload, sessionId),
+  changeDate: (payload: any, sessionId: string | null, id: string, service: service) => changeDate(dispatch, payload, sessionId, id, service),
+  changeDirection: (payload: any, sessionId: string | null, id: string, service: service) => changeDirection(dispatch, payload, sessionId, id, service),
+  changeTime: (payload: any, sessionId: string | null, id: string, service: service) => changeTime(dispatch, payload, sessionId, id, service),
+  changeTickets: (payload: any, sessionId: string | null, id: string, service: service) => changeTickets(dispatch, payload, sessionId, id, service),
 });
 
 export const Service = connect(mapStateToProps, mapDispatchToProps)(ServiceClass)

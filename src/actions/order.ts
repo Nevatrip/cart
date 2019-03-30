@@ -1,8 +1,10 @@
-import { IServiceState } from '../view/components/Service/index';
+import { IServiceState, service } from '../view/components/Service/index';
 import { store } from '../view'
 import { ICompileTicket, IOneTicket, IResponce } from "../view/components"
+import { func } from 'prop-types';
+import { OrderAside } from '../view/components/Order/Aside/Order-Aside';
 
-export const updateService = function (dispatch: Function, payload: IServiceState, sessionId: string | null) {
+export const initialService = function (dispatch: Function, payload: IServiceState, sessionId: string | null) {
     if (sessionId) {
         const state = store.getState().order
         const created = state.created;
@@ -49,6 +51,125 @@ export const updateService = function (dispatch: Function, payload: IServiceStat
             })
         }
     }
+}
+
+function extractOrder (sessionId: string | null, serviceId: string, dispatch: Function, service: service, changeValue: Function) {
+    console.log(1)
+    if (sessionId) {
+        const state = store.getState().order
+        console.log(state.orders)
+        console.log(serviceId)
+        const created = state.created;
+        let order = {...state.orders.find((item: ICompileTicket) => item.id === serviceId)}
+        console.log({order})
+        const changedOrder = changeValue(order)
+        changedOrder.tickets = filterTickets(changedOrder.tickets, service, changedOrder.direction)
+        console.log({changedOrder})
+        const orders = state.orders.map(item => (item.id === changedOrder.id ? changedOrder : item))
+        console.log({orders})
+        dispatch({
+            type: "SERVICE_UPDATE",
+            payload: {
+                orders
+            }
+        })
+        fetch(`http://api.nevatrip.ru/shoppingCarts/${sessionId}`,  {
+            method: "PUT",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                sessionId,
+                created,
+                lastUpdated: new Date(),
+                items: orders.map(item => {
+                    return {
+                        "serviceId": item.id,
+                        "options": item
+                    }
+                })
+            })
+        })
+    }
+}
+
+export function filterTickets(tickets: any, service: service, direction: string ) {
+    const { directions } = service
+    const selectedDirection = directions && directions.filter(item => item._key === direction)[0]
+    return tickets.filter((item: any) => {
+        if (selectedDirection) {
+            return selectedDirection.tickets.find(elem => {
+                return elem._key === item._key
+            })
+        } else {
+            return false
+        }
+    })
+}
+
+export function checkTime(time: Date, newDate: Date, service: service, direction: string ) {
+    const {
+        directions,
+    } = service
+
+    const selectedDirection = directions && directions.filter(item => item._key === direction)[0]
+
+    const dateInFormst = newDate && new Date(newDate)
+    const times = time && dateInFormst && selectedDirection && selectedDirection.schedule
+        .flatMap(event => event.actions.map(action => new Date(action.start)))
+        .filter(item => {
+            return item.getFullYear() === dateInFormst.getFullYear() 
+            && item.getMonth() === dateInFormst.getMonth() 
+            && item.getDate() === dateInFormst.getDate()
+        })
+    const timeRes = times && times.find(item => {
+        return item.getHours() === time.getHours()
+            && item.getMinutes() === time.getMinutes()
+    })
+
+    return timeRes || (times && times[0])
+}
+
+export const changeDate = function (dispatch: Function, date: any, sessionId: string | null, serviceId: string, service: service) {
+    extractOrder(sessionId, serviceId, dispatch, service, (order: any) => {
+        return {
+            ...order,
+            time: checkTime(new Date(order.time), new Date(date), service, order.direction),
+            date: new Date(date),
+        }
+    })
+}
+
+export const changeDirection = function (dispatch: Function, direction: any, sessionId: string | null, serviceId: string, service: service) {
+    extractOrder(sessionId, serviceId, dispatch, service, (order: any) => {
+        return {
+            ...order,
+            time: checkTime(new Date(order.time), new Date(order.date), service, direction),
+            direction,
+        }
+    })
+}
+
+export const changeTime = function (dispatch: Function, time: any, sessionId: string | null, serviceId: string, service: service) {
+    extractOrder(sessionId, serviceId, dispatch, service, (order: any) => {
+        return {
+            ...order,
+            time,
+        }
+    })
+
+}
+
+export const changeTickets = function (dispatch: Function, payload: any, sessionId: string | null, serviceId: string, service: service) {
+    extractOrder(sessionId, serviceId, dispatch, service, (order: any) => {
+        const tickets = Object.values(<IOneTicket[]> payload).filter((item: IOneTicket) => (item.count))
+        return {
+            ...order,
+            tickets,
+        }
+    })
+
 }
 
 export const setService = function (dispatch: Function, orders: IServiceState, created: Date) {

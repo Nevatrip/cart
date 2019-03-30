@@ -28,8 +28,12 @@ export interface IServiceProps extends IClassNameProps {
   periods?: IPeriod[];
   dates?: string[];
   serviceUpdate: Function;
-  order: ICompileTicket | null;
+  order: ICompileTicket;
   sessionId: string | null;
+  changeDate: Function;
+  changeDirection: Function;
+  changeTime: Function;
+  changeTickets: Function;
 }
 
 export interface ISchedule {
@@ -120,5 +124,4 @@ export interface IServiceState {
   order: order;
   tickets: Array<tickets>;
   id: string;
-  orders: ICompileTicket | null;
 }
