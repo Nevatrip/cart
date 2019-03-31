@@ -83,7 +83,6 @@ class ChoiceOfPlaceClass extends React.Component<IChoiceProps, IChoiceState> {
 
     updateData() {
         const order = this.props.order
-        console.log(JSON.stringify(order))
         const {id, direction, date} = this.props.order
         if (order && id && direction && date) {
             getType(id, direction, this.dateToApiFormat(new Date(date)))

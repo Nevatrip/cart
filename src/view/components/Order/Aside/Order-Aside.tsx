@@ -19,6 +19,8 @@ const OrderAsideClass: React.FunctionComponent<{order: ICompileTicket[]}> = ({or
           <ul className={cnOrder('Tickets-Ul')}>
             {
               order.map( orderItem => {
+                const sum = orderItem.tickets ? orderItem.tickets.reduce((acc, cur) => (acc + (Number(cur.count) * Number(cur.price))), 0) : 0
+                console.log(sum)
                 return (
                   <li key={(orderItem.title || '') + (orderItem.date || '') + (orderItem.time || '')} className={cnOrder('Tickets-Li')}>
                     <h4 className={cnOrder('Tickets-Title')}>{orderItem.title}</h4>
@@ -58,11 +60,11 @@ const OrderAsideClass: React.FunctionComponent<{order: ICompileTicket[]}> = ({or
                           </dd>
                         </div>
                       )}
-                      <div className={cnOrder('Tickets-Row')}>
-                        <dt>Стоимость</dt><dd></dd>
-                      </div>
+                      {sum ? <div className={cnOrder('Tickets-Row')}>
+                        <dt>Стоимость {sum}</dt><dd></dd>
+                      </div> : null}
                     </dl>
-                    <ChoiceOfPlace id={orderItem.id}/>
+                    {sum ? <ChoiceOfPlace id={orderItem.id}/> : null}
                   </li>
                 )
               } )

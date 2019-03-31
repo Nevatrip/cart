@@ -54,19 +54,13 @@ export const initialService = function (dispatch: Function, payload: IServiceSta
 }
 
 function extractOrder (sessionId: string | null, serviceId: string, dispatch: Function, service: service, changeValue: Function) {
-    console.log(1)
     if (sessionId) {
         const state = store.getState().order
-        console.log(state.orders)
-        console.log(serviceId)
         const created = state.created;
         let order = {...state.orders.find((item: ICompileTicket) => item.id === serviceId)}
-        console.log({order})
         const changedOrder = changeValue(order)
         changedOrder.tickets = filterTickets(changedOrder.tickets, service, changedOrder.direction)
-        console.log({changedOrder})
         const orders = state.orders.map(item => (item.id === changedOrder.id ? changedOrder : item))
-        console.log({orders})
         dispatch({
             type: "SERVICE_UPDATE",
             payload: {
