@@ -3,7 +3,7 @@ import { cn } from "@bem-react/classname";
 import { connect } from 'react-redux';
 import { ICompileTicket } from "../../";
 import { ApplicationState } from "../../../../reducers/index"
-import {getPlaces} from '../../../../actions/choice';
+import { getPlaces, getType } from '../../../../actions/choice';
 
 
 export interface IChoiceProps {order: ICompileTicket}
@@ -83,15 +83,21 @@ class ChoiceOfPlaceClass extends React.Component<IChoiceProps, IChoiceState> {
 
     updateData() {
         const order = this.props.order
+        console.log(JSON.stringify(order))
         const {id, direction, date} = this.props.order
         if (order && id && direction && date) {
-            getPlaces(id, direction, this.dateToApiFormat(new Date(date)), 'event')
-                .then(data => this.setState({
-                    ...data,
-                    id,
-                    direction,
-                    date,
-                }))
+            getType(id, direction, this.dateToApiFormat(new Date(date)))
+                .then(data => {
+                    if (data && data[0] && data[0]._type) {
+                        getPlaces(id, direction, this.dateToApiFormat(new Date(date)), data[0]._type)
+                            .then(data => this.setState({
+                                ...data,
+                                id,
+                                direction,
+                                date,
+                            }))
+                        }
+                    })
         }
     }
 
@@ -106,7 +112,6 @@ class ChoiceOfPlaceClass extends React.Component<IChoiceProps, IChoiceState> {
             {this.state.places.map((item) => {
                 if (item.available) {
                     const requiredValue = this.getValuesForCategory(item.category)
-                    console.log(requiredValue)
                     if (Number(item.value) <= requiredValue || this.state.checked[item.id]) {
                         return (<div>
                             <input 
@@ -122,7 +127,6 @@ class ChoiceOfPlaceClass extends React.Component<IChoiceProps, IChoiceState> {
                     return <div>недоступно i: {item.id} v: {item.value} c: {item.category}</div>
                 }
             })}
-            {JSON.stringify(this.state.checked)}
         </div>)
     }
 }

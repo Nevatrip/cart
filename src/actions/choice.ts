@@ -11,3 +11,16 @@ export const getPlaces = function (id: string, directionId: string, date: string
         })
 }
 
+
+export const getType = function (id: string, directionId: string, date: string) {
+    return fetch(`http://api.nevatrip.ru/service/${id}/schedule/${directionId}/${date}`,  {
+        method: "GET",
+        headers: {},
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json()
+            }
+        })
+}
+
