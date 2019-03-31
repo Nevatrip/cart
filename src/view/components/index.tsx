@@ -1,6 +1,9 @@
 export interface IOneTicket {
     category: {
-        title: string
+        title: string;
+        name: {
+            current: string;
+        }
     };
     count?: number
     price?: string

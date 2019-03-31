@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { ICompileTicket } from "../../";
 import { ApplicationState } from "../../../../reducers/index"
 import ButtonMUI from '@material-ui/core/Button';
+import { ChoiceOfPlace } from '../ChoiceOfPlace/ChoiceOfPlace'
 
 import './Order-Aside.css';
 const cnOrder = cn('Order');
@@ -61,6 +62,7 @@ const OrderAsideClass: React.FunctionComponent<{order: ICompileTicket[]}> = ({or
                         <dt>Стоимость</dt><dd></dd>
                       </div>
                     </dl>
+                    <ChoiceOfPlace id={orderItem.id}/>
                   </li>
                 )
               } )
