@@ -29,7 +29,7 @@ export interface IServiceProps extends IClassNameProps {
   dates?: string[];
   serviceUpdate: Function;
   order: ICompileTicket;
-  sessionId: string | null;
+  sessionId: string;
   changeDate: Function;
   changeDirection: Function;
   changeTime: Function;

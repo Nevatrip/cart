@@ -3,13 +3,13 @@ import ReactCalendar from 'react-calendar'
 
 export interface ICalendarProps {
   dates: string[];
-  value: Date | undefined;
+  value?: Date;
   onChange: Function;
 }
 
 export interface ICalendarState {
   visible: boolean;
-  selected: Date | undefined;
+  selected?: Date;
   dates: Set<string>;
   datesDefault: string[];
 }
@@ -29,15 +29,8 @@ export class Calendar extends React.Component<ICalendarProps, ICalendarState> {
   }
 
   onChange (selected: Date, byProps: boolean) {
-    if (byProps) {
-      if (!this.state.selected) {
-        this.props.onChange( selected.getTime() )
-        this.setState({ selected })
-      }
-    } else {
-      this.props.onChange( selected.getTime() )
-      this.setState({ selected })
-    }
+    this.props.onChange( selected.getTime() )
+    this.setState({ selected })
   }
 
   updateProps(nextProps: ICalendarProps) {
@@ -93,7 +86,7 @@ export class Calendar extends React.Component<ICalendarProps, ICalendarState> {
     }
   }
 
-  dateToApiFormat (date: Date | undefined) {
+  dateToApiFormat (date?: Date) {
     if (date) {
       return `${this.toTwoCharacterFormat(date.getDate())}.${this.toTwoCharacterFormat(date.getMonth() + 1)}.${String(date.getFullYear())}`
     } else {

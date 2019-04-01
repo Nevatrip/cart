@@ -26,7 +26,5 @@ export interface ICompileTicket {
 
 export interface IResponce {
     sessionId: string,
-    created: string,
-    lastUpdated: string,
     options: ICompileTicket
 }

@@ -75,13 +75,16 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
     this.getService().then( (response: service) => {
       const newState = { ...this.state };
       newState.service = response;
-      newState.order.direction = response.directions ? response.directions[0]._key : '';
+      newState.order.direction = (response && response.directions) ? response.directions[0]._key : '';
       this.setState( newState );
     } );
   }
 
   render() {
     const lang: string = 'ru';
+    if (!this.state.service) {
+      return null;
+    }
 
     const {
       service: {
@@ -194,11 +197,11 @@ const mapStateToProps = (state: ApplicationState, props: any) => {
 }
 
 const mapDispatchToProps = (dispatch: Function) => ({
-  serviceUpdate: (payload: IServiceState, sessionId: string | null) => initialService(dispatch, payload, sessionId),
-  changeDate: (payload: any, sessionId: string | null, id: string, service: service) => changeDate(dispatch, payload, sessionId, id, service),
-  changeDirection: (payload: any, sessionId: string | null, id: string, service: service) => changeDirection(dispatch, payload, sessionId, id, service),
-  changeTime: (payload: any, sessionId: string | null, id: string, service: service) => changeTime(dispatch, payload, sessionId, id, service),
-  changeTickets: (payload: any, sessionId: string | null, id: string, service: service) => changeTickets(dispatch, payload, sessionId, id, service),
+  serviceUpdate: (payload: IServiceState, sessionId: string) => initialService(dispatch, payload, sessionId),
+  changeDate: (payload: any, sessionId: string, id: string, service: service) => changeDate(dispatch, payload, sessionId, id, service),
+  changeDirection: (payload: any, sessionId: string, id: string, service: service) => changeDirection(dispatch, payload, sessionId, id, service),
+  changeTime: (payload: any, sessionId: string, id: string, service: service) => changeTime(dispatch, payload, sessionId, id, service),
+  changeTickets: (payload: any, sessionId: string, id: string, service: service) => changeTickets(dispatch, payload, sessionId, id, service),
 });
 
 export const Service = connect(mapStateToProps, mapDispatchToProps)(ServiceClass)
