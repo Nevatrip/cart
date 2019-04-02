@@ -1,7 +1,6 @@
 import * as React from "react";
 import { cn } from "@bem-react/classname";
 import "./Order-Content.css";
-// import * as cart from "../cart.json";
 import {Service} from '../../Service/Service'
 import {IOrderProps} from '../index'
 import TextField, { TextFieldProps } from '@material-ui/core/TextField';

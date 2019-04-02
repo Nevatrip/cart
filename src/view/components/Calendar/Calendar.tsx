@@ -3,12 +3,13 @@ import ReactCalendar from 'react-calendar'
 
 export interface ICalendarProps {
   dates: string[];
+  value?: Date;
   onChange: Function;
 }
 
 export interface ICalendarState {
   visible: boolean;
-  selected: Date | undefined;
+  selected?: Date;
   dates: Set<string>;
   datesDefault: string[];
 }
@@ -21,13 +22,13 @@ export class Calendar extends React.Component<ICalendarProps, ICalendarState> {
   }
 
   state = {
-    selected: undefined,
+    selected: this.props.value,
     visible: false,
     dates: new Set(),
     datesDefault: [],
   }
 
-  onChange (selected: Date) {
+  onChange (selected: Date, byProps: boolean) {
     this.props.onChange( selected.getTime() )
     this.setState({ selected })
   }
@@ -45,7 +46,7 @@ export class Calendar extends React.Component<ICalendarProps, ICalendarState> {
 
       this.setState({ dates });
       if (resDates.length) {
-        this.onChange(this.dateFromApiFormat(resDates[0]))
+        this.onChange(this.dateFromApiFormat(resDates[0]), true)
       }
     }
   }
@@ -85,7 +86,7 @@ export class Calendar extends React.Component<ICalendarProps, ICalendarState> {
     }
   }
 
-  dateToApiFormat (date: Date | undefined) {
+  dateToApiFormat (date?: Date) {
     if (date) {
       return `${this.toTwoCharacterFormat(date.getDate())}.${this.toTwoCharacterFormat(date.getMonth() + 1)}.${String(date.getFullYear())}`
     } else {
@@ -119,7 +120,7 @@ export class Calendar extends React.Component<ICalendarProps, ICalendarState> {
             minDate={new Date()}
             onChange={(date) => {
               if (date instanceof Date) {
-                this.onChange(date)
+                this.onChange(date, false)
               }
             }}
             value={this.state.selected}

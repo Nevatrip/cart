@@ -1,8 +1,8 @@
 export interface sessionState {
-    sessionId: string | null
+    sessionId: string
 }
 
-export const sessionReducer = function (state: sessionState = {sessionId: null}, action: any) {
+export const sessionReducer = function (state: sessionState = {sessionId: ''}, action: any) {
     if (action.type === "SET_SESSION_ID") {
         return {
             ...state,

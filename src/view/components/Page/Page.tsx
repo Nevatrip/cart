@@ -6,8 +6,6 @@ import "./Page.css";
 import { IExampleProps, cnExample } from "../Example/Example";
 
 import {Order} from '../Order/Order'
-import cart from "../Order/cart.json";
-import { Provider } from 'react-redux'
 
 export const cnPage = cn("Page");
 
@@ -28,7 +26,7 @@ export const Page: React.FunctionComponent<IPageProps> = props => (
               При инициализации страницы запрашиваем по сессии корзину
               текущего пользователя, которую пропсом передаём в Order
             */}
-            <Order isLoading={!!cart} cart={cart} />
+            <Order/>
           </div>
         </>
       );

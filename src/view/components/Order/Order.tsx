@@ -1,6 +1,8 @@
 import React, { PureComponent } from "react";
 import { IOrderProps } from './index';
 import { cn } from "@bem-react/classname";
+import { connect } from 'react-redux'
+import { ApplicationState } from '../../../reducers/index'
 
 import { OrderAside } from './Aside/Order-Aside';
 import { OrderContent } from './Content/Order-Content';
@@ -9,7 +11,7 @@ import "./Order.css";
 
 const cnOrder = cn('Order');
 
-export class Order extends PureComponent<IOrderProps, {}> {
+class OrderComponent extends PureComponent<IOrderProps, {}> {
   constructor(props: IOrderProps) {
     super(props);
 
@@ -33,3 +35,10 @@ export class Order extends PureComponent<IOrderProps, {}> {
     )
   }
 }
+
+export const Order = connect((state: ApplicationState) => ({
+  isLoading: state.order.orders ? true : false,
+  cart: {
+    items: state.order.orders
+  }
+}))(OrderComponent)
