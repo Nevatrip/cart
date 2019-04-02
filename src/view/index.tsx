@@ -13,7 +13,7 @@ serviceWorker.unregister();
 const root = document.getElementById("root")
 const sessionId = (root && root.dataset.sessionid)? root.dataset.sessionid : ''
 export const store = createStore(rootReducer, {session: {sessionId}})
-getService(store.dispatch, sessionId)
+getService(sessionId)
 
 export const render = (
   Component: React.ComponentType<IPageProps>,

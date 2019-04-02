@@ -63,7 +63,6 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
 
 
   getService() {
-
     const query = `*[_id == "${this.props.id}"] {title, "directions": directions[]{..., "tickets": tickets[]{..., "category": category->, "ticket": ticket[]->}}}[0]`;
     const params = {}
 
@@ -99,8 +98,7 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
     } = this.props.order
 
     // TODO: update dates on changed direction
-    const selectedDirection = directions && directions.filter(item => item._key === direction)[0]
-
+    const selectedDirection = directions && (directions.filter(item => item._key === direction)[0] || directions[0])
     const dates = selectedDirection && selectedDirection.schedule.flatMap(event => event.actions.map(action => new Date(action.start).toLocaleDateString()));
 
     const dateInFormst = date && new Date(date)
@@ -109,6 +107,16 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
       .filter(item => {
         return item.getFullYear() === dateInFormst.getFullYear() && item.getMonth() === dateInFormst.getMonth() && item.getDate() === dateInFormst.getDate()
       })
+      
+    if (!this.props.order.title && title && selectedDirection && dates && times) {
+      console.log(selectedDirection._key)
+      this.props.initialService({
+        direction: selectedDirection._key,
+        date: dates[0],
+        time: times[0],
+      }, this.props.sessionId, this.props.id, this.state.service)
+      return null;
+    }
 
     const ticketGroup = selectedDirection && selectedDirection.tickets && selectedDirection.tickets.reduce(function (r, a) {
       r[a.category.name.current] = r[a.category.name.current] || [];
@@ -197,11 +205,11 @@ const mapStateToProps = (state: ApplicationState, props: any) => {
 }
 
 const mapDispatchToProps = (dispatch: Function) => ({
-  serviceUpdate: (payload: IServiceState, sessionId: string) => initialService(dispatch, payload, sessionId),
-  changeDate: (payload: any, sessionId: string, id: string, service: service) => changeDate(dispatch, payload, sessionId, id, service),
-  changeDirection: (payload: any, sessionId: string, id: string, service: service) => changeDirection(dispatch, payload, sessionId, id, service),
-  changeTime: (payload: any, sessionId: string, id: string, service: service) => changeTime(dispatch, payload, sessionId, id, service),
-  changeTickets: (payload: any, sessionId: string, id: string, service: service) => changeTickets(dispatch, payload, sessionId, id, service),
+  initialService: (newOrder: any, sessionId: string, id: string, service: service) => initialService(newOrder, sessionId, id, service),
+  changeDate: (payload: any, sessionId: string, id: string, service: service) => changeDate(payload, sessionId, id, service),
+  changeDirection: (payload: any, sessionId: string, id: string, service: service) => changeDirection(payload, sessionId, id, service),
+  changeTime: (payload: any, sessionId: string, id: string, service: service) => changeTime(payload, sessionId, id, service),
+  changeTickets: (payload: any, sessionId: string, id: string, service: service) => changeTickets(payload, sessionId, id, service),
 });
 
 export const Service = connect(mapStateToProps, mapDispatchToProps)(ServiceClass)

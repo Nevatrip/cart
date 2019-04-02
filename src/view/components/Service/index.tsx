@@ -27,7 +27,7 @@ export interface IServiceProps extends IClassNameProps {
   title?: localeTitleSlug;
   periods?: IPeriod[];
   dates?: string[];
-  serviceUpdate: Function;
+  initialService: Function;
   order: ICompileTicket;
   sessionId: string;
   changeDate: Function;
