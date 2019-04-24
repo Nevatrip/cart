@@ -1,9 +1,21 @@
 .Order {
-  display: flex;
+  position: relative;
+  width: 374px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background-color: #fff;
+  box-shadow: 0 0 10px #b9b9b9;
 }
 
 .Order-Item + .Order-Item {
   margin-top: 20px;
   padding-top: 20px;
   border-top: 1px solid #429;
+}
+.Order-List{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+  box-sizing: border-box;
 }

@@ -1,9 +1,3 @@
 .Order-Content {
   position: relative;
-  z-index: 3;
-  color: #fff;
-  background-color: #4A90E2;
-  flex: 1;
-  padding-right: 52px;
-  box-shadow: -300px 0 0 #4A90E2, -600px 0 0 #4A90E2, -900px 0 0 #4A90E2, -1200px 0 0 #4A90E2, -1500px 0 0 #4A90E2, -1800px 0 0 #4A90E2, -2100px 0 0 #4A90E2, -2400px 0 0 #4A90E2, -2700px 0 0 #4A90E2, -3000px 0 0 #4A90E2;
 }

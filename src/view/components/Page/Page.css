@@ -4,15 +4,11 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background-color: #DBEBFF;
+  background-color: #e5e5e5;
 }
 
 .Page-Content {
   position: relative;
   box-sizing: border-box;
-  min-height: 100vh;
-  margin-left: auto;
-  margin-right: auto;
   font-family: 'Open Sans', sans-serif;
-  max-width: 1190px;
 }

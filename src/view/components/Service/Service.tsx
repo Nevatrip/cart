@@ -42,7 +42,7 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
     this.handleTicket = this.handleTicket.bind(this);
     this.handleTime = this.handleTime.bind(this);
   }
-  
+
 
   handleDate(date: number) {
     this.props.changeDate(date, this.props.sessionId, this.props.id, this.state.service)
@@ -69,7 +69,7 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
     return client.fetch(query, params);
   }
 
-  
+
   componentDidMount() {
     this.getService().then( (response: service) => {
       const newState = { ...this.state };
@@ -91,7 +91,7 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
         directions,
       },
     } = this.state
-    
+
     const {
       date,
       direction,
@@ -107,7 +107,7 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
       .filter(item => {
         return item.getFullYear() === dateInFormst.getFullYear() && item.getMonth() === dateInFormst.getMonth() && item.getDate() === dateInFormst.getDate()
       })
-      
+
     if (!this.props.order.title && title && selectedDirection && dates && times) {
       console.log(selectedDirection._key)
       this.props.initialService({
@@ -126,19 +126,26 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
 
     return (
       <div className={cnService()}>
-        {title && <h3 className={cnService("Title")}>{title[ lang as any ].name}</h3>}
-        {dates && <Calendar dates={dates} onChange={this.handleDate} value={dateInFormst}/>}
-        <div className={cnService("Directions")}>
-          {
-            directions && directions.length > 1
-            ? (
-                <select onChange={this.handleDirection} value={direction}>
-                  {directions.map((direction, index) => (
-                    <option value={direction._key} key={direction._key || index}>{direction.title}</option>
-                  )) }
-                </select>
-              )
-              : directions && (
+        <div className={cnService("Header")}>
+          <a href={"#"} className={cnService("TitleLink")}></a>
+          {title && <h3 className={cnService("Title")}>{title[ lang as any ].name}</h3>}
+        </div>
+
+        <div className={cnService("Container")}>
+          <div className={cnService("Step")}>Шаг 1 из 6. Выберите дату поездки</div>
+
+          {dates && <Calendar dates={dates} onChange={this.handleDate} value={dateInFormst}/>}
+          <div className={cnService("Directions")}>
+            {
+              directions && directions.length > 1
+                ? (
+                  <select onChange={this.handleDirection} value={direction}>
+                    {directions.map((direction, index) => (
+                      <option value={direction._key} key={direction._key || index}>{direction.title}</option>
+                    )) }
+                  </select>
+                )
+                : directions && (
                 <>
                   <input type="hidden" name="direction" value={directions[0]._key} />
                   <select disabled value={directions[0]._key}>
@@ -146,50 +153,51 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
                   </select>
                 </>
               )
-          }
-        </div>
-        <div className={cnService("Times")}>
-          <ul>
-            {
-              times && times.map( (time, index) => {
-                return (
-                  <li key={time.toLocaleTimeString()}>
-                    <label htmlFor={time.toLocaleTimeString()}>
-                      <input
-                        type="radio"
-                        id={time.toLocaleTimeString()}
-                        value={time.toLocaleTimeString()}
-                        name={title ? (title[ lang as any ].name + direction) : ''}
-                        defaultChecked={!index}
-                        onChange={() => this.handleTime(time)}
-                      />
-                      {time.toLocaleTimeString()}
-                    </label>
+            }
+          </div>
+          <div className={cnService("Times")}>
+            <ul>
+              {
+                times && times.map( (time, index) => {
+                  return (
+                    <li key={time.toLocaleTimeString()}>
+                      <label htmlFor={time.toLocaleTimeString()}>
+                        <input
+                          type="radio"
+                          id={time.toLocaleTimeString()}
+                          value={time.toLocaleTimeString()}
+                          name={title ? (title[ lang as any ].name + direction) : ''}
+                          defaultChecked={!index}
+                          onChange={() => this.handleTime(time)}
+                        />
+                        {time.toLocaleTimeString()}
+                      </label>
+                    </li>
+                  )
+                } )
+              }
+            </ul>
+          </div>
+          <div className={cnService("Tickets")}>
+            <ul>
+              {
+                ticketGroup && Object.keys( ticketGroup ).map( category => (
+                  <li key={category}>
+                    <h4>{category}</h4>
+                    <ul>
+                      {
+                        ticketGroup[ category ].map((ticket: any) => {
+                          const exist = (this.props.order && this.props.order.tickets) ? this.props.order.tickets.find(item => (item._key === ticket._key)) : null
+                          const count = (exist && exist.count) ? exist.count : 0
+                          return (<ServiceTicket ticket={ticket} count={count} key={ticket._key} handleTicket={this.handleTicket}/>)
+                        })
+                      }
+                    </ul>
                   </li>
-                )
-              } )
-            }
-          </ul>
-        </div>
-        <div className={cnService("Tickets")}>
-          <ul>
-            {
-              ticketGroup && Object.keys( ticketGroup ).map( category => (
-                <li key={category}>
-                  <h4>{category}</h4>
-                  <ul>
-                    {
-                      ticketGroup[ category ].map((ticket: any) => {
-                        const exist = (this.props.order && this.props.order.tickets) ? this.props.order.tickets.find(item => (item._key === ticket._key)) : null
-                        const count = (exist && exist.count) ? exist.count : 0
-                        return (<ServiceTicket ticket={ticket} count={count} key={ticket._key} handleTicket={this.handleTicket}/>)
-                      })
-                    }
-                  </ul>
-                </li>
-              ) )
-            }
-          </ul>
+                ) )
+              }
+            </ul>
+          </div>
         </div>
       </div>
     )

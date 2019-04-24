@@ -81,7 +81,8 @@ const OrderAsideClass: React.FunctionComponent<{order: ICompileTicket[]}> = ({or
 
 const mapStateToProps = (state: ApplicationState) => {
   return {
-  order: state.order.orders
-}}
+    order: state.order.orders
+  }
+}
 
 export const OrderAside = connect(mapStateToProps)(OrderAsideClass)

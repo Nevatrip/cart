@@ -108,14 +108,24 @@ export class Calendar extends React.Component<ICalendarProps, ICalendarState> {
   render() {
     return (
       <>
+        <label className={("Calendar-Label")}>Дата поездки</label>
         <input
+          className={("Calendar-Input")}
           onClick={() =>
             this.setState((state: ICalendarState) => ({ visible: !state.visible }))
           }
           value={this.dateToApiFormat(this.state.selected)}
           readOnly
         />
-        {this.state.visible && (
+
+        <div className={("Calendar-Checkbox")}>
+          <input className={("Calendar-CheckboxInput")} type={("checkbox")} id={("isFixedDate")}/>
+          <label className={("Calendar-CheckboxLabel")} htmlFor={("isFixedDate")}>
+              <b>Билет без точной даты</b> (действует в&nbsp;течение периода по&nbsp;расписанию)
+          </label>
+        </div>
+
+        {/*{this.state.visible && (*/}
           <ReactCalendar
             minDate={new Date()}
             onChange={(date) => {
@@ -129,7 +139,7 @@ export class Calendar extends React.Component<ICalendarProps, ICalendarState> {
               return !this.state.dates.has(formatedDate);
             }}
           />
-        )}
+        {/*)}*/}
       </>
     );
   }

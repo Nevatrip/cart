@@ -28,7 +28,7 @@ function extractOrder (sessionId: string, serviceId: string,  service: service, 
             orders
         }
     })
-    fetch(`http://api.nevatrip.ru/shoppingCarts/${sessionId}`,  {
+    fetch(`https://api.nevatrip.ru/shoppingCarts/${sessionId}`,  {
         method: "PUT",
         headers: {
             'Accept': 'application/json',
@@ -73,8 +73,8 @@ export function checkTime(time: Date, newDate: Date, service: service, direction
     const times = time && dateInFormst && selectedDirection && selectedDirection.schedule
         .flatMap(event => event.actions.map(action => new Date(action.start)))
         .filter(item => {
-            return item.getFullYear() === dateInFormst.getFullYear() 
-            && item.getMonth() === dateInFormst.getMonth() 
+            return item.getFullYear() === dateInFormst.getFullYear()
+            && item.getMonth() === dateInFormst.getMonth()
             && item.getDate() === dateInFormst.getDate()
         })
     const timeRes = times && times.find(item => {
@@ -137,7 +137,7 @@ export const setService = function ( orders: IServiceState) {
 }
 
 export const getService = function ( sessionId: string) {
-    fetch(`http://api.nevatrip.ru/shoppingCarts/${sessionId}`,  {
+    fetch(`https://api.nevatrip.ru/shoppingCarts/${sessionId}`,  {
         method: "GET",
         headers: {},
     })

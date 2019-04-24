@@ -50,6 +50,13 @@ export class OrderContent extends React.Component<IOrderProps, {}> {
 
     return (
       <div className={cnOrder("Content")}>
+        <ul className={cnOrder("List")}>
+          {(cart.items || []).map((cartItem, index) => (
+            <li className={cnOrder("Item")} key={cartItem.id || String(index)}>
+              <Service {...cartItem} />
+            </li>
+          ))}
+        </ul>
         <Fieldset title="Персональные данные">
           <FormField title="Ваш email">
             <TextField
@@ -74,13 +81,6 @@ export class OrderContent extends React.Component<IOrderProps, {}> {
             />
           </FormField>
         </Fieldset>
-        <ul className={cnOrder("List")}>
-          {(cart.items || []).map((cartItem, index) => (
-            <li className={cnOrder("Item")} key={cartItem.id || String(index)}>
-              <Service {...cartItem} />
-            </li>
-          ))}
-        </ul>
       </div>
     )
   }
