@@ -19,7 +19,7 @@ const OrderAsideClass: React.FunctionComponent<{order: ICompileTicket[]}> = ({or
             {
               order.map( orderItem => {
                 return (
-                  <li key={(orderItem.title || '') + (orderItem.date || '') + (orderItem.time || '')} className={cnOrder('Tickets-Li')}>
+                  <li key={(orderItem.id || '')} className={cnOrder('Tickets-Li')}>
                     <h4 className={cnOrder('Tickets-Title')}>{orderItem.title}</h4>
                     <dl>
                       {orderItem.date && <div className={cnOrder('Tickets-Row')}>

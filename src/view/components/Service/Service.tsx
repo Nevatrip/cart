@@ -109,7 +109,6 @@ class ServiceClass extends React.PureComponent<IServiceProps, IServiceState> {
       })
       
     if (!this.props.order.title && title && selectedDirection && dates && times) {
-      console.log(selectedDirection._key)
       this.props.initialService({
         direction: selectedDirection._key,
         date: dates[0],
