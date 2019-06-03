@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 
 // Components
-import Calendar from '../../components/Calendar';
-import Directions from '../../components/Directions';
+import Product from '../../components/Product';
+import ProductPreview from '../../components/ProductPreview';
 
 // Instruments
 import { api } from '../../REST';
@@ -79,20 +79,25 @@ export default class Cart extends Component {
 
         return (
             <>
-                <Calendar
-                    _selectedDate = { this._selectedDate }
-                    dates = { dates }
-                    selectDate = { selectDate }
-                />
-                {
-                    directionsAll.length <= 1 ? // Проверка на количество направлений экскурсии //
-                        null :
-                        <Directions
+                <div className = { 'cart' }>
+                    <div className = { 'cart__list' }>
+
+                        <Product
+                            _selectedDate = { this._selectedDate }
                             _selectedDirection = { this._selectedDirection }
+                            dates = { dates }
                             direction = { selectDirection }
                             directionsAll = { directionsAll }
+                            selectDate = { selectDate }
                         />
-                }
+
+                    </div>
+
+                    <div className = { 'cart__aside' }>
+                        <ProductPreview />
+                    </div>
+                </div>
+
             </>
         );
     }
