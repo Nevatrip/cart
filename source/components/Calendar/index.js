@@ -13,7 +13,6 @@ export default class Calendar extends Component {
 
     _changeDate = (date) => {
         this.props._selectedDate(date);
-
     }
 
   _includeDates = () => {

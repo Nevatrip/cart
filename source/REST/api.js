@@ -2,17 +2,22 @@
 import { MAIN_URL } from './config';
 
 export const api = {
-    // cart: {
-    //     newCart (sessionId) {
-    //         return fetch(`${MAIN_URL}/${sessionId}/products`, {
-    //             method:  'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify(),
-    //         });
-    //     },
-    // },
+    cart: {
+        async newCart (sessionId) {
+            const response = await fetch(`${MAIN_URL}/shoppingCarts/${sessionId}`, {
+                method:  'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(),
+            });
+
+            const result = await response.json();
+
+            return result;
+        },
+
+    },
     product: {
 
         async getProductData (productId) {

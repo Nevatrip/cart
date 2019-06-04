@@ -12,84 +12,58 @@ import { formatDate } from '../../../instruments/helpers';
 export default class Cart extends Component {
 
     state = {
-        dates:           [],
-        selectDate:      '',
-        directionsAll:   [],
-        selectDirection: '',
+        cart: [],
     }
     componentDidMount () {
+        const { sessionId } = this.props;
 
-        this._getProductDataAsync('41b1283d-2ad1-4894-b03e-368042e5d301');
-        // this._getProductDataAsync('1949faec-c728-40de-a700-ca5b666ba765');
-
+        this._createdCart(sessionId);
     }
 
-    _getProductDataAsync = async (idProduct) => {
-        const dataProduct = await api.product.getProductData(idProduct);
-
-        this._setDefaultData(dataProduct);
-
-    }
-
-    _setDefaultData = (dataProduct) => {
-        const defaultDirection = dataProduct.directions[0]._key;
-        const defaultDirectionDates = dataProduct.directions[0].dates;
-
-        this.setState({
-            dates:           defaultDirectionDates,
-            selectDate:      formatDate(defaultDirectionDates[0]),
-            directionsAll:   dataProduct.directions,
-            selectDirection: defaultDirection,
+    _createdCart = async (sessionId) => {
+        const { products } = await api.cart.newCart(sessionId);
+        const productsInCart = products.map((item) => {
+            return item.productId;
         });
+
+        const cart = await Promise.all(
+            productsInCart.map((item) => {
+                return api.product.getProductData(item);
+            })
+        );
+
+        this.setState({ cart });
+
     }
 
-    _selectedDirection = (direction) => {
+    _renderProduct = () => {
+        const { cart } = this.state;
 
-        this.setState({ selectDirection: direction });
+        const result = cart.map((product, index) => {
 
-        this._setProductDate(direction);
-
-    }
-
-    _setProductDate = (direction) => {
-        const { directionsAll } = this.state;
-
-        const selectedDirection = directionsAll.filter((item) => {
             return (
-
-                item._key === direction
+                <Product
+                    dates = { product.directions[0].dates }
+                    direction = { product.directions[0]._key }
+                    directionsAll = { product.directions }
+                    key = { index }
+                    selectDate = { formatDate(product.directions[0].dates[0]) }
+                />
             );
         });
-        const dates = selectedDirection[0].dates;
 
-        this.setState({ dates });
-    }
+        return result;
 
-    _selectedDate = (date) => {
-        this.setState({ selectDate: date });
     }
 
     render () {
-        const {
-            directionsAll,
-            selectDirection,
-            dates,
-            selectDate,
-        } = this.state;
 
         return (
             <>
                 <div className = { 'cart' }>
                     <div className = { 'cart__list' }>
 
-                        <Product
-                            _selectedDate = { this._selectedDate }
-                            _selectedDirection = { this._selectedDirection }
-                            dates = { dates }
-                            direction = { selectDirection }
-                            directionsAll = { directionsAll }
-                            selectDate = { selectDate }
-                        />
+                        { this._renderProduct() }
 
                     </div>
 
