@@ -47,6 +47,19 @@ export const api = {
 
             return result;
         },
+        async getProductTime (productId, directionId, date) {
+
+            const response = await fetch(`${MAIN_URL}/product/${productId}/schedule/${directionId}/${date}`, {
+                method:  'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const result = await response.json();
+
+            return result;
+        },
     },
 
 };

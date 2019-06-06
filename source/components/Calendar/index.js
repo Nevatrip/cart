@@ -2,12 +2,11 @@
 import React, { Component } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import ru from 'date-fns/locale/ru';
+import fromUnixTime from 'date-fns/fromUnixTime';
 registerLocale('ru-RU', ru);
 
+// Styles
 import 'react-datepicker/dist/react-datepicker.css';
-
-// Instruments
-import { formatDate } from '../../../instruments/helpers';
 
 export default class Calendar extends Component {
 
@@ -19,7 +18,7 @@ export default class Calendar extends Component {
       const { dates } = this.props;
 
       const result = dates.map((item) => {
-          return formatDate(item);
+          return fromUnixTime(item);
       });
 
       return result;

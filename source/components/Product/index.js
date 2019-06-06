@@ -1,18 +1,37 @@
 // Core
 import React, { Component } from 'react';
+import getUnixTime from 'date-fns/getUnixTime';
 
 // Components
 import Calendar from '../Calendar';
 import Directions from '../Directions';
+import Time from '../Time';
 
-export default class Cart extends Component {
+// Instruments
+import { api } from '../../REST';
+
+export default class Product extends Component {
 
     state = {
         dates:           this.props.dates,
         selectDirection: this.props.selectDirection,
         selectDate:      this.props.selectDate,
     }
+    componentDidMount () {
+        this._getTime();
+    }
 
+    _getTime = async () => {
+        const { productId } = this.props;
+        const { selectDirection, selectDate } =this.state;
+
+        // console.log(productId);
+        // console.log(selectDirection);
+        console.log('unix', getUnixTime(selectDate));
+        const time = await api.product.getProductTime(productId, selectDirection, selectDate);
+
+        console.log('time', time);
+    }
     _selectedDirection = (direction) => {
         this.setState({ selectDirection: direction });
 
@@ -54,6 +73,7 @@ export default class Cart extends Component {
                             selectDirection = { this.state.selectDirection }
                         />
                 }
+                {/* <Time /> */}
             </>
         );
     }

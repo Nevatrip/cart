@@ -1,5 +1,6 @@
 // Core
 import React, { Component } from 'react';
+import fromUnixTime from 'date-fns/fromUnixTime';
 
 // Components
 import Product from '../../components/Product';
@@ -7,12 +8,12 @@ import ProductPreview from '../../components/ProductPreview';
 
 // Instruments
 import { api } from '../../REST';
-import { formatDate } from '../../../instruments/helpers';
 
 export default class Cart extends Component {
 
     state = {
-        cart: [],
+        cart:     [],
+        products: [],
     }
     componentDidMount () {
         const { sessionId } = this.props;
@@ -22,6 +23,7 @@ export default class Cart extends Component {
 
     _createdCart = async (sessionId) => {
         const { products } = await api.cart.newCart(sessionId);
+
         const productsInCart = products.map((item) => {
             return item.productId;
         });
@@ -32,7 +34,7 @@ export default class Cart extends Component {
             })
         );
 
-        this.setState({ cart });
+        this.setState({ cart, products });
 
     }
 
@@ -44,10 +46,11 @@ export default class Cart extends Component {
             return (
                 <Product
                     dates = { product.directions[0].dates }
-                    direction = { product.directions[0]._key }
                     directionsAll = { product.directions }
                     key = { index }
-                    selectDate = { formatDate(product.directions[0].dates[0]) }
+                    productId = { product._id }
+                    selectDate = { fromUnixTime(product.directions[0].dates[0]) }
+                    selectDirection = { product.directions[0]._key }
                 />
             );
         });
