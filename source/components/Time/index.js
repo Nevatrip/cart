@@ -1,34 +1,49 @@
 // Core
 import React, { Component } from 'react';
+import { format } from 'date-fns';
 
 export default class Time extends Component {
 
-    _changeDirection = (event) => {
-        const { _selectedDirection } = this.props;
+    _changeTime = (event) => {
+        const { _selectedTime } = this.props;
 
-        _selectedDirection(event.target.value);
+        _selectedTime(event.target.value);
 
     }
 
     render () {
-        const { directionsAll } = this.props;
+        const { timesAll, selectedTime, productKey } = this.props;
 
-        const renderDirections =  directionsAll.map((item) => {
+        const renderTimes =  timesAll.map((item, index) => {
 
             return (
-
-                <option data-key = { item._key } key = { item._key } value = { item._key }>{item.title}</option>
+                <li data-key = { item._key } key = { item._key }>
+                    <label>
+                        <input
+                            checked = { selectedTime ? selectedTime === item._key : index === 0 }
+                            name = { `time-${productKey}` }
+                            type = 'radio'
+                            value = { item._key }
+                            onChange = { this._changeTime }
+                        />
+                        {format(
+                            new Date(item.startLabel),
+                            'HH:mm',
+                            new Date()
+                        )}
+                    </label>
+                </li>
             );
         });
 
         return (
-            <label>
-                Выберите направление
-                <select onChange = { this._changeDirection }>
+            <div>
+                Выберите время
+                <ul>
 
-                    {renderDirections}
-                </select>
-            </label>
+                    {renderTimes}
+                </ul>
+            </div>
 
         );
     }

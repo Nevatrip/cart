@@ -1,6 +1,6 @@
 // Core
 import React, { Component } from 'react';
-import getUnixTime from 'date-fns/getUnixTime';
+import { format } from 'date-fns';
 
 // Components
 import Calendar from '../Calendar';
@@ -17,6 +17,7 @@ export default class Product extends Component {
         selectDirection: this.props.selectDirection,
         selectDate:      this.props.selectDate,
     }
+
     componentDidMount () {
         this._getTime();
     }
@@ -25,19 +26,23 @@ export default class Product extends Component {
         const { productId } = this.props;
         const { selectDirection, selectDate } =this.state;
 
-        // console.log(productId);
-        // console.log(selectDirection);
-        console.log('unix', getUnixTime(selectDate));
-        const time = await api.product.getProductTime(productId, selectDirection, selectDate);
+        const date =  format(selectDate, 'yyyy-MM-dd', new Date());
+        const time = await api.product.getProductTime(productId, selectDirection, date);
 
-        console.log('time', time);
+        this.setState({ times: time });
+        this._selectedTime(time[0]._key);
     }
+
+    _selectedTime = (time) => {
+        this.setState({ selectedTime: time });
+    }
+
     _selectedDirection = (direction) => {
-        this.setState({ selectDirection: direction });
-
-        this._setProductDate(direction);
-
+        this.setState({ selectDirection: direction }, () => {
+            this._setProductDate(direction);
+        });
     }
+
     _setProductDate = (direction) => {
         const { directionsAll } = this.props;
         const selectedDirection = directionsAll.filter((item) => {
@@ -50,20 +55,27 @@ export default class Product extends Component {
 
         this.setState({ dates });
     }
+
     _selectedDate = (date) => {
-        this.setState({ selectDate: date });
+        this.setState({ selectDate: date }, () => {
+            this._getTime();
+        });
     }
 
     render () {
-        const { directionsAll } = this.props;
+        const { directionsAll, name, productId } = this.props;
 
         return (
-            <>
+            <fieldset>
+                <legend>
+                    { name }
+                </legend>
                 <Calendar
                     _selectedDate = { this._selectedDate }
                     dates = { this.state.dates }
                     selectDate = { this.state.selectDate }
                 />
+                <br />
                 {
                     directionsAll.length <= 1 ? // Проверка на количество направлений экскурсии //
                         null :
@@ -73,8 +85,15 @@ export default class Product extends Component {
                             selectDirection = { this.state.selectDirection }
                         />
                 }
-                {/* <Time /> */}
-            </>
+                {
+                    this.state.times &&
+                    <Time
+                        productKey = { productId }
+                        selectedTime = { this.state.selectedTime }
+                        timesAll = { this.state.times }
+                    />
+                }
+            </fieldset>
         );
     }
 }
