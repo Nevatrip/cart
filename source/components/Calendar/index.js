@@ -9,10 +9,9 @@ registerLocale('ru-RU', ru);
 import 'react-datepicker/dist/react-datepicker.css';
 
 export default class Calendar extends Component {
-
-    _changeDate = (date) => {
-        this.props._selectedDate(date);
-    }
+  _changeDate = (date) => {
+      this.props._selectedDate(date);
+  }
 
   _includeDates = () => {
       const { dates } = this.props;
@@ -23,20 +22,20 @@ export default class Calendar extends Component {
 
       return result;
   }
+
   render () {
       const { selectDate } = this.props;
 
       return (
           <label>
-            Выберите дату
+          Выберите дату
               <DatePicker
-                  dateFormat = 'YYYY MMMM dd'
+                  dateFormat = 'dd MMMM YYYY'
                   includeDates = { this._includeDates() }
                   locale = 'ru-RU'
                   selected = { selectDate }
                   onChange = { this._changeDate }
               />
-
           </label>
       );
   }
