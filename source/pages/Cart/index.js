@@ -41,19 +41,24 @@ export default class Cart extends Component {
     _renderProduct = () => {
         const { cart } = this.state;
 
-        const result = cart.map((product, index) => {
-
-            return (
-                <Product
-                    dates = { product.directions[0].dates }
-                    directionsAll = { product.directions }
-                    key = { index }
-                    productId = { product._id }
-                    selectDate = { fromUnixTime(product.directions[0].dates[0]) }
-                    selectDirection = { product.directions[0]._key }
-                />
-            );
-        });
+        const result = cart.length
+            ? cart.map((product, index) => {
+                return (
+                    <li key = { index }>
+                        <Product
+                            dates = { product.directions[0].dates }
+                            directionsAll = { product.directions }
+                            name = { product.title.ru.name }
+                            productId = { product._id }
+                            selectDate = { fromUnixTime(
+                                product.directions[0].dates[0]
+                            ) }
+                            selectDirection = { product.directions[0]._key }
+                        />
+                    </li>
+                );
+            })
+            : 'Корзина пуста';
 
         return result;
 
@@ -64,11 +69,14 @@ export default class Cart extends Component {
         return (
             <>
                 <div className = { 'cart' }>
-                    <div className = { 'cart__list' }>
+                    <ul className = { 'cart__list' }>
 
                         { this._renderProduct() }
 
-                    </div>
+                        <br /><br /><br />
+                        <button type = 'button'>Купить</button>
+
+                    </ul>
 
                     <div className = { 'cart__aside' }>
                         <ProductPreview />
