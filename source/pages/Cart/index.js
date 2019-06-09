@@ -12,8 +12,9 @@ import { api } from '../../REST';
 export default class Cart extends Component {
 
     state = {
-        cart:     [],
-        products: [],
+        cart:      [],
+        products:  [],
+        totalData: [],
     }
     componentDidMount () {
         const { sessionId } = this.props;
@@ -37,6 +38,50 @@ export default class Cart extends Component {
         this.setState({ cart, products });
 
     }
+    _setTotalData = (selectDirection, selectDate, selectedTime, selectedTimeKey) => {
+        const { totalData } = this.state;
+
+        const selectData = {
+            selectDirection,
+            selectDate,
+            selectedTime,
+            selectedTimeKey,
+        };
+
+        totalData.push(selectData);
+
+        this.setState({
+            totalData,
+        });
+        console.log(this.state.totalData);
+
+        // console.log('selectData', selectData);
+        // const test = [];
+
+        // test.push(selectData);
+        // this.setState = {
+        //     totalData: test,
+        // };
+        // console.log('test', test);
+        // console.log(this.state.totalData)
+        console.log('selectDirection', selectDirection);
+        console.log('selectDate', selectDate);
+        console.log('selectedTime', selectedTime);
+        // this._createdProductData(selectData);
+    }
+    _createdProductData = (data) => {
+        const { totalData } = this.state;
+
+        totalData.splice(0, totalData.length - 1);
+
+        totalData.push(data);
+
+        this.setState({
+            totalData,
+        });
+        console.log(this.state.totalData);
+
+    }
 
     _renderProduct = () => {
         const { cart } = this.state;
@@ -46,6 +91,7 @@ export default class Cart extends Component {
                 return (
                     <li key = { index }>
                         <Product
+                            _setTotalData = { this._setTotalData }
                             dates = { product.directions[0].dates }
                             directionsAll = { product.directions }
                             name = { product.title.ru.name }
