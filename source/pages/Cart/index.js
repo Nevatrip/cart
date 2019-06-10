@@ -22,17 +22,47 @@ export default class Cart extends Component {
     }
 
     _createdCart = async (sessionId) => {
-        const { products } = await api.cart.newCart(sessionId);
+        const cartItems = (await api.cart.newCart(sessionId)).products;
 
-        const productsInCart = products.map((item) => {
-            return item.productId;
+        const cart = {};
+
+        cartItems.forEach((item) => {
+            cart[item.productId] = item.productId;
         });
 
-        const cart = await Promise.all(
-            productsInCart.map((item) => {
+        /*
+        cart = {
+            '1949faec-c728-40de-a700-ca5b666ba765': '1949faec-c728-40de-a700-ca5b666ba765',
+            '41b1283d-2ad1-4894-b03e-368042e5d301': '41b1283d-2ad1-4894-b03e-368042e5d301'
+        }
+        */
+
+        // const productsInCart = new Set(...productsInCartAll );
+
+        const productsResponse = await Promise.all(
+            Object.keys(cart).map((item) => {
                 return api.product.getProductData(item);
             })
         );
+
+        productsResponse.forEach((product) => {
+            cart[product._id] = product;
+        });
+
+        /*
+        cart = {
+            '1949faec-c728-40de-a700-ca5b666ba765': {…},
+            '41b1283d-2ad1-4894-b03e-368042e5d301': {…}'
+        }
+        */
+
+        const products = cartItems.map((item) => ({
+            ...item,
+            ...cart[item.productId],
+        }));
+
+        // eslint-disable-next-line no-debugger
+        debugger;
 
         this.setState({ cart, products });
 
