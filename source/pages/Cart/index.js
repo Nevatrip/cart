@@ -63,7 +63,7 @@ export default class Cart extends Component {
         }));
 
         // eslint-disable-next-line no-debugger
-        debugger;
+        // debugger;
 
         this.setState({ cart, products });
 
@@ -114,10 +114,10 @@ export default class Cart extends Component {
     }
 
     _renderProduct = () => {
-        const { cart } = this.state;
+        const { products } = this.state;
 
-        const result = cart.length
-            ? cart.map((product, index) => {
+        const result = products.length
+            ? products.map((product, index) => {
                 return (
                     <li key = { index }>
                         <Product
