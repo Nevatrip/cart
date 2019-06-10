@@ -3,16 +3,36 @@ import React, { Component } from 'react';
 import { format } from 'date-fns';
 
 export default class Time extends Component {
+    componentDidMount () {
+        const {
+            _setTotalData,
+            selectDate,
+            selectDirection,
+            selectTime,
+            selectTimeKey,
+        } = this.props;
+
+        _setTotalData(selectDirection, selectDate, selectTime, selectTimeKey);
+    }
 
     _changeTime = (event) => {
-        const { _selectedTime } = this.props;
+        const {
+            _selectedTime,
+            _setTotalData,
+            selectDate,
+            selectDirection,
+        } = this.props;
 
-        _selectedTime(event.target.value);
+        const selectedTimeKey = event.target.value;
+        const selectedTime = event.target.dataset.time;
+
+        _selectedTime(selectedTimeKey);
+        _setTotalData(selectDirection, selectDate, selectedTime, selectedTimeKey);
 
     }
 
     render () {
-        const { timesAll, selectedTime, productKey } = this.props;
+        const { timesAll, selectTimeKey, productKey } = this.props;
 
         const renderTimes =  timesAll.map((item, index) => {
 
@@ -20,7 +40,8 @@ export default class Time extends Component {
                 <li data-key = { item._key } key = { item._key }>
                     <label>
                         <input
-                            checked = { selectedTime ? selectedTime === item._key : index === 0 }
+                            checked = { selectTimeKey ? selectTimeKey === item._key : index === 0 }
+                            data-time = { item.start }
                             name = { `time-${productKey}` }
                             type = 'radio'
                             value = { item._key }

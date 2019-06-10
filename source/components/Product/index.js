@@ -16,6 +16,8 @@ export default class Product extends Component {
         dates:           this.props.dates,
         selectDirection: this.props.selectDirection,
         selectDate:      this.props.selectDate,
+        selectTimeKey:   '',
+        selectTime:      '',
     }
 
     componentDidMount () {
@@ -24,17 +26,22 @@ export default class Product extends Component {
 
     _getTime = async () => {
         const { productId } = this.props;
-        const { selectDirection, selectDate } =this.state;
+        const { selectDirection, selectDate } = this.state;
 
         const date =  format(selectDate, 'yyyy-MM-dd', new Date());
         const time = await api.product.getProductTime(productId, selectDirection, date);
 
         this.setState({ times: time });
-        this._selectedTime(time[0]._key);
+
+        const selectedTimeKey = time[0]._key;
+        const selectedTime = time[0].start;
+
+        this._selectedTime(selectedTimeKey, selectedTime);
     }
 
-    _selectedTime = (time) => {
-        this.setState({ selectedTime: time });
+    _selectedTime = (selectedTimeKey) => {
+
+        this.setState({ selectTimeKey: selectedTimeKey });
     }
 
     _selectedDirection = (direction) => {
@@ -63,7 +70,21 @@ export default class Product extends Component {
     }
 
     render () {
-        const { directionsAll, name, productId } = this.props;
+        const {
+            directionsAll,
+            name,
+            productId,
+            _setTotalData,
+        } = this.props;
+
+        const {
+            dates,
+            selectDate,
+            selectDirection,
+            selectTime,
+            selectTimeKey,
+            times,
+        } = this.state;
 
         return (
             <fieldset>
@@ -72,8 +93,8 @@ export default class Product extends Component {
                 </legend>
                 <Calendar
                     _selectedDate = { this._selectedDate }
-                    dates = { this.state.dates }
-                    selectDate = { this.state.selectDate }
+                    dates = { dates }
+                    selectDate = { selectDate }
                 />
                 <br />
                 {
@@ -82,15 +103,20 @@ export default class Product extends Component {
                         <Directions
                             _selectedDirection = { this._selectedDirection }
                             directionsAll = { directionsAll }
-                            selectDirection = { this.state.selectDirection }
+                            selectDirection = { selectDirection }
                         />
                 }
                 {
                     this.state.times &&
                     <Time
+                        _selectedTime = { this._selectedTime }
+                        _setTotalData = { _setTotalData }
                         productKey = { productId }
-                        selectedTime = { this.state.selectedTime }
-                        timesAll = { this.state.times }
+                        selectDate = { selectDate }
+                        selectDirection = { selectDirection }
+                        selectTime = { selectTime }
+                        selectTimeKey = { selectTimeKey }
+                        timesAll = { times }
                     />
                 }
             </fieldset>
