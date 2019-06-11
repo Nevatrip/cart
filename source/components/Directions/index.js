@@ -4,9 +4,15 @@ import React, { Component } from 'react';
 export default class Directions extends Component {
 
     _changeDirection = (event) => {
-        const { _selectedDirection } = this.props;
+        const {
+            _selectedDirection,
+            _updateCartItem,
+            cartItem,
+        } = this.props;
 
+        cartItem.selectDirection = event.target.value;
         _selectedDirection(event.target.value);
+        _updateCartItem(cartItem);
 
     }
 

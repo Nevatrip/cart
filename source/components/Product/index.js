@@ -13,39 +13,53 @@ import { api } from '../../REST';
 export default class Product extends Component {
 
     state = {
-        dates:           this.props.dates,
-        selectDirection: this.props.selectDirection,
-        selectDate:      this.props.selectDate,
-        selectTimeKey:   '',
-        selectTime:      '',
+        dates:    this.props.dates,
+        times:    [],
+        cartItem: {
+            selectDirection: this.props.selectDirection,
+            selectDate:      this.props.selectDate,
+            selectTimeKey:   '',
+            selectTime:      '',
+            productKey:      '',
+            name:            '',
+        },
     }
 
     componentDidMount () {
         this._getTime();
+
     }
 
     _getTime = async () => {
-        const { productId } = this.props;
-        const { selectDirection, selectDate } = this.state;
+        const { productId, productKey, _setTotalData, name } = this.props;
+        const { cartItem } = this.state;
 
-        const date =  format(selectDate, 'yyyy-MM-dd', new Date());
-        const time = await api.product.getProductTime(productId, selectDirection, date);
+        const date =  format(cartItem.selectDate, 'yyyy-MM-dd', new Date());
+        const time = await api.product.getProductTime(productId, cartItem.selectDirection, date);
 
-        this.setState({ times: time });
+        const selectTime = time[0].start;
+        const selectTimeKey = time[0]._key;
 
-        const selectedTimeKey = time[0]._key;
-        const selectedTime = time[0].start;
+        cartItem.selectTime = selectTime;
+        cartItem.selectTimeKey = selectTimeKey;
+        cartItem.productKey = productKey;
+        cartItem.name = name;
 
-        this._selectedTime(selectedTimeKey, selectedTime);
+        this.setState({ cartItem, times: time });
+
+        _setTotalData(cartItem);
     }
 
-    _selectedTime = (selectedTimeKey) => {
+    _selectedTime = (selectTimeKey) => {
 
-        this.setState({ selectTimeKey: selectedTimeKey });
+        this.setState({ selectTimeKey });
     }
 
     _selectedDirection = (direction) => {
-        this.setState({ selectDirection: direction }, () => {
+        const { cartItem } = this.state;
+
+        cartItem.selectDirection = direction;
+        this.setState({ cartItem }, () => {
             this._setProductDate(direction);
         });
     }
@@ -64,27 +78,32 @@ export default class Product extends Component {
     }
 
     _selectedDate = (date) => {
-        this.setState({ selectDate: date }, () => {
+
+        const { cartItem } = this.state;
+
+        cartItem.selectDate = date;
+        this.setState({ cartItem }, () => {
             this._getTime();
         });
     }
 
     render () {
         const {
+            _updateCartItem,
             directionsAll,
             name,
-            productId,
-            _setTotalData,
+            productKey,
         } = this.props;
 
         const {
             dates,
-            selectDate,
-            selectDirection,
-            selectTime,
-            selectTimeKey,
             times,
+            cartItem,
         } = this.state;
+
+        if (cartItem.selectTime === '') {
+            return null;
+        }
 
         return (
             <fieldset>
@@ -93,8 +112,9 @@ export default class Product extends Component {
                 </legend>
                 <Calendar
                     _selectedDate = { this._selectedDate }
+                    _updateCartItem = { _updateCartItem }
+                    cartItem = { cartItem }
                     dates = { dates }
-                    selectDate = { selectDate }
                 />
                 <br />
                 {
@@ -102,20 +122,17 @@ export default class Product extends Component {
                         null :
                         <Directions
                             _selectedDirection = { this._selectedDirection }
+                            _updateCartItem = { _updateCartItem }
+                            cartItem = { cartItem }
                             directionsAll = { directionsAll }
-                            selectDirection = { selectDirection }
                         />
                 }
                 {
                     this.state.times &&
                     <Time
                         _selectedTime = { this._selectedTime }
-                        _setTotalData = { _setTotalData }
-                        productKey = { productId }
-                        selectDate = { selectDate }
-                        selectDirection = { selectDirection }
-                        selectTime = { selectTime }
-                        selectTimeKey = { selectTimeKey }
+                        _updateCartItem = { _updateCartItem }
+                        cartItem = { cartItem }
                         timesAll = { times }
                     />
                 }

@@ -14,7 +14,7 @@ export default class Cart extends Component {
     state = {
         cart:      [],
         products:  [],
-        totalData: [],
+        totalData: {},
     }
     componentDidMount () {
         const { sessionId } = this.props;
@@ -63,69 +63,46 @@ export default class Cart extends Component {
         }));
 
         // eslint-disable-next-line no-debugger
-        debugger;
+        // debugger;
 
         this.setState({ cart, products });
 
     }
-    _setTotalData = (selectDirection, selectDate, selectedTime, selectedTimeKey) => {
+    _setTotalData = (cartItem) => {
         const { totalData } = this.state;
 
-        const selectData = {
-            selectDirection,
-            selectDate,
-            selectedTime,
-            selectedTimeKey,
-        };
+        totalData[cartItem.productKey] = cartItem;
 
-        totalData.push(selectData);
-
-        this.setState({
-            totalData,
-        });
-        console.log(this.state.totalData);
-
-        // console.log('selectData', selectData);
-        // const test = [];
-
-        // test.push(selectData);
-        // this.setState = {
-        //     totalData: test,
-        // };
-        // console.log('test', test);
-        // console.log(this.state.totalData)
-        console.log('selectDirection', selectDirection);
-        console.log('selectDate', selectDate);
-        console.log('selectedTime', selectedTime);
-        // this._createdProductData(selectData);
+        this.setState({ totalData });
     }
-    _createdProductData = (data) => {
+    _updateCartItem = (data) => {
         const { totalData } = this.state;
 
-        totalData.splice(0, totalData.length - 1);
+        totalData[data.productKey] = data;
 
-        totalData.push(data);
+        this.setState({ totalData });
+    }
+    _checkOut = () => {
+        const { totalData } = this.state;
 
-        this.setState({
-            totalData,
-        });
-        console.log(this.state.totalData);
-
+        console.log('_checkOut', totalData);
     }
 
     _renderProduct = () => {
-        const { cart } = this.state;
+        const { products } = this.state;
 
-        const result = cart.length
-            ? cart.map((product, index) => {
+        const result = products.length
+            ? products.map((product) => {
                 return (
-                    <li key = { index }>
+                    <li key = { product.key }>
                         <Product
                             _setTotalData = { this._setTotalData }
+                            _updateCartItem = { this._updateCartItem }
                             dates = { product.directions[0].dates }
                             directionsAll = { product.directions }
                             name = { product.title.ru.name }
                             productId = { product._id }
+                            productKey = { product.key }
                             selectDate = { fromUnixTime(
                                 product.directions[0].dates[0]
                             ) }
@@ -139,6 +116,28 @@ export default class Cart extends Component {
         return result;
 
     }
+    _renderProductPreview = () => {
+        const { totalData } = this.state;
+
+        return (
+            Object.values(totalData).map((cartItem) => {
+
+                return (
+                    <li key = { cartItem.productKey }>
+                        <ProductPreview
+                            name = { cartItem.name }
+                            selectDate = { cartItem.selectDate }
+                            selectDirection = { cartItem.selectDirection }
+                            selectTime = { cartItem.selectTime }
+                            selectTimeKey = { cartItem.selectTimeKey }
+                        />
+                    </li>
+
+                );
+            })
+        );
+
+    }
 
     render () {
 
@@ -150,13 +149,17 @@ export default class Cart extends Component {
                         { this._renderProduct() }
 
                         <br /><br /><br />
-                        <button type = 'button'>Купить</button>
+                        <button
+                            type = 'button'
+                            onClick = { this._checkOut }>
+                            Купить
+                        </button>
 
                     </ul>
 
-                    <div className = { 'cart__aside' }>
-                        <ProductPreview />
-                    </div>
+                    <ul className = { 'cart__aside' }>
+                        {this._renderProductPreview()}
+                    </ul>
                 </div>
 
             </>

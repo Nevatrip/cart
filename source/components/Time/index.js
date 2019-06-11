@@ -3,36 +3,26 @@ import React, { Component } from 'react';
 import { format } from 'date-fns';
 
 export default class Time extends Component {
-    componentDidMount () {
-        const {
-            _setTotalData,
-            selectDate,
-            selectDirection,
-            selectTime,
-            selectTimeKey,
-        } = this.props;
-
-        _setTotalData(selectDirection, selectDate, selectTime, selectTimeKey);
-    }
 
     _changeTime = (event) => {
         const {
             _selectedTime,
-            _setTotalData,
-            selectDate,
-            selectDirection,
+            _updateCartItem,
+            cartItem,
         } = this.props;
 
-        const selectedTimeKey = event.target.value;
-        const selectedTime = event.target.dataset.time;
+        const selectTimeKey = event.target.value;
+        const selectTime = Number(event.target.dataset.time);
 
-        _selectedTime(selectedTimeKey);
-        _setTotalData(selectDirection, selectDate, selectedTime, selectedTimeKey);
+        cartItem.selectTime = selectTime;
+        cartItem.selectTimeKey = selectTimeKey;
+        _selectedTime(selectTimeKey);
+        _updateCartItem(cartItem);
 
     }
 
     render () {
-        const { timesAll, selectTimeKey, productKey } = this.props;
+        const { timesAll, cartItem } = this.props;
 
         const renderTimes =  timesAll.map((item, index) => {
 
@@ -40,9 +30,9 @@ export default class Time extends Component {
                 <li data-key = { item._key } key = { item._key }>
                     <label>
                         <input
-                            checked = { selectTimeKey ? selectTimeKey === item._key : index === 0 }
+                            checked = { cartItem.selectTimeKey ? cartItem.selectTimeKey === item._key : index === 0 }
                             data-time = { item.start }
-                            name = { `time-${productKey}` }
+                            name = { `time-${cartItem.productKey}` }
                             type = 'radio'
                             value = { item._key }
                             onChange = { this._changeTime }

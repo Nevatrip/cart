@@ -10,7 +10,15 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 export default class Calendar extends Component {
   _changeDate = (date) => {
-      this.props._selectedDate(date);
+      const {
+          _selectedDate,
+          _updateCartItem,
+          cartItem,
+      } = this.props;
+
+      cartItem.selectDate = date;
+      _selectedDate(date);
+      _updateCartItem(cartItem);
   }
 
   _includeDates = () => {
@@ -24,7 +32,7 @@ export default class Calendar extends Component {
   }
 
   render () {
-      const { selectDate } = this.props;
+      const { selectDate } = this.props.cartItem;
 
       return (
           <label>

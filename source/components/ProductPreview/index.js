@@ -1,10 +1,14 @@
 // Core
 import React from 'react';
 
-const ProductPreview = () => {
+const ProductPreview = (props) => {
     return (
         <>
-            <p>Экскурсия 1</p>
+            <fieldset>
+                <legend>
+                    { props.name }
+                </legend>
+            </fieldset>
         </>
     );
 };
