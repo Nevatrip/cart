@@ -107,6 +107,7 @@ export default class Cart extends Component {
                                 product.directions[0].dates[0]
                             ) }
                             selectDirection = { product.directions[0]._key }
+                            selectTickets = { product.directions[0].tickets }
                         />
                     </li>
                 );

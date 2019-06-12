@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import Calendar from '../Calendar';
 import Directions from '../Directions';
 import Time from '../Time';
+import Tickets from '../Tickets';
 
 // Instruments
 import { api } from '../../REST';
@@ -18,6 +19,7 @@ export default class Product extends Component {
         cartItem: {
             selectDirection: this.props.selectDirection,
             selectDate:      this.props.selectDate,
+            selectTickets:   this.props.selectTickets,
             selectTimeKey:   '',
             selectTime:      '',
             productKey:      '',
@@ -27,6 +29,7 @@ export default class Product extends Component {
 
     componentDidMount () {
         this._getTime();
+        // console.log('selectDirection', this.props.selectDirection)
 
     }
 
@@ -61,6 +64,7 @@ export default class Product extends Component {
         cartItem.selectDirection = direction;
         this.setState({ cartItem }, () => {
             this._setProductDate(direction);
+            this._setProductTickets(direction);
         });
     }
 
@@ -75,6 +79,22 @@ export default class Product extends Component {
         const dates = selectedDirection[0].dates;
 
         this.setState({ dates });
+    }
+    _setProductTickets = (direction) => {
+        const { cartItem } = this.state;
+        const { directionsAll } = this.props;
+
+        const selectedTickets = directionsAll.filter((item) => {
+            return (
+
+                item._key === direction
+            );
+        });
+
+        cartItem.selectTickets = selectedTickets[0].tickets;
+
+        this.setState({ cartItem });
+
     }
 
     _selectedDate = (date) => {
@@ -92,7 +112,6 @@ export default class Product extends Component {
             _updateCartItem,
             directionsAll,
             name,
-            productKey,
         } = this.props;
 
         const {
@@ -136,6 +155,9 @@ export default class Product extends Component {
                         timesAll = { times }
                     />
                 }
+                <Tickets
+                    cartItem = { cartItem }
+                />
             </fieldset>
         );
     }
