@@ -19,7 +19,7 @@ export default class Directions extends Component {
     render () {
         const { directionsAll } = this.props;
 
-        const renderDirections =  directionsAll.map((item) => {
+        const renderDirections =  Object.values(directionsAll).map((item) => {
 
             return (
 

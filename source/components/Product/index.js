@@ -14,9 +14,10 @@ import { api } from '../../REST';
 export default class Product extends Component {
 
     state = {
-        dates:    this.props.dates,
-        times:    [],
-        cartItem: {
+        dates:         this.props.dates,
+        directionsAll: {},
+        times:         [],
+        cartItem:      {
             selectDirection: this.props.selectDirection,
             selectDate:      this.props.selectDate,
             selectTickets:   this.props.selectTickets,
@@ -29,8 +30,18 @@ export default class Product extends Component {
 
     componentDidMount () {
         this._getTime();
-        // console.log('selectDirection', this.props.selectDirection)
+        this._convertObj();
 
+    }
+    _convertObj = () => {
+        const { directionsAll } = this.props;
+
+        const directionsObj = {};
+
+        directionsAll.forEach((item) => {
+            directionsObj[item._key] = item;
+        });
+        this.setState({ directionsAll: directionsObj });
     }
 
     _getTime = async () => {
@@ -69,29 +80,19 @@ export default class Product extends Component {
     }
 
     _setProductDate = (direction) => {
-        const { directionsAll } = this.props;
-        const selectedDirection = directionsAll.filter((item) => {
-            return (
+        const { directionsAll } = this.state;
 
-                item._key === direction
-            );
-        });
-        const dates = selectedDirection[0].dates;
+        const currentDirection = directionsAll[direction];
 
-        this.setState({ dates });
+        this.setState({ dates: currentDirection.dates });
     }
     _setProductTickets = (direction) => {
         const { cartItem } = this.state;
-        const { directionsAll } = this.props;
+        const { directionsAll } = this.state;
 
-        const selectedTickets = directionsAll.filter((item) => {
-            return (
+        const currentDirection = directionsAll[direction];
 
-                item._key === direction
-            );
-        });
-
-        cartItem.selectTickets = selectedTickets[0].tickets;
+        cartItem.selectTickets = currentDirection.tickets;
 
         this.setState({ cartItem });
 
@@ -110,14 +111,14 @@ export default class Product extends Component {
     render () {
         const {
             _updateCartItem,
-            directionsAll,
             name,
         } = this.props;
 
         const {
-            dates,
-            times,
             cartItem,
+            dates,
+            directionsAll,
+            times,
         } = this.state;
 
         if (cartItem.selectTime === '') {
