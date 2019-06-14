@@ -10,14 +10,7 @@ export default class Tickets extends Component {
         // console.log(this.props.cartItem.selectTickets);
     }
 
-    _changeTime = (event) => {
-        const {
-
-            cartItem,
-        } = this.props;
-
-    }
-
+    
     _renderTickets = () => {
         const { selectTickets } = this.props.cartItem;
         const result = selectTickets.map((item) => {
@@ -26,8 +19,8 @@ export default class Tickets extends Component {
                     <li>
                         <fieldset>
                             <ul>
-                                <li>{item.name}</li>
-                                <li>{item.price}</li>
+                                <li>Тип билета {item.name}</li>
+                                <li>Цена {item.price}</li>
                             </ul>
 
                             <Counter />
