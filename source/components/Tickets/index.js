@@ -1,6 +1,9 @@
 // Core
 import React, { Component } from 'react';
 
+// Components
+import Counter from '../Counter';
+
 export default class Tickets extends Component {
 
     componentDidMount () {
@@ -26,6 +29,8 @@ export default class Tickets extends Component {
                                 <li>{item.name}</li>
                                 <li>{item.price}</li>
                             </ul>
+
+                            <Counter />
 
                         </fieldset>
                     </li>

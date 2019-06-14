@@ -3,8 +3,7 @@ import React, { Component } from 'react';
 
 //Pages
 import Cart from './pages/Cart';
-
-
+import Counter from './components/Counter';
 
 export default class App extends Component {
 
@@ -14,6 +13,7 @@ export default class App extends Component {
         return (
             <>
                 <Cart sessionId = { sessionId } />
+                <Counter />
             </>
         );
     }

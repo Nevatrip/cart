@@ -38,7 +38,7 @@ export default class Calendar extends Component {
           <label>
           Выберите дату
               <DatePicker
-                  dateFormat = 'dd MMMM YYYY'
+                  dateFormat = 'dd MMMM yyyy'
                   includeDates = { this._includeDates() }
                   locale = 'ru-RU'
                   selected = { selectDate }
