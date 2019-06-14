@@ -5,6 +5,7 @@ import fromUnixTime from 'date-fns/fromUnixTime';
 // Components
 import Product from '../../components/Product';
 import ProductPreview from '../../components/ProductPreview';
+import Counter from '../../components/Counter';
 
 // Instruments
 import { api } from '../../REST';
@@ -162,7 +163,6 @@ export default class Cart extends Component {
                         {this._renderProductPreview()}
                     </ul>
                 </div>
-
             </>
         );
     }

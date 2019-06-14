@@ -33,6 +33,7 @@ export default class Product extends Component {
         this._convertObj();
 
     }
+    
     _convertObj = () => {
         const { directionsAll } = this.props;
 

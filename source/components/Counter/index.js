@@ -6,9 +6,7 @@ const Counter = () => {
         count: 0,
     };
     const [state, setstate] = useState(initialState);
-    // const initialState = {
-    //     count: 0,
-    // };
+    
 
     console.log('useState', state);
 
