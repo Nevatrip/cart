@@ -92,7 +92,7 @@ export default class Cart extends Component {
         const { products } = this.state;
 
         const result = products.length
-            ? products.map((product) => {
+            ? products.map((product, index) => {
                 return (
                     <li key = { product.key }>
                         <Product
@@ -100,6 +100,7 @@ export default class Cart extends Component {
                             _updateCartItem = { this._updateCartItem }
                             dates = { product.directions[0].dates }
                             directionsAll = { product.directions }
+                            indexItem = { index }
                             name = { product.title.ru.name }
                             productId = { product._id }
                             productKey = { product.key }
@@ -121,8 +122,13 @@ export default class Cart extends Component {
     _renderProductPreview = () => {
         const { totalData } = this.state;
 
+        const resultArray =  Object.values(totalData).sort((a, b) => {
+
+            return a.indexItem > b.indexItem;
+        });
+
         return (
-            Object.values(totalData).map((cartItem) => {
+            resultArray.map((cartItem) => {
 
                 return (
                     <li key = { cartItem.productKey }>

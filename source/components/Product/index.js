@@ -27,6 +27,7 @@ export default class Product extends Component {
             selectTime:           '',
             productKey:           '',
             name:                 '',
+            indexItem:            this.props.indexItem,
         },
     }
 
