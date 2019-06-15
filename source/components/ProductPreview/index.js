@@ -12,7 +12,6 @@ const ProductPreview = (props) => {
         return (
             Object.keys(selectTicket).length <= 0 ? null :
                 Object.values(selectTicket).map((item, index) => {
-                    console.log(item.ticketKey);
 
                     return (
 
