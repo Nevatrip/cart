@@ -5,7 +5,6 @@ import fromUnixTime from 'date-fns/fromUnixTime';
 // Components
 import Product from '../../components/Product';
 import ProductPreview from '../../components/ProductPreview';
-import Counter from '../../components/Counter';
 
 // Instruments
 import { api } from '../../REST';
@@ -108,7 +107,8 @@ export default class Cart extends Component {
                                 product.directions[0].dates[0]
                             ) }
                             selectDirection = { product.directions[0]._key }
-                            selectTickets = { product.directions[0].tickets }
+                            selectDirectionTitle = { product.directions[0].title }
+                            tickets = { product.directions[0].tickets }
                         />
                     </li>
                 );
@@ -129,7 +129,8 @@ export default class Cart extends Component {
                         <ProductPreview
                             name = { cartItem.name }
                             selectDate = { cartItem.selectDate }
-                            selectDirection = { cartItem.selectDirection }
+                            selectDirectionTitle = { cartItem.selectDirectionTitle }
+                            selectTicket = { cartItem.selectTicket }
                             selectTime = { cartItem.selectTime }
                             selectTimeKey = { cartItem.selectTimeKey }
                         />

@@ -10,15 +10,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 export default class Calendar extends Component {
   _changeDate = (date) => {
-      const {
-          _selectedDate,
-          _updateCartItem,
-          cartItem,
-      } = this.props;
+      const { _selectedDate } = this.props;
 
-      cartItem.selectDate = date;
       _selectedDate(date);
-      _updateCartItem(cartItem);
   }
 
   _includeDates = () => {

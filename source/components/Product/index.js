@@ -16,15 +16,17 @@ export default class Product extends Component {
     state = {
         dates:         this.props.dates,
         directionsAll: {},
+        tickets:       this.props.tickets,
         times:         [],
         cartItem:      {
-            selectDirection: this.props.selectDirection,
-            selectDate:      this.props.selectDate,
-            selectTickets:   this.props.selectTickets,
-            selectTimeKey:   '',
-            selectTime:      '',
-            productKey:      '',
-            name:            '',
+            selectDirection:      this.props.selectDirection,
+            selectDirectionTitle: this.props.selectDirectionTitle,
+            selectDate:           this.props.selectDate,
+            selectTicket:         {},
+            selectTimeKey:        '',
+            selectTime:           '',
+            productKey:           '',
+            name:                 '',
         },
     }
 
@@ -33,7 +35,7 @@ export default class Product extends Component {
         this._convertObj();
 
     }
-    
+
     _convertObj = () => {
         const { directionsAll } = this.props;
 
@@ -65,61 +67,71 @@ export default class Product extends Component {
         _setTotalData(cartItem);
     }
 
-    _selectedTime = (selectTimeKey) => {
+    _selectedTime = (selectTimeKey, selectTime) => {
+        const { cartItem } = this.state;
+        const { _updateCartItem } = this.props;
 
-        this.setState({ selectTimeKey });
+        cartItem.selectTime = selectTime;
+        cartItem.selectTimeKey = selectTimeKey;
+        _updateCartItem(cartItem);
+
     }
 
-    _selectedDirection = (direction) => {
+    _selectedTicket = (ticket) => {
         const { cartItem } = this.state;
+        const { _updateCartItem } = this.props;
+        const ticketKey = Object.keys(ticket)[0];
+
+        cartItem.selectTicket[ticketKey] = ticket[ticketKey];
+        this.setState({ cartItem });
+        _updateCartItem(cartItem);
+    }
+
+    _selectedDirection = (direction, titleDirection) => {
+        const { cartItem } = this.state;
+        const { _updateCartItem } = this.props;
 
         cartItem.selectDirection = direction;
+        cartItem.selectDirectionTitle = titleDirection;
         this.setState({ cartItem }, () => {
-            this._setProductDate(direction);
-            this._setProductTickets(direction);
+            this._changeProductData(direction);
+            _updateCartItem(cartItem);
+
         });
     }
 
-    _setProductDate = (direction) => {
+    _changeProductData = (direction) => {
         const { directionsAll } = this.state;
 
         const currentDirection = directionsAll[direction];
 
-        this.setState({ dates: currentDirection.dates });
-    }
-    _setProductTickets = (direction) => {
-        const { cartItem } = this.state;
-        const { directionsAll } = this.state;
-
-        const currentDirection = directionsAll[direction];
-
-        cartItem.selectTickets = currentDirection.tickets;
-
-        this.setState({ cartItem });
-
+        this.setState({
+            dates:   currentDirection.dates,
+            tickets: currentDirection.tickets,
+        });
     }
 
     _selectedDate = (date) => {
 
         const { cartItem } = this.state;
+        const { _updateCartItem } = this.props;
 
         cartItem.selectDate = date;
         this.setState({ cartItem }, () => {
             this._getTime();
+            _updateCartItem(cartItem);
         });
     }
 
     render () {
-        const {
-            _updateCartItem,
-            name,
-        } = this.props;
+        const { name } = this.props;
 
         const {
             cartItem,
             dates,
             directionsAll,
             times,
+            tickets,
         } = this.state;
 
         if (cartItem.selectTime === '') {
@@ -133,7 +145,6 @@ export default class Product extends Component {
                 </legend>
                 <Calendar
                     _selectedDate = { this._selectedDate }
-                    _updateCartItem = { _updateCartItem }
                     cartItem = { cartItem }
                     dates = { dates }
                 />
@@ -143,7 +154,6 @@ export default class Product extends Component {
                         null :
                         <Directions
                             _selectedDirection = { this._selectedDirection }
-                            _updateCartItem = { _updateCartItem }
                             cartItem = { cartItem }
                             directionsAll = { directionsAll }
                         />
@@ -152,13 +162,13 @@ export default class Product extends Component {
                     this.state.times &&
                     <Time
                         _selectedTime = { this._selectedTime }
-                        _updateCartItem = { _updateCartItem }
                         cartItem = { cartItem }
                         timesAll = { times }
                     />
                 }
                 <Tickets
-                    cartItem = { cartItem }
+                    _selectedTicket = { this._selectedTicket }
+                    tickets = { tickets }
                 />
             </fieldset>
         );

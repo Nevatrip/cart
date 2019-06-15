@@ -6,14 +6,11 @@ import Counter from '../Counter';
 
 export default class Tickets extends Component {
 
-    componentDidMount () {
-        // console.log(this.props.cartItem.selectTickets);
-    }
-
-    
     _renderTickets = () => {
-        const { selectTickets } = this.props.cartItem;
-        const result = selectTickets.map((item) => {
+        const { tickets, _selectedTicket } = this.props;
+
+        const result = tickets.map((item) => {
+
             return (
                 <ul key = { item._key }>
                     <li>
@@ -23,7 +20,12 @@ export default class Tickets extends Component {
                                 <li>Цена {item.price}</li>
                             </ul>
 
-                            <Counter />
+                            <Counter
+                                _selectedTicket = { _selectedTicket }
+                                prise = { item.price }
+                                ticketKey = { item._key }
+                                typeTicket = { item.name }
+                            />
 
                         </fieldset>
                     </li>

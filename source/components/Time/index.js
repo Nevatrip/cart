@@ -5,19 +5,12 @@ import { format } from 'date-fns';
 export default class Time extends Component {
 
     _changeTime = (event) => {
-        const {
-            _selectedTime,
-            _updateCartItem,
-            cartItem,
-        } = this.props;
+        const { _selectedTime } = this.props;
 
         const selectTimeKey = event.target.value;
         const selectTime = Number(event.target.dataset.time);
 
-        cartItem.selectTime = selectTime;
-        cartItem.selectTimeKey = selectTimeKey;
-        _selectedTime(selectTimeKey);
-        _updateCartItem(cartItem);
+        _selectedTime(selectTimeKey, selectTime);
 
     }
 
