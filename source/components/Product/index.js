@@ -1,6 +1,7 @@
 // Core
 import React, { Component } from 'react';
 import { format } from 'date-fns';
+import fromUnixTime from 'date-fns/fromUnixTime';
 
 // Components
 import Calendar from '../Calendar';
@@ -106,6 +107,8 @@ export default class Product extends Component {
 
         const currentDirection = directionsAll[direction];
 
+        this._selectedDate(fromUnixTime(currentDirection.dates[0]));
+
         this.setState({
             dates:   currentDirection.dates,
             tickets: currentDirection.tickets,
@@ -113,7 +116,7 @@ export default class Product extends Component {
     }
 
     _selectedDate = (date) => {
-
+        console.log(date);
         const { cartItem } = this.state;
         const { _updateCartItem } = this.props;
 
