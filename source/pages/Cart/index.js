@@ -123,8 +123,13 @@ export default class Cart extends Component {
         const { totalData } = this.state;
 
         const resultArray =  Object.values(totalData).sort((a, b) => {
+            if (a.indexItem > b.indexItem) {
+                return 1;
+            }
+            if (a.indexItem < b.indexItem) {
+                return -1;
+            }
 
-            return a.indexItem > b.indexItem;
         });
 
         return (
