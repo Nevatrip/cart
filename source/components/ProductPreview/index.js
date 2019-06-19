@@ -10,31 +10,22 @@ const ProductPreview = (props) => {
 
     const _renderPriseTicket = () => {
         return (
-            Object.keys(selectTicket).length <= 0 ? null :
-                Object.values(selectTicket).map((item, index) => {
-
-                    return (
-
-                        <li key = { index }>
-                            <div>
-                                {`Тип билета: ${item.typeTicket}
-                                    Цена: ${item.currentPrise}
-                                    Количество: ${item.count}
-                                    Итого: ${item.prise}`}
-                            </div>
-                        </li>
-
-                    );
-                })
+            Object.values(selectTicket).map((item, index) => {
+                return (
+                    <li key = { index }>
+                        <div>
+                            {`${item.typeTicket}: ${item.currentPrise} ₽ × ${item.count} = ${item.prise} ₽`}
+                        </div>
+                    </li>
+                );
+            })
         );
     };
 
     return (
         <>
             <fieldset>
-                <legend>
-                    { name }
-                </legend>
+                <legend>{ name }</legend>
                 <ul>
                     <li>Дата: { date }</li>
                     <li>Время: {time}</li>

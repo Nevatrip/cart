@@ -35,35 +35,17 @@ export default class Product extends Component {
     componentDidMount () {
         this._getTime();
         this._convertObj();
-
     }
+
     shouldComponentUpdate (nextProps, nextState) {
-
-        if (this.state.dates !== nextState.dates) {
-
+        if (this.state.dates !== nextState.dates ||
+            this.state.tickets !== nextState.tickets ||
+            this.state.times !== nextState.times ||
+            this.state.directionsAll !== nextState.directionsAll ||
+            this.state.cartItem !== nextState.cartItem ||
+            this.props !== nextProps) {
             return true;
         }
-        if (this.state.tickets !== nextState.tickets) {
-
-            return true;
-        }
-
-        if (this.state.times !== nextState.times) {
-
-            return true;
-        }
-        if (this.state.directionsAll !== nextState.directionsAll) {
-            return true;
-        }
-        if (this.state.cartItem !== nextState.cartItem) {
-            return true;
-        }
-        if (this.props !== nextProps) {
-
-            return true;
-        }
-
-        // console.log('this.state', this.state);
 
         return false;
     }
