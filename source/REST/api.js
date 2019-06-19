@@ -19,6 +19,22 @@ export const api = {
 
             return result;
         },
+        async deleteItem (sessionId, key) {
+            const response = await fetch(
+                `${MAIN_URL}/shoppingCarts/${sessionId}/products/${key}`,
+                {
+                    method:  'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(),
+                }
+            );
+
+            const result = await response.json();
+
+            return result;
+        },
     },
     product: {
         async getProductData (productId) {

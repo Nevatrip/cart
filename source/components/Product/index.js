@@ -159,6 +159,12 @@ export default class Product extends Component {
         });
     }
 
+    _deleteProduct = () => {
+        const { productKey, _deleteProduct } = this.props;
+
+        _deleteProduct(productKey);
+    }
+
     render () {
         const { name } = this.props;
 
@@ -206,6 +212,7 @@ export default class Product extends Component {
                     _selectedTicket = { this._selectedTicket }
                     tickets = { tickets }
                 />
+                <button onClick = { this._deleteProduct } >× Удалить товар</button>
             </fieldset>
         );
     }

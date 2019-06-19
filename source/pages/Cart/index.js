@@ -109,6 +109,18 @@ export default class Cart extends Component {
         user[event.target.name] = event.target.value;
         this.setState({ user });
     }
+    _deleteProduct = (key) => {
+        const totalData = this.state.totalData;
+        const products = this.state.products.filter(
+            (product) => product.key !== key
+        );
+
+        delete totalData[key];
+
+        this.setState({ products, totalData }, () => {
+            api.cart.deleteItem(this.props.sessionId, key);
+        });
+    }
 
     _renderProduct = () => {
         const { products } = this.state;
@@ -118,6 +130,7 @@ export default class Cart extends Component {
                 return (
                     <li key = { product.key }>
                         <Product
+                            _deleteProduct = { this._deleteProduct }
                             _setTotalData = { this._setTotalData }
                             _updateCartItem = { this._updateCartItem }
                             dates = { product.directions[0].dates }
