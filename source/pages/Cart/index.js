@@ -15,6 +15,11 @@ export default class Cart extends Component {
         cart:      [],
         products:  [],
         totalData: {},
+        user:      {
+            fullname: '',
+            email:    '',
+            phone:    '',
+        },
     }
     componentDidMount () {
         const { sessionId } = this.props;
@@ -82,10 +87,27 @@ export default class Cart extends Component {
 
         this.setState({ totalData });
     }
-    _checkOut = () => {
-        const { totalData } = this.state;
+    _checkOut = async () => {
+        const { user } = this.state;
 
-        console.log('_checkOut', totalData);
+        const order = {
+            sessionId: this.props.sessionId,
+            user,
+        };
+
+        console.log('order', order);
+
+        const response = await api.order.newOrder(order);
+
+        if ((((response || {}).payment || {}).Model || {}).Url) {
+            window.location.href = response.payment.Model.Url;
+        }
+    }
+    _setUserData = (event) => {
+        const user = { ...this.state.user };
+
+        user[event.target.name] = event.target.value;
+        this.setState({ user });
     }
 
     _renderProduct = () => {
@@ -122,15 +144,9 @@ export default class Cart extends Component {
     _renderProductPreview = () => {
         const { totalData } = this.state;
 
-        const resultArray =  Object.values(totalData).sort((a, b) => {
-            if (a.indexItem > b.indexItem) {
-                return 1;
-            }
-            if (a.indexItem < b.indexItem) {
-                return -1;
-            }
-
-        });
+        const resultArray = Object.values(totalData).sort((a, b) =>
+            a.indexItem > b.indexItem ? 1 : -1
+        );
 
         return (
             resultArray.map((cartItem) => {
@@ -154,6 +170,13 @@ export default class Cart extends Component {
     }
 
     render () {
+        const {
+            user: {
+                fullname,
+                email,
+                phone,
+            },
+        } = this.state;
 
         return (
             <>
@@ -163,6 +186,21 @@ export default class Cart extends Component {
                         { this._renderProduct() }
 
                         <br /><br /><br />
+                        <div>
+                            <label>Ф. И. О.:
+                                <input name = 'fullname' value = { fullname } onChange = { this._setUserData } />
+                            </label>
+                        </div>
+                        <div>
+                            <label>Email:
+                                <input name = 'email' value = { email } onChange = { this._setUserData } />
+                            </label>
+                        </div>
+                        <div>
+                            <label>Телефон:
+                                <input name = 'phone' value = { phone } onChange = { this._setUserData } />
+                            </label>
+                        </div>
                         <button
                             type = 'button'
                             onClick = { this._checkOut }>
