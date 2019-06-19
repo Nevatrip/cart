@@ -13,7 +13,7 @@ export default class Cart extends Component {
 
     state = {
         cart:      [],
-        products:  [],
+        products:  {},
         totalData: {},
         user:      {
             fullname: '',
@@ -30,10 +30,10 @@ export default class Cart extends Component {
     _createdCart = async (sessionId) => {
         const cartItems = (await api.cart.newCart(sessionId)).products;
 
-        const cart = {};
+        const products = {};
 
         cartItems.forEach((item) => {
-            cart[item.productId] = item.productId;
+            products[item.productId] = item.productId;
         });
 
         /*
@@ -46,13 +46,13 @@ export default class Cart extends Component {
         // const productsInCart = new Set(...productsInCartAll );
 
         const productsResponse = await Promise.all(
-            Object.keys(cart).map((item) => {
+            Object.keys(products).map((item) => {
                 return api.product.getProductData(item);
             })
         );
 
         productsResponse.forEach((product) => {
-            cart[product._id] = product;
+            products[product._id] = product;
         });
 
         /*
@@ -62,9 +62,9 @@ export default class Cart extends Component {
         }
         */
 
-        const products = cartItems.map((item) => ({
+        const cart = cartItems.map((item) => ({
             ...item,
-            ...cart[item.productId],
+            ...products[item.productId],
         }));
 
         // eslint-disable-next-line no-debugger
@@ -100,7 +100,7 @@ export default class Cart extends Component {
         const response = await api.order.newOrder(order);
 
         if ((((response || {}).payment || {}).Model || {}).Url) {
-            window.location.href = response.payment.Model.Url;
+            // window.location.href = response.payment.Model.Url;
         }
     }
     _setUserData = (event) => {
@@ -111,22 +111,22 @@ export default class Cart extends Component {
     }
     _deleteProduct = (key) => {
         const totalData = this.state.totalData;
-        const products = this.state.products.filter(
+        const cart = this.state.cart.filter(
             (product) => product.key !== key
         );
 
         delete totalData[key];
 
-        this.setState({ products, totalData }, () => {
+        this.setState({ cart, totalData }, () => {
             api.cart.deleteItem(this.props.sessionId, key);
         });
     }
 
     _renderProduct = () => {
-        const { products } = this.state;
+        const { cart } = this.state;
 
-        const result = products.length
-            ? products.map((product, index) => {
+        const result = cart.length
+            ? cart.map((product, index) => {
                 return (
                     <li key = { product.key }>
                         <Product
