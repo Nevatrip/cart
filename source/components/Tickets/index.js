@@ -12,24 +12,17 @@ export default class Tickets extends Component {
         const result = tickets.map((item) => {
 
             return (
-                <ul key = { item._key }>
-                    <li>
-                        <fieldset>
-                            <ul>
-                                <li>Тип билета {item.name}</li>
-                                <li>Цена {item.price}</li>
-                            </ul>
-
-                            <Counter
-                                _selectedTicket = { _selectedTicket }
-                                prise = { item.price }
-                                ticketKey = { item._key }
-                                typeTicket = { item.name }
-                            />
-
-                        </fieldset>
-                    </li>
-                </ul>
+                <div key = { item._key } style = { { display: 'flex' } } >
+                    <dt>{item.name || '???'}, {item.price} ₽</dt>
+                    <dd>
+                        <Counter
+                            _selectedTicket = { _selectedTicket }
+                            prise = { item.price }
+                            ticketKey = { item._key }
+                            typeTicket = { item.name }
+                        />
+                    </dd>
+                </div>
             );
         });
 
@@ -39,15 +32,9 @@ export default class Tickets extends Component {
     render () {
 
         return (
-            <>
-
-                <label>
-                Выберите билет
-
-                </label>
+            <dl>
                 {this._renderTickets()}
-            </>
-
+            </dl>
         );
     }
 }

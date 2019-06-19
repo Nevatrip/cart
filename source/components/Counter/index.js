@@ -47,13 +47,19 @@ const Counter = (props) => {
 
         );
     };
+    const _setCount = (event) => {
+        const count = event.target.value;
+
+        _counterPrise(count);
+
+        return _setState({ count });
+    };
 
     return (
         <>
-
-            <div>Количество билетов: {state.count}</div>
-            <button onClick = { _increment } >+</button>
             <button onClick = { _decrement }>-</button>
+            <input min = { 0 } value = { state.count } onChange = { _setCount } />
+            <button onClick = { _increment }>+</button>
         </>
     );
 };

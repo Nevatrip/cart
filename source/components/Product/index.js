@@ -182,9 +182,7 @@ export default class Product extends Component {
 
         return (
             <fieldset>
-                <legend>
-                    { name }
-                </legend>
+                <legend>{ name }</legend>
                 <Calendar
                     _selectedDate = { this._selectedDate }
                     cartItem = { cartItem }

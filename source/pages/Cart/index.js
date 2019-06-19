@@ -193,39 +193,40 @@ export default class Cart extends Component {
 
         return (
             <>
-                <div className = { 'cart' }>
-                    <ul className = { 'cart__list' }>
-
+                <div className = { 'cart' } style = { { display: 'flex' } }>
+                    <ul className = { 'cart__list' } style = { { flex: 1, listStyle: 'none' } } >
                         { this._renderProduct() }
-
-                        <br /><br /><br />
-                        <div>
-                            <label>Ф. И. О.:
-                                <input name = 'fullname' value = { fullname } onChange = { this._setUserData } />
-                            </label>
-                        </div>
-                        <div>
-                            <label>Email:
-                                <input name = 'email' value = { email } onChange = { this._setUserData } />
-                            </label>
-                        </div>
-                        <div>
-                            <label>Телефон:
-                                <input name = 'phone' value = { phone } onChange = { this._setUserData } />
-                            </label>
-                        </div>
-                        <button
-                            type = 'button'
-                            onClick = { this._checkOut }>
-                            Купить
-                        </button>
-
                     </ul>
 
-                    <ul className = { 'cart__aside' }>
-                        {this._renderProductPreview()}
-                    </ul>
+                    <div className = { 'cart__aside' } style = { { width: '33%' } }>
+                        <ul className = { 'cart__list-preview' } style = { { listStyle: 'none' } }>
+                            {this._renderProductPreview()}
+                        </ul>
+                        <div className = { 'cart__user' }>
+                            <div>
+                                <label>Ф. И. О.:
+                                    <input name = 'fullname' value = { fullname } onChange = { this._setUserData } />
+                                </label>
+                            </div>
+                            <div>
+                                <label>Email:
+                                    <input name = 'email' value = { email } onChange = { this._setUserData } />
+                                </label>
+                            </div>
+                            <div>
+                                <label>Телефон:
+                                    <input name = 'phone' value = { phone } onChange = { this._setUserData } />
+                                </label>
+                            </div>
+                            <button
+                                type = 'button'
+                                onClick = { this._checkOut }>
+                                Купить
+                            </button>
+                        </div>
+                    </div>
                 </div>
+
             </>
         );
     }
