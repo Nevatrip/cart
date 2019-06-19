@@ -37,6 +37,36 @@ export default class Product extends Component {
         this._convertObj();
 
     }
+    shouldComponentUpdate (nextProps, nextState) {
+
+        if (this.state.dates !== nextState.dates) {
+
+            return true;
+        }
+        if (this.state.tickets !== nextState.tickets) {
+
+            return true;
+        }
+
+        if (this.state.times !== nextState.times) {
+
+            return true;
+        }
+        if (this.state.directionsAll !== nextState.directionsAll) {
+            return true;
+        }
+        if (this.state.cartItem !== nextState.cartItem) {
+            return true;
+        }
+        if (this.props !== nextProps) {
+
+            return true;
+        }
+
+        // console.log('this.state', this.state);
+
+        return false;
+    }
 
     _convertObj = () => {
         const { directionsAll } = this.props;
@@ -64,12 +94,14 @@ export default class Product extends Component {
         cartItem.productKey = productKey;
         cartItem.name = name;
 
-        this.setState({ cartItem, times: time });
+        this.setState({ cartItem, times: time }, () => {
+            _setTotalData(cartItem);
+        });
 
-        _setTotalData(cartItem);
     }
 
     _selectedTime = (selectTimeKey, selectTime) => {
+
         const { cartItem } = this.state;
         const { _updateCartItem } = this.props;
 
@@ -85,8 +117,9 @@ export default class Product extends Component {
         const ticketKey = Object.keys(ticket)[0];
 
         cartItem.selectTicket[ticketKey] = ticket[ticketKey];
-        this.setState({ cartItem });
-        _updateCartItem(cartItem);
+        this.setState({ cartItem }, () => {
+            _updateCartItem(cartItem);
+        });
     }
 
     _selectedDirection = (direction, titleDirection) => {
@@ -116,7 +149,6 @@ export default class Product extends Component {
     }
 
     _selectedDate = (date) => {
-        console.log(date);
         const { cartItem } = this.state;
         const { _updateCartItem } = this.props;
 

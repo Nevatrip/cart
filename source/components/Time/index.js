@@ -18,7 +18,6 @@ export default class Time extends Component {
         const { timesAll, cartItem } = this.props;
 
         const renderTimes =  timesAll.map((item, index) => {
-
             return (
                 <li data-key = { item._key } key = { item._key }>
                     <label>
