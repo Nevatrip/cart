@@ -81,9 +81,36 @@ export default class Cart extends Component {
         this.setState({ totalData });
     }
     _updateCartItem = (data) => {
-        const { totalData } = this.state;
+        const { cart, totalData } = this.state;
 
         totalData[data.productKey] = data;
+
+        const products = cart.map((cartItem) => {
+            const {
+                selectDirection,
+                selectTime,
+                selectTimeKey,
+                selectTicket,
+            } = totalData[cartItem.key];
+
+            const tickets = {};
+
+            Object.values(selectTicket).forEach((ticket) => {
+                tickets[ticket.ticketKey] = ticket.count;
+            });
+
+            return {
+                productId: cartItem._id,
+                options:   {
+                    direction: selectDirection,
+                    date:      selectTime,
+                    time:      selectTimeKey,
+                    tickets,
+                },
+            };
+        });
+
+        api.cart.updateCart(this.props.sessionId, products);
 
         this.setState({ totalData });
     }

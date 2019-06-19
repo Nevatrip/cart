@@ -35,6 +35,21 @@ export const api = {
 
             return result;
         },
+        async updateCart (sessionId, products) {
+            await fetch(
+                `${MAIN_URL}/shoppingCarts/${sessionId}`,
+                {
+                    method:  'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        sessionId,
+                        products,
+                    }),
+                }
+            );
+        },
     },
     product: {
         async getProductData (productId) {
