@@ -13,16 +13,16 @@ export default class Directions extends Component {
     }
 
     render () {
-        const { directionsAll } = this.props;
+        const { directionsAll, selectDirection } = this.props;
 
         const renderDirections =  Object.values(directionsAll).map((item) => {
 
             return (
-
                 <option
                     data-key = { item._key }
                     data-title = { item.title }
                     key = { item._key }
+                    selected = { item._key === selectDirection }
                     value = { item._key }>
                     {item.title}
                 </option>
@@ -33,7 +33,6 @@ export default class Directions extends Component {
             <label>
                 Выберите направление
                 <select text = 'true' onChange = { this._changeDirection }>
-
                     {renderDirections}
                 </select>
             </label>

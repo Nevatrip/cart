@@ -174,6 +174,7 @@ export default class Product extends Component {
             directionsAll,
             times,
             tickets,
+            cartItem: { selectDirection },
         } = this.state;
 
         if (cartItem.selectTime === '') {
@@ -190,12 +191,13 @@ export default class Product extends Component {
                 />
                 <br />
                 {
-                    directionsAll.length <= 1 ? // Проверка на количество направлений экскурсии //
+                    Object.values(directionsAll).length <= 1 ? // Проверка на количество направлений экскурсии //
                         null :
                         <Directions
                             _selectedDirection = { this._selectedDirection }
                             cartItem = { cartItem }
                             directionsAll = { directionsAll }
+                            selectDirection = { selectDirection }
                         />
                 }
                 {

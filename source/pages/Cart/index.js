@@ -154,24 +154,24 @@ export default class Cart extends Component {
 
         const result = cart.length
             ? cart.map((product, index) => {
+                const direction = product.directions.find((dir) => dir._key === product.options.direction) || product.directions[0];
+
                 return (
                     <li key = { product.key }>
                         <Product
                             _deleteProduct = { this._deleteProduct }
                             _setTotalData = { this._setTotalData }
                             _updateCartItem = { this._updateCartItem }
-                            dates = { product.directions[0].dates }
+                            dates = { direction.dates }
                             directionsAll = { product.directions }
                             indexItem = { index }
                             name = { product.title.ru.name }
                             productId = { product._id }
                             productKey = { product.key }
-                            selectDate = { fromUnixTime(
-                                product.directions[0].dates[0]
-                            ) }
-                            selectDirection = { product.directions[0]._key }
-                            selectDirectionTitle = { product.directions[0].title }
-                            tickets = { product.directions[0].tickets }
+                            selectDate = { fromUnixTime(product.options.date || direction.dates[0]) }
+                            selectDirection = { direction._key }
+                            selectDirectionTitle = { direction.title }
+                            tickets = { direction.tickets }
                         />
                     </li>
                 );
