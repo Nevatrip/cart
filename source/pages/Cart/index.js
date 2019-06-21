@@ -25,6 +25,11 @@ class Cart extends Component {
     }
 
     _createdCart = async (sessionId) => {
+
+        const { dispatch } = this.props;
+
+        dispatch('cart/get', sessionId);
+
         const cartItems = (await api.cart.newCart(sessionId)).products;
 
         const products = {};
@@ -68,6 +73,7 @@ class Cart extends Component {
         // debugger;
 
         this.setState({ cart, products });
+        console.log('cart2', cart2);
 
     }
     _setTotalData = (cartItem) => {
@@ -256,4 +262,4 @@ class Cart extends Component {
         );
     }
 }
-export default connect('user', Cart);
+export default connect('user', 'cart', Cart);
