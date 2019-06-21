@@ -1,8 +1,11 @@
 // Core
 import React, { Component } from 'react';
-
+import StoreContext from 'storeon/react/context';
 //Pages
 import Cart from './pages/Cart';
+import Counter from './Counter';
+
+import { store } from './init/store';
 
 export default class App extends Component {
 
@@ -11,7 +14,10 @@ export default class App extends Component {
 
         return (
             <>
-                <Cart sessionId = { sessionId } />
+                <StoreContext.Provider value = { store }>
+                    {/* <Counter /> */}
+                    <Cart sessionId = { sessionId } />
+                </StoreContext.Provider>
             </>
         );
     }

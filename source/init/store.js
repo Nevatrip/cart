@@ -1,12 +1,13 @@
-// // Core
-// import { createStore } from 'redux';
+// Core
+import createStore from 'storeon';
 
-// // Roots
-// import { rootReducer } from './rootReducer';
-// import { rootSaga } from './rootSaga';
+import projects from './projects';
+import user from './user';
 
-// // Enhancer
-// import { enhancedStore, sagaMiddleware } from './middleware/core';
-
-// export const store = createStore(rootReducer, enhancedStore);
-// sagaMiddleware.run(rootSaga);
+export const store = createStore(
+    [
+        projects,
+        user,
+        process.env.NODE_ENV !== 'production' && require('storeon/devtools')
+    ]
+);

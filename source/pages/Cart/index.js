@@ -1,6 +1,7 @@
 // Core
 import React, { Component } from 'react';
 import fromUnixTime from 'date-fns/fromUnixTime';
+import connect from 'storeon/react/connect';
 
 // Components
 import Product from '../../components/Product';
@@ -10,17 +11,12 @@ import ProductPreview from '../../components/ProductPreview';
 import { api } from '../../REST';
 import Styles from './styles.m.css';
 
-export default class Cart extends Component {
+class Cart extends Component {
 
     state = {
         cart:      [],
         products:  {},
         totalData: {},
-        user:      {
-            fullname: '',
-            email:    '',
-            phone:    '',
-        },
     }
     componentDidMount () {
         const { sessionId } = this.props;
@@ -132,10 +128,11 @@ export default class Cart extends Component {
         }
     }
     _setUserData = (event) => {
-        const user = { ...this.state.user };
+        const { dispatch, user } = this.props;
 
         user[event.target.name] = event.target.value;
-        this.setState({ user });
+
+        dispatch('user/change', user);
     }
     _deleteProduct = (key) => {
         const totalData = this.state.totalData;
@@ -213,11 +210,11 @@ export default class Cart extends Component {
     render () {
         const {
             user: {
-                fullname,
+                fullName,
                 email,
                 phone,
             },
-        } = this.state;
+        } = this.props;
 
         return (
             <>
@@ -233,7 +230,7 @@ export default class Cart extends Component {
                         <div className = { 'cart__user' }>
                             <div>
                                 <label>Ф. И. О.:
-                                    <input name = 'fullname' value = { fullname } onChange = { this._setUserData } />
+                                    <input name = 'fullName' value = { fullName } onChange = { this._setUserData } />
                                 </label>
                             </div>
                             <div>
@@ -259,3 +256,4 @@ export default class Cart extends Component {
         );
     }
 }
+export default connect('user', Cart);
