@@ -43,18 +43,18 @@ class Product extends Component {
 
     }
 
-    shouldComponentUpdate (nextProps, nextState) {
-        if (this.state.dates !== nextState.dates ||
-            this.state.tickets !== nextState.tickets ||
-            this.state.times !== nextState.times ||
-            this.state.directionsAll !== nextState.directionsAll ||
-            this.state.cartItem !== nextState.cartItem ||
-            this.props !== nextProps) {
-            return true;
-        }
+    // shouldComponentUpdate (nextProps, nextState) {
+    //     if (this.state.dates !== nextState.dates ||
+    //         this.state.tickets !== nextState.tickets ||
+    //         this.state.times !== nextState.times ||
+    //         this.state.directionsAll !== nextState.directionsAll ||
+    //         this.state.cartItem !== nextState.cartItem ||
+    //         this.props !== nextProps) {
+    //         return true;
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 
     _convertObj = () => {
         const { directionsAll } = this.props;
@@ -76,11 +76,12 @@ class Product extends Component {
             productId,
         };
 
-        dispatch('times/get', timeData);
+        dispatch('times/get', timeData, () => {
+            this._initTotalData();
+        });
         // console.log('this.props.times', this.props.times);
         // console.log('store', dispatch('times/get', timeData));
 
-        this._initTotalData();
     }
 
     _initTotalData = () => {
@@ -120,7 +121,7 @@ class Product extends Component {
         const date =  format(selectDate, 'yyyy-MM-dd', new Date());
         const time = await api.product.getProductTime(productId, selectDirection, date);
 
-        console.log('time', time);
+        // console.log('time',time)
 
         const selectTime = time[0].start;
         const selectTimeKey = time[0]._key;
@@ -130,12 +131,14 @@ class Product extends Component {
         cartItem.productKey = productKey;
         cartItem.name = name;
 
-        this.setState({ cartItem, times: time }, () => {
-            _setTotalData(cartItem);
+        this.setState({ times: time }, () => {
+            // _setTotalData(cartItem);
+
+            dispatch('totalData/get', cartItem);
+
         });
 
         // dispatch('times/addState', time);
-        // dispatch('totalData/get', cartItem);
 
     }
 
