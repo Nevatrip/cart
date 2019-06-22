@@ -14,11 +14,11 @@ export default (store) => {
 
         const { selectDate, selectDirection, productId } = timeData;
         const date =  format(selectDate, 'yyyy-MM-dd', new Date());
-        console.log('date', date)
-        console.log('selectDirection', selectDirection)
+        // console.log('date', date)
+        // console.log('selectDirection', selectDirection)
         const time = await api.product.getProductTime(productId, selectDirection, date);
 
-        console.log('time', time);
+        // console.log('time', time);
         store.dispatch('times/addState', time);
 
         // const cart = store.get().cart;

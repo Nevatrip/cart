@@ -15,7 +15,6 @@ export default (store) => {
         
         const cart = store.get().cart;
         const sessionId = store.get().session;
-
         totalData[data.productKey] = data;
 
         const products = cart.map((cartItem) => {

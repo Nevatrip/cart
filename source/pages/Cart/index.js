@@ -101,17 +101,17 @@ class Cart extends Component {
     }
 
     _deleteProduct = (key) => {
-        return key;
-        // const totalData = this.state.totalData;
-        // const cart = this.state.cart.filter(
-        //     (product) => product.key !== key
-        // );
+        // return key;
+        const totalData = this.state.totalData;
+        const cart = this.state.cart.filter(
+            (product) => product.key !== key
+        );
 
-        // delete totalData[key];
+        delete totalData[key];
 
-        // this.setState({ cart, totalData }, () => {
-        //     api.cart.deleteItem(this.props.sessionId, key);
-        // });
+        this.setState({ cart, totalData }, () => {
+            api.cart.deleteItem(this.props.sessionId, key);
+        });
     }
 
     _renderProduct = () => {

@@ -101,7 +101,7 @@ class Product extends Component {
     }
 
     _getTime = async () => {
-        const { productId, selectDate, productKey, _setTotalData, name, selectDirection } = this.props;
+        const { dispatch, productId, selectDate, productKey, _setTotalData, name, selectDirection } = this.props;
 
         const cartItem = {
             selectDirection,
@@ -121,8 +121,6 @@ class Product extends Component {
         const date =  format(selectDate, 'yyyy-MM-dd', new Date());
         const time = await api.product.getProductTime(productId, selectDirection, date);
 
-        // console.log('time',time)
-
         const selectTime = time[0].start;
         const selectTimeKey = time[0]._key;
 
@@ -134,9 +132,8 @@ class Product extends Component {
         this.setState({ times: time }, () => {
             // _setTotalData(cartItem);
 
-            dispatch('totalData/get', cartItem);
-
         });
+        dispatch('totalData/get', cartItem);
 
         // dispatch('times/addState', time);
 
