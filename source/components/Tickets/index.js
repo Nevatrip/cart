@@ -10,7 +10,6 @@ export default class Tickets extends Component {
         const { tickets, _selectedTicket } = this.props;
 
         const result = tickets.map((item) => {
-
             return (
                 <div key = { item._key } style = { { display: 'flex' } } >
                     <dt>{item.name || '???'}, {item.price} ₽</dt>
@@ -20,6 +19,7 @@ export default class Tickets extends Component {
                             prise = { item.price }
                             ticketKey = { item._key }
                             typeTicket = { item.name }
+                            value = { item.count }
                         />
                     </dd>
                 </div>
@@ -30,7 +30,6 @@ export default class Tickets extends Component {
     }
 
     render () {
-
         return (
             <dl>
                 {this._renderTickets()}

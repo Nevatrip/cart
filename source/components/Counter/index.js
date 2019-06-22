@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 const Counter = (props) => {
     const initialState = {
-        count: 0,
+        count: props.value || 0,
     };
 
     const [state, _setState] = useState(initialState);
@@ -24,6 +24,7 @@ const Counter = (props) => {
 
         _selectedTicket(ticketQt);
     };
+
     const _increment = () => {
         const count = state.count + 1;
 
@@ -31,9 +32,9 @@ const Counter = (props) => {
 
         return (
             _setState({ count })
-
         );
     };
+
     const _decrement = () => {
         if (state.count === 0) {
             return null;
@@ -44,9 +45,9 @@ const Counter = (props) => {
 
         return (
             _setState({ count })
-
         );
     };
+
     const _setCount = (event) => {
         const count = event.target.value;
 
