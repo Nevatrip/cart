@@ -83,7 +83,7 @@ class Product extends Component {
         this._initTotalData();
     }
 
-    _initTotalData = async () => {
+    _initTotalData = () => {
 
         console.log('this.props.times', this.props.times);
         const itemCart = {
@@ -114,12 +114,13 @@ class Product extends Component {
             indexItem:            this.props.indexItem,
         };
 
-        const { dispatch } =this.props;
+        // const { dispatch } = this.props;
         // const { cartItem } = this.state;
 
         const date =  format(selectDate, 'yyyy-MM-dd', new Date());
         const time = await api.product.getProductTime(productId, selectDirection, date);
-        console.log('time',time)
+
+        console.log('time', time);
 
         const selectTime = time[0].start;
         const selectTimeKey = time[0]._key;
@@ -132,6 +133,7 @@ class Product extends Component {
         this.setState({ cartItem, times: time }, () => {
             _setTotalData(cartItem);
         });
+
         // dispatch('times/addState', time);
         // dispatch('totalData/get', cartItem);
 

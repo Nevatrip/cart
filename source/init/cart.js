@@ -6,12 +6,9 @@ const cart = [];
 export default (store) => {
     store.on('@init', () => ({ cart }));
 
-    store.on('cart/get', async ({ cart },) => {
-        
+    store.on('cart/get', async () => {
         const sessionId = store.get().session;
-
         const cartItems = (await api.cart.newCart(sessionId)).products;
-
         const products = {};
 
         cartItems.forEach((item) => {
@@ -35,11 +32,9 @@ export default (store) => {
 
         store.dispatch('cart/addState', createCart);
         store.dispatch('products/get', products);
-
     });
 
-    store.on('cart/addState', ({ cart }, newCart) => {
-
+    store.on('cart/addState', (newCart) => {
         return { cart: newCart };
     });
 };

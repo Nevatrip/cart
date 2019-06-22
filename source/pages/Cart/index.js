@@ -18,6 +18,7 @@ class Cart extends Component {
         products:  {},
         totalData: {},
     }
+
     componentDidMount () {
         const { dispatch, sessionId } = this.props;
 
@@ -74,12 +75,14 @@ class Cart extends Component {
     //     this.setState({ cart, products });
 
     // }
+
     _setTotalData = (cartItem) => {
         const { totalData } = this.state;
 
         totalData[cartItem.productKey] = cartItem;
         this.setState({ totalData });
     }
+
     _updateCartItem = (data) => {
         const { cart, totalData } = this.state;
 
@@ -115,6 +118,7 @@ class Cart extends Component {
         this.setState({ totalData });
         // dispatch('totalData/updateCartItem');
     }
+
     _checkOut = async () => {
         const { user } = this.state;
 
@@ -131,6 +135,7 @@ class Cart extends Component {
             // window.location.href = response.payment.Model.Url;
         }
     }
+
     _setUserData = (event) => {
         const { dispatch, user } = this.props;
 
@@ -138,6 +143,7 @@ class Cart extends Component {
 
         dispatch('user/change', user);
     }
+
     _deleteProduct = (key) => {
         return key;
         // const totalData = this.state.totalData;
@@ -186,6 +192,7 @@ class Cart extends Component {
         return result;
 
     }
+
     _renderProductPreview = () => {
         const { totalData } = this.props;
 
@@ -258,7 +265,6 @@ class Cart extends Component {
                         </div>
                     </div>
                 </div>
-
             </>
         );
     }
