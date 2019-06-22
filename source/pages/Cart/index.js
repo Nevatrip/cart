@@ -21,7 +21,6 @@ class Cart extends Component {
     componentDidMount () {
         const { dispatch, sessionId } = this.props;
 
-
         dispatch('session/id', sessionId);
         dispatch('cart/get');
 
@@ -140,6 +139,7 @@ class Cart extends Component {
         dispatch('user/change', user);
     }
     _deleteProduct = (key) => {
+        return key;
         // const totalData = this.state.totalData;
         // const cart = this.state.cart.filter(
         //     (product) => product.key !== key
@@ -155,7 +155,8 @@ class Cart extends Component {
     _renderProduct = () => {
         // const { cart } = this.state;
         const { cart } = this.props;
-console.log('cart', cart)
+
+        console.log('cart', cart);
         const result = cart.length
             ? cart.map((product, index) => {
                 const direction = product.directions.find((dir) => dir._key === product.options.direction) || product.directions[0];
