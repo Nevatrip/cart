@@ -6,27 +6,49 @@ import connect from 'storeon/react/connect';
 class Time extends Component {
 
     _changeTime = (event) => {
-        const {dispatch, _selectedTime } = this.props;
+        const {
+            _selectedTime,
+            dispatch,
+            productKey,
+            totalData,
+        } = this.props;
 
-        const selectTimeKey = event.target.value;
-        const selectTime = Number(event.target.dataset.time);
+        const currentItem = totalData[productKey];
 
-        _selectedTime(selectTimeKey, selectTime);
+        currentItem.selectTimeKey = event.target.value;
+        currentItem.selectTime = Number(event.target.dataset.time);
+
+        // _selectedTime(selectTimeKey, selectTime);
         // dispatch('totalData/updateCartItem');
+        dispatch('totalData/updateCart', currentItem);
 
     }
 
     render () {
-        const { timesAll, cartItem } = this.props;
+        const { timesAll, cartItem, totalData, productKey } = this.props;
+        console.log(productKey)
+
+        if (totalData === {}) {
+            return null;
+        }
+        const currentItem = totalData[productKey];
+
+        if (currentItem === void 0) {
+            return null;
+        }
 
         const renderTimes =  timesAll.map((item, index) => {
+
+            // console.log('totalData.selectTimeKey', currentItem.selectTimeKey);
+            // console.log('item', item._key);
+
             return (
                 <li data-key = { item._key } key = { item._key }>
                     <label>
                         <input
-                            checked = { cartItem.selectTimeKey ? cartItem.selectTimeKey === item._key : index === 0 }
+                            checked = { currentItem.selectTimeKey ? currentItem.selectTimeKey === item._key : index === 0 }
                             data-time = { item.start }
-                            name = { `time-${cartItem.productKey}` }
+                            name = { `time-${totalData.productKey}` }
                             type = 'radio'
                             value = { item._key }
                             onChange = { this._changeTime }
@@ -54,4 +76,3 @@ class Time extends Component {
     }
 }
 export default connect('totalData', Time);
-

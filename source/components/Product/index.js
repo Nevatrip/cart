@@ -129,27 +129,26 @@ class Product extends Component {
         cartItem.productKey = productKey;
         cartItem.name = name;
 
-        this.setState({ times: time }, () => {
-            // _setTotalData(cartItem);
-
-        });
+        this.setState({ times: time });
         dispatch('totalData/get', cartItem);
 
         // dispatch('times/addState', time);
 
     }
 
-    _selectedTime = (selectTimeKey, selectTime) => {
+//     _selectedTime = (selectTimeKey, selectTime) => {
 
-        const { cartItem } = this.state;
-        const { dispatch, _updateCartItem } = this.props;
+//         const { cartItem } = this.state;
+//         const { dispatch, _updateCartItem } = this.props;
 
-        cartItem.selectTime = selectTime;
-        cartItem.selectTimeKey = selectTimeKey;
-        // _updateCartItem(cartItem);
-        dispatch('totalData/updateCartItem', cartItem);
+//         cartItem.selectTime = selectTime;
+//         cartItem.selectTimeKey = selectTimeKey;
+//         // _updateCartItem(cartItem);
+//         // dispatch('totalData/updateCartItem', cartItem);
 
-    }
+        
+// // _updateCartItem(cartItem);
+//     }
 
     _selectedTicket = (ticket) => {
         const { cartItem } = this.state;
@@ -162,7 +161,6 @@ class Product extends Component {
         });
     }
 
-    
     _changeProductData = (direction) => {
         const { directionsAll } = this.state;
 
@@ -223,6 +221,7 @@ class Product extends Component {
                     <Time
                         _selectedTime = { this._selectedTime }
                         cartItem = { cartItem }
+                        productKey = { productKey }
                         timesAll = { times }
                     />
                 }
