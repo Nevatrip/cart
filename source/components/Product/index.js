@@ -224,9 +224,9 @@ class Product extends Component {
             cartItem: { selectDirection },
         } = this.state;
 
-        if (cartItem.selectTime === '') {
-            return null;
-        }
+        // if (cartItem.selectTime === '') {
+        //     return null;
+        // }
 
         return (
             <fieldset>
@@ -238,7 +238,7 @@ class Product extends Component {
                     productKey = { productKey }
                 />
                 <br />
-                {
+                {/* {
                     Object.values(directionsAll).length <= 1 ? // Проверка на количество направлений экскурсии //
                         null :
                         <Directions
@@ -247,15 +247,15 @@ class Product extends Component {
                             directionsAll = { directionsAll }
                             selectDirection = { selectDirection }
                         />
-                }
-                {
+                } */}
+                {/* {
                     this.state.times &&
                     <Time
                         _selectedTime = { this._selectedTime }
                         cartItem = { cartItem }
                         timesAll = { times }
                     />
-                }
+                } */}
                 {/* <Tickets
                     _selectedTicket = { this._selectedTicket }
                     tickets = { tickets }
