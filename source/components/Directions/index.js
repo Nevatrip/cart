@@ -22,7 +22,6 @@ export default class Directions extends Component {
                     data-key = { item._key }
                     data-title = { item.title }
                     key = { item._key }
-                    selected = { item._key === selectDirection }
                     value = { item._key }>
                     {item.title}
                 </option>
@@ -32,7 +31,7 @@ export default class Directions extends Component {
         return (
             <label>
                 Выберите направление
-                <select text = 'true' onChange = { this._changeDirection }>
+                <select defaultValue = { selectDirection } text = 'true' onChange = { this._changeDirection }>
                     {renderDirections}
                 </select>
             </label>
