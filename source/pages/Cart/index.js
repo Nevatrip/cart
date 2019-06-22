@@ -21,7 +21,9 @@ class Cart extends Component {
     componentDidMount () {
         const { dispatch, sessionId } = this.props;
 
-        dispatch('cart/get', sessionId);
+
+        dispatch('session/id', sessionId);
+        dispatch('cart/get');
 
         // this._createdCart(sessionId);
     }
@@ -81,7 +83,6 @@ class Cart extends Component {
     }
     _updateCartItem = (data) => {
         const { cart, totalData } = this.state;
-        const { dispatch } = this.props;
 
         totalData[data.productKey] = data;
 
@@ -113,7 +114,7 @@ class Cart extends Component {
         api.cart.updateCart(this.props.sessionId, products);
 
         this.setState({ totalData });
-        dispatch('totalData/updateCartItem');
+        // dispatch('totalData/updateCartItem');
     }
     _checkOut = async () => {
         const { user } = this.state;
@@ -149,13 +150,12 @@ class Cart extends Component {
         // this.setState({ cart, totalData }, () => {
         //     api.cart.deleteItem(this.props.sessionId, key);
         // });
-        console.log('del')
     }
 
     _renderProduct = () => {
         // const { cart } = this.state;
         const { cart } = this.props;
-
+console.log('cart', cart)
         const result = cart.length
             ? cart.map((product, index) => {
                 const direction = product.directions.find((dir) => dir._key === product.options.direction) || product.directions[0];
@@ -186,7 +186,7 @@ class Cart extends Component {
 
     }
     _renderProductPreview = () => {
-        const { totalData } = this.state;
+        const { totalData } = this.props;
 
         const resultArray = Object.values(totalData).sort((a, b) =>
             a.indexItem > b.indexItem ? 1 : -1
@@ -231,7 +231,7 @@ class Cart extends Component {
 
                     <div className = { Styles.aside } >
                         <ul className = { Styles.listPreview }>
-                            {this._renderProductPreview()}
+                            {/* {this._renderProductPreview()} */}
                         </ul>
                         <div className = { 'cart__user' }>
                             <div>
@@ -262,4 +262,4 @@ class Cart extends Component {
         );
     }
 }
-export default connect('user', 'cart', 'totalData', Cart);
+export default connect('user', 'cart', 'totalData', 'session', Cart);

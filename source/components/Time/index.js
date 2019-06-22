@@ -12,7 +12,7 @@ class Time extends Component {
         const selectTime = Number(event.target.dataset.time);
 
         _selectedTime(selectTimeKey, selectTime);
-        dispatch('totalData/updateCartItem');
+        // dispatch('totalData/updateCartItem');
 
     }
 

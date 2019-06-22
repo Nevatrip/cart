@@ -6,7 +6,9 @@ const cart = [];
 export default (store) => {
     store.on('@init', () => ({ cart }));
 
-    store.on('cart/get', async ({ cart }, sessionId) => {
+    store.on('cart/get', async ({ cart },) => {
+        
+        const sessionId = store.get().session;
 
         const cartItems = (await api.cart.newCart(sessionId)).products;
 
