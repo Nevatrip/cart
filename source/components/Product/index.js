@@ -162,21 +162,7 @@ class Product extends Component {
         });
     }
 
-    _selectedDirection = (direction, titleDirection) => {
-        const { cartItem } = this.state;
-        const { dispatch, _updateCartItem } = this.props;
-
-        cartItem.selectDirection = direction;
-        cartItem.selectDirectionTitle = titleDirection;
-        this.setState({ cartItem }, () => {
-            this._changeProductData(direction);
-            // _updateCartItem(cartItem);
-
-        });
-        dispatch('totalData/updateCartItem', cartItem);
-
-    }
-
+    
     _changeProductData = (direction) => {
         const { directionsAll } = this.state;
 
@@ -188,21 +174,6 @@ class Product extends Component {
             dates:   currentDirection.dates,
             tickets: currentDirection.tickets,
         });
-    }
-
-    _selectedDate = (date) => {
-        const { cartItem } = this.state;
-        const { dispatch, _updateCartItem } = this.props;
-
-        cartItem.selectDate = date;
-        // this.setState({ cartItem }, () => {
-        //     this._getTime();
-        //     // _updateCartItem(cartItem);
-        // });
-        this._getTime();
-
-        dispatch('totalData/updateCartItem', cartItem);
-
     }
 
     _deleteProduct = () => {
@@ -234,30 +205,27 @@ class Product extends Component {
             <fieldset>
                 <legend>{ name }</legend>
                 <Calendar
-                    // _selectedDate = { this._selectedDate }
-                    cartItem = { cartItem }
                     dates = { dates }
                     productKey = { productKey }
                 />
                 <br />
-                {/* {
+                {
                     Object.values(directionsAll).length <= 1 ? // Проверка на количество направлений экскурсии //
                         null :
                         <Directions
-                            _selectedDirection = { this._selectedDirection }
-                            cartItem = { cartItem }
+                            _changeProductData = { this._changeProductData }
                             directionsAll = { directionsAll }
-                            selectDirection = { selectDirection }
+                            productKey = { productKey }
                         />
-                } */}
-                {/* {
+                }
+                {
                     this.state.times &&
                     <Time
                         _selectedTime = { this._selectedTime }
                         cartItem = { cartItem }
                         timesAll = { times }
                     />
-                } */}
+                }
                 {/* <Tickets
                     _selectedTicket = { this._selectedTicket }
                     tickets = { tickets }

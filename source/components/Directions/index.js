@@ -1,20 +1,37 @@
 // Core
 import React, { Component } from 'react';
+import connect from 'storeon/react/connect';
 
-export default class Directions extends Component {
+class Directions extends Component {
 
     _changeDirection = (event) => {
-        const { _selectedDirection } = this.props;
+        const {
+            dispatch,
+            productKey,
+            totalData,
+            _changeProductData,
+        } = this.props;
+
+        const currentItem = totalData[productKey];
+
         const selectIndex = event.target.options.selectedIndex;
         const titleDirection = event.target.children[selectIndex].dataset.title;
 
-        _selectedDirection(event.target.value, titleDirection);
+        currentItem.selectDirection = event.target.value;
+        currentItem.selectDirectionTitle = titleDirection;
 
+
+        dispatch('totalData/updateCart', currentItem);
+        _changeProductData(event.target.value);
     }
 
     render () {
-        const { directionsAll, selectDirection } = this.props;
+        const { directionsAll, totalData } = this.props;
 
+        if (totalData === {}) {
+            return null;
+        }
+        const selectDirection = totalData.selectDirection;
         const renderDirections =  Object.values(directionsAll).map((item) => {
 
             return (
@@ -40,3 +57,4 @@ export default class Directions extends Component {
         );
     }
 }
+export default connect('totalData', Directions);
