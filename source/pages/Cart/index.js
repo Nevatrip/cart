@@ -12,69 +12,25 @@ import { api } from '../../REST';
 import Styles from './styles.m.css';
 
 class Cart extends Component {
+    constructor (props) {
+        super(props);
+        this.state = {
+            cart:      [],
+            products:  {},
+            totalData: {},
+        };
 
-    state = {
-        cart:      [],
-        products:  {},
-        totalData: {},
-    }
-
-    componentDidMount () {
         const { dispatch, sessionId } = this.props;
 
         dispatch('session/id', sessionId);
-        dispatch('cart/get');
-
-        // this._createdCart(sessionId);
     }
 
-    // _createdCart = async (sessionId) => {
+    componentDidMount () {
+        const { dispatch } = this.props;
 
-    //     const cartItems = (await api.cart.newCart(sessionId)).products;
-
-    //     const products = {};
-
-    //     cartItems.forEach((item) => {
-    //         products[item.productId] = item.productId;
-    //     });
-
-    //     /*
-    //     cart = {
-    //         '1949faec-c728-40de-a700-ca5b666ba765': '1949faec-c728-40de-a700-ca5b666ba765',
-    //         '41b1283d-2ad1-4894-b03e-368042e5d301': '41b1283d-2ad1-4894-b03e-368042e5d301'
-    //     }
-    //     */
-
-    //     // const productsInCart = new Set(...productsInCartAll );
-
-    //     const productsResponse = await Promise.all(
-    //         Object.keys(products).map((item) => {
-    //             return api.product.getProductData(item);
-    //         })
-    //     );
-
-    //     productsResponse.forEach((product) => {
-    //         products[product._id] = product;
-    //     });
-
-    //     /*
-    //     cart = {
-    //         '1949faec-c728-40de-a700-ca5b666ba765': {…},
-    //         '41b1283d-2ad1-4894-b03e-368042e5d301': {…}'
-    //     }
-    //     */
-
-    //     const cart = cartItems.map((item) => ({
-    //         ...item,
-    //         ...products[item.productId],
-    //     }));
-
-    //     // eslint-disable-next-line no-debugger
-    //     // debugger;
-
-    //     this.setState({ cart, products });
-
-    // }
+        dispatch('cart/get');
+        // this._createdCart(sessionId);
+    }
 
     _setTotalData = (cartItem) => {
         const { totalData } = this.state;
@@ -159,10 +115,8 @@ class Cart extends Component {
     }
 
     _renderProduct = () => {
-        // const { cart } = this.state;
         const { cart } = this.props;
 
-        console.log('cart', cart);
         const result = cart.length
             ? cart.map((product, index) => {
                 const direction = product.directions.find((dir) => dir._key === product.options.direction) || product.directions[0];
@@ -190,7 +144,6 @@ class Cart extends Component {
             : 'Корзина пуста';
 
         return result;
-
     }
 
     _renderProductPreview = () => {
@@ -231,41 +184,51 @@ class Cart extends Component {
         } = this.props;
 
         return (
-            <>
-                <div className = { Styles.cart }>
-                    <ul className = { Styles.list } >
-                        { this._renderProduct() }
-                    </ul>
-
-                    <div className = { Styles.aside } >
+            this.props.cart
+                ? (<div className = { Styles.cart }>
+                    <ul className = { Styles.list }>{this._renderProduct()}</ul>
+                    <div className = { Styles.aside }>
                         <ul className = { Styles.listPreview }>
                             {/* {this._renderProductPreview()} */}
                         </ul>
                         <div className = { 'cart__user' }>
                             <div>
-                                <label>Ф. И. О.:
-                                    <input name = 'fullName' value = { fullName } onChange = { this._setUserData } />
+                                <label>
+                        Ф. И. О.:
+                                    <input
+                                        name = 'fullName'
+                                        value = { fullName }
+                                        onChange = { this._setUserData }
+                                    />
                                 </label>
                             </div>
                             <div>
-                                <label>Email:
-                                    <input name = 'email' value = { email } onChange = { this._setUserData } />
+                                <label>
+                        Email:
+                                    <input
+                                        name = 'email'
+                                        value = { email }
+                                        onChange = { this._setUserData }
+                                    />
                                 </label>
                             </div>
                             <div>
-                                <label>Телефон:
-                                    <input name = 'phone' value = { phone } onChange = { this._setUserData } />
+                                <label>
+                        Телефон:
+                                    <input
+                                        name = 'phone'
+                                        value = { phone }
+                                        onChange = { this._setUserData }
+                                    />
                                 </label>
                             </div>
-                            <button
-                                type = 'button'
-                                onClick = { this._checkOut }>
-                                Купить
+                            <button type = 'button' onClick = { this._checkOut }>
+                        Купить
                             </button>
                         </div>
                     </div>
-                </div>
-            </>
+                </div>)
+                : 'Загрузка…'
         );
     }
 }

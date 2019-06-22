@@ -1,10 +1,8 @@
 // Instruments
 import { api } from '../REST';
 
-const cart = [];
-
 export default (store) => {
-    store.on('@init', () => ({ cart }));
+    store.on('@init', () => ({ cart: []}));
 
     store.on('cart/get', async () => {
         const sessionId = store.get().session;
@@ -34,7 +32,7 @@ export default (store) => {
         store.dispatch('products/get', products);
     });
 
-    store.on('cart/addState', (newCart) => {
-        return { cart: newCart };
+    store.on('cart/addState', (state, cart) => {
+        return { cart };
     });
 };
