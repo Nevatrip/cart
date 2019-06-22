@@ -4,11 +4,13 @@ import DatePicker, { registerLocale } from 'react-datepicker';
 import ru from 'date-fns/locale/ru';
 import fromUnixTime from 'date-fns/fromUnixTime';
 registerLocale('ru-RU', ru);
+import connect from 'storeon/react/connect';
+
 
 // Styles
 import 'react-datepicker/dist/react-datepicker.css';
 
-export default class Calendar extends Component {
+class Calendar extends Component {
   _changeDate = (date) => {
       const { _selectedDate } = this.props;
 
@@ -42,3 +44,5 @@ export default class Calendar extends Component {
       );
   }
 }
+export default connect('totalData', Calendar);
+

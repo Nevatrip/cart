@@ -19,72 +19,69 @@ class Cart extends Component {
         totalData: {},
     }
     componentDidMount () {
-        const { sessionId } = this.props;
-
-        this._createdCart(sessionId);
-    }
-
-    _createdCart = async (sessionId) => {
-
-        const { dispatch } = this.props;
+        const { dispatch, sessionId } = this.props;
 
         dispatch('cart/get', sessionId);
 
-        const cartItems = (await api.cart.newCart(sessionId)).products;
-
-        const products = {};
-
-        cartItems.forEach((item) => {
-            products[item.productId] = item.productId;
-        });
-
-        /*
-        cart = {
-            '1949faec-c728-40de-a700-ca5b666ba765': '1949faec-c728-40de-a700-ca5b666ba765',
-            '41b1283d-2ad1-4894-b03e-368042e5d301': '41b1283d-2ad1-4894-b03e-368042e5d301'
-        }
-        */
-
-        // const productsInCart = new Set(...productsInCartAll );
-
-        const productsResponse = await Promise.all(
-            Object.keys(products).map((item) => {
-                return api.product.getProductData(item);
-            })
-        );
-
-        productsResponse.forEach((product) => {
-            products[product._id] = product;
-        });
-
-        /*
-        cart = {
-            '1949faec-c728-40de-a700-ca5b666ba765': {…},
-            '41b1283d-2ad1-4894-b03e-368042e5d301': {…}'
-        }
-        */
-
-        const cart = cartItems.map((item) => ({
-            ...item,
-            ...products[item.productId],
-        }));
-
-        // eslint-disable-next-line no-debugger
-        // debugger;
-
-        this.setState({ cart, products });
-        console.log('cart2', cart2);
-
+        // this._createdCart(sessionId);
     }
+
+    // _createdCart = async (sessionId) => {
+
+    //     const cartItems = (await api.cart.newCart(sessionId)).products;
+
+    //     const products = {};
+
+    //     cartItems.forEach((item) => {
+    //         products[item.productId] = item.productId;
+    //     });
+
+    //     /*
+    //     cart = {
+    //         '1949faec-c728-40de-a700-ca5b666ba765': '1949faec-c728-40de-a700-ca5b666ba765',
+    //         '41b1283d-2ad1-4894-b03e-368042e5d301': '41b1283d-2ad1-4894-b03e-368042e5d301'
+    //     }
+    //     */
+
+    //     // const productsInCart = new Set(...productsInCartAll );
+
+    //     const productsResponse = await Promise.all(
+    //         Object.keys(products).map((item) => {
+    //             return api.product.getProductData(item);
+    //         })
+    //     );
+
+    //     productsResponse.forEach((product) => {
+    //         products[product._id] = product;
+    //     });
+
+    //     /*
+    //     cart = {
+    //         '1949faec-c728-40de-a700-ca5b666ba765': {…},
+    //         '41b1283d-2ad1-4894-b03e-368042e5d301': {…}'
+    //     }
+    //     */
+
+    //     const cart = cartItems.map((item) => ({
+    //         ...item,
+    //         ...products[item.productId],
+    //     }));
+
+    //     // eslint-disable-next-line no-debugger
+    //     // debugger;
+
+    //     this.setState({ cart, products });
+
+    // }
     _setTotalData = (cartItem) => {
         const { totalData } = this.state;
 
         totalData[cartItem.productKey] = cartItem;
-
         this.setState({ totalData });
     }
     _updateCartItem = (data) => {
         const { cart, totalData } = this.state;
+        const { dispatch } = this.props;
 
         totalData[data.productKey] = data;
 
@@ -116,6 +113,7 @@ class Cart extends Component {
         api.cart.updateCart(this.props.sessionId, products);
 
         this.setState({ totalData });
+        dispatch('totalData/updateCartItem');
     }
     _checkOut = async () => {
         const { user } = this.state;
@@ -141,20 +139,22 @@ class Cart extends Component {
         dispatch('user/change', user);
     }
     _deleteProduct = (key) => {
-        const totalData = this.state.totalData;
-        const cart = this.state.cart.filter(
-            (product) => product.key !== key
-        );
+        // const totalData = this.state.totalData;
+        // const cart = this.state.cart.filter(
+        //     (product) => product.key !== key
+        // );
 
-        delete totalData[key];
+        // delete totalData[key];
 
-        this.setState({ cart, totalData }, () => {
-            api.cart.deleteItem(this.props.sessionId, key);
-        });
+        // this.setState({ cart, totalData }, () => {
+        //     api.cart.deleteItem(this.props.sessionId, key);
+        // });
+        console.log('del')
     }
 
     _renderProduct = () => {
-        const { cart } = this.state;
+        // const { cart } = this.state;
+        const { cart } = this.props;
 
         const result = cart.length
             ? cart.map((product, index) => {
@@ -262,4 +262,4 @@ class Cart extends Component {
         );
     }
 }
-export default connect('user', 'cart', Cart);
+export default connect('user', 'cart', 'totalData', Cart);

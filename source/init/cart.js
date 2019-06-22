@@ -32,6 +32,7 @@ export default (store) => {
         }));
 
         store.dispatch('cart/addState', createCart);
+        store.dispatch('products/get', products);
 
     });
 

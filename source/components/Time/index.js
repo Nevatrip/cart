@@ -1,16 +1,18 @@
 // Core
 import React, { Component } from 'react';
 import { format } from 'date-fns';
+import connect from 'storeon/react/connect';
 
-export default class Time extends Component {
+class Time extends Component {
 
     _changeTime = (event) => {
-        const { _selectedTime } = this.props;
+        const {dispatch, _selectedTime } = this.props;
 
         const selectTimeKey = event.target.value;
         const selectTime = Number(event.target.dataset.time);
 
         _selectedTime(selectTimeKey, selectTime);
+        dispatch('totalData/updateCartItem');
 
     }
 
@@ -51,3 +53,5 @@ export default class Time extends Component {
         );
     }
 }
+export default connect('totalData', Time);
+

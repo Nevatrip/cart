@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { format } from 'date-fns';
 import fromUnixTime from 'date-fns/fromUnixTime';
+import connect from 'storeon/react/connect';
 
 // Components
 import Calendar from '../Calendar';
@@ -12,7 +13,7 @@ import Tickets from '../Tickets';
 // Instruments
 import { api } from '../../REST';
 
-export default class Product extends Component {
+class Product extends Component {
 
     state = {
         dates:         this.props.dates,
@@ -63,6 +64,7 @@ export default class Product extends Component {
 
     _getTime = async () => {
         const { productId, productKey, _setTotalData, name } = this.props;
+        const { dispatch } =this.props;
         const { cartItem } = this.state;
 
         const date =  format(cartItem.selectDate, 'yyyy-MM-dd', new Date());
@@ -79,6 +81,7 @@ export default class Product extends Component {
         this.setState({ cartItem, times: time }, () => {
             _setTotalData(cartItem);
         });
+        dispatch('totalData/get', cartItem);
 
     }
 
@@ -132,13 +135,16 @@ export default class Product extends Component {
 
     _selectedDate = (date) => {
         const { cartItem } = this.state;
-        const { _updateCartItem } = this.props;
+        console.log('date',cartItem)
+        const { dispatch, _updateCartItem } = this.props;
 
         cartItem.selectDate = date;
         this.setState({ cartItem }, () => {
             this._getTime();
             _updateCartItem(cartItem);
         });
+        dispatch('totalData/updateCartItem');
+
     }
 
     _deleteProduct = () => {
@@ -199,3 +205,4 @@ export default class Product extends Component {
         );
     }
 }
+export default connect('totalData', Product);
