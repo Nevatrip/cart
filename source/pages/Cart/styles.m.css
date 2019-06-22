@@ -1,0 +1,12 @@
+.cart {
+    display: flex;
+}
+.listPreview,
+.list {
+    flex: 1;
+    list-style: none;
+
+}
+.aside {
+    width: 33% 
+}

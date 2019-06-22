@@ -8,6 +8,7 @@ import ProductPreview from '../../components/ProductPreview';
 
 // Instruments
 import { api } from '../../REST';
+import Styles from './styles.m.css';
 
 export default class Cart extends Component {
 
@@ -218,13 +219,13 @@ export default class Cart extends Component {
 
         return (
             <>
-                <div className = { 'cart' } style = { { display: 'flex' } }>
-                    <ul className = { 'cart__list' } style = { { flex: 1, listStyle: 'none' } } >
+                <div className = { Styles.cart }>
+                    <ul className = { Styles.list } >
                         { this._renderProduct() }
                     </ul>
 
-                    <div className = { 'cart__aside' } style = { { width: '33%' } }>
-                        <ul className = { 'cart__list-preview' } style = { { listStyle: 'none' } }>
+                    <div className = { Styles.aside } >
+                        <ul className = { Styles.listPreview }>
                             {this._renderProductPreview()}
                         </ul>
                         <div className = { 'cart__user' }>
