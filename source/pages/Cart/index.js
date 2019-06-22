@@ -155,7 +155,6 @@ class Cart extends Component {
     _renderProduct = () => {
         // const { cart } = this.state;
         const { cart } = this.props;
-        console.log('cart', cart)
         const result = cart.length
             ? cart.map((product, index) => {
                 const direction = product.directions.find((dir) => dir._key === product.options.direction) || product.directions[0];
