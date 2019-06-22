@@ -4,7 +4,7 @@ import fromUnixTime from 'date-fns/fromUnixTime';
 import format from 'date-fns/format';
 
 const ProductPreview = (props) => {
-    const { name, selectDate, selectDirectionTitle, selectTicket, selectTime } = props;
+    const { name, selectDirectionTitle, selectTicket, selectTime } = props;
     const date = format(fromUnixTime(selectTime), 'yyyy-MMMM-dd');
     const time = format(fromUnixTime(selectTime), 'HH-mm');
 
