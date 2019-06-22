@@ -122,12 +122,10 @@ export default class Cart extends Component {
             user,
         };
 
-        console.log('order', order);
-
         const response = await api.order.newOrder(order);
 
         if ((((response || {}).payment || {}).Model || {}).Url) {
-            // window.location.href = response.payment.Model.Url;
+            window.location.href = response.payment.Model.Url;
         }
     }
     _setUserData = (event) => {
@@ -154,7 +152,7 @@ export default class Cart extends Component {
 
         const result = cart.length
             ? cart.map((product, index) => {
-                const direction = product.directions.find((dir) => dir._key === product.options.direction) || product.directions[0];
+                const direction = product.directions.find((dir) => dir._key === (product.options || {}).direction) || product.directions[0];
 
                 return (
                     <li key = { product.key }>
@@ -168,7 +166,7 @@ export default class Cart extends Component {
                             name = { product.title.ru.name }
                             productId = { product._id }
                             productKey = { product.key }
-                            selectDate = { fromUnixTime(product.options.date || direction.dates[0]) }
+                            selectDate = { fromUnixTime((product.options || {}).date || direction.dates[0]) }
                             selectDirection = { direction._key }
                             selectDirectionTitle = { direction.title }
                             tickets = { direction.tickets }
