@@ -136,19 +136,18 @@ class Product extends Component {
 
     }
 
-//     _selectedTime = (selectTimeKey, selectTime) => {
+    //     _selectedTime = (selectTimeKey, selectTime) => {
 
-//         const { cartItem } = this.state;
-//         const { dispatch, _updateCartItem } = this.props;
+    //         const { cartItem } = this.state;
+    //         const { dispatch, _updateCartItem } = this.props;
 
-//         cartItem.selectTime = selectTime;
-//         cartItem.selectTimeKey = selectTimeKey;
-//         // _updateCartItem(cartItem);
-//         // dispatch('totalData/updateCartItem', cartItem);
+    //         cartItem.selectTime = selectTime;
+    //         cartItem.selectTimeKey = selectTimeKey;
+    //         // _updateCartItem(cartItem);
+    //         // dispatch('totalData/updateCartItem', cartItem);
 
-        
-// // _updateCartItem(cartItem);
-//     }
+    // // _updateCartItem(cartItem);
+    //     }
 
     _selectedTicket = (ticket) => {
         const { cartItem } = this.state;
@@ -182,10 +181,15 @@ class Product extends Component {
     }
 
     render () {
-        const { name, productKey } = this.props;
+        const { name, productKey, totalData } = this.props;
         // console.log('store', store.get());
+        const currentItem = totalData[productKey];
 
-        // console.log(this.props.totalData);
+
+        if (currentItem === void 0) {
+            return null;
+        }
+
         const {
             cartItem,
             dates,
@@ -217,7 +221,7 @@ class Product extends Component {
                         />
                 }
                 {
-                    this.state.times &&
+                    this.state.times.length === 0 ? null :
                     <Time
                         _selectedTime = { this._selectedTime }
                         cartItem = { cartItem }

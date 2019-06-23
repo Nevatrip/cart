@@ -26,21 +26,14 @@ class Time extends Component {
 
     render () {
         const { timesAll, cartItem, totalData, productKey } = this.props;
-        console.log(productKey)
 
         if (totalData === {}) {
             return null;
         }
         const currentItem = totalData[productKey];
 
-        if (currentItem === void 0) {
-            return null;
-        }
-
+        
         const renderTimes =  timesAll.map((item, index) => {
-
-            // console.log('totalData.selectTimeKey', currentItem.selectTimeKey);
-            // console.log('item', item._key);
 
             return (
                 <li data-key = { item._key } key = { item._key }>
@@ -48,7 +41,7 @@ class Time extends Component {
                         <input
                             checked = { currentItem.selectTimeKey ? currentItem.selectTimeKey === item._key : index === 0 }
                             data-time = { item.start }
-                            name = { `time-${totalData.productKey}` }
+                            name = { `time-${productKey}` }
                             type = 'radio'
                             value = { item._key }
                             onChange = { this._changeTime }

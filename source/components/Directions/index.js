@@ -39,7 +39,7 @@ class Directions extends Component {
                     data-key = { item._key }
                     data-title = { item.title }
                     key = { item._key }
-                    selected = { item._key === selectDirection }
+                    defaultValue = { item._key === selectDirection }
                     value = { item._key }>
                     {item.title}
                 </option>
