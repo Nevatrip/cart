@@ -115,11 +115,16 @@ class Product extends Component {
             indexItem:            this.props.indexItem,
         };
 
-        // const { dispatch } = this.props;
-        // const { cartItem } = this.state;
+        const timeZoneOffset = selectDate.getTimezoneOffset();
 
+        console.log(selectDate.getMinutes()+timeZoneOffset);
         const date =  format(selectDate, 'yyyy-MM-dd', new Date());
         const time = await api.product.getProductTime(productId, selectDirection, date);
+
+        // const time
+
+        console.log(new Date(selectDate).getTimezoneOffset());
+        console.log(time, selectDirection, date);
 
         const selectTime = time[0].start;
         const selectTimeKey = time[0]._key;
@@ -185,7 +190,6 @@ class Product extends Component {
         // console.log('store', store.get());
         const currentItem = totalData[productKey];
 
-
         if (currentItem === void 0) {
             return null;
         }
@@ -222,7 +226,7 @@ class Product extends Component {
                 }
                 {
                     this.state.times.length === 0 ? null :
-                    <Time
+                        <Time
                         _selectedTime = { this._selectedTime }
                         cartItem = { cartItem }
                         productKey = { productKey }
