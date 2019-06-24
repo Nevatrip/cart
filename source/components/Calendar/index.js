@@ -1,55 +1,52 @@
 // Core
-import React, { Component } from 'react';
+import React from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import ru from 'date-fns/locale/ru';
 import fromUnixTime from 'date-fns/fromUnixTime';
 registerLocale('ru-RU', ru);
-import connect from 'storeon/react/connect';
+import useStoreon from 'storeon/react';
 
 // Styles
 import 'react-datepicker/dist/react-datepicker.css';
 
-class Calendar extends Component {
+export const Calendar = (props) => {
 
-  _changeDate = (date) => {
-      const { dispatch, productKey, totalData } = this.props;
-      const currentItem = totalData[productKey];
+    const { dispatch, totalData } = useStoreon('totalData');
+    const { productKey, dates } = props;
 
-      currentItem.selectDate = date;
+    if (totalData === {}) {
+        return null;
+    }
 
-      dispatch('totalData/updateCart', currentItem);
+    const currentItem = totalData[productKey];
+    const selectDate  = totalData[productKey].selectDate;
 
-  }
+    const _changeDate = (date) => {
 
-  _includeDates = () => {
-      const { dates } = this.props;
-      const result = dates.map((item) => {
-          return fromUnixTime(item);
-      });
+        currentItem.selectDate = date;
 
-      return result;
-  }
+        dispatch('totalData/updateCart', currentItem);
+    };
 
-  render () {
-      const { productKey, totalData } = this.props;
+    const _includeDates = () => {
 
-      if (totalData[productKey] === void 0) {
-          return null;
-      }
-      const selectDate  = totalData[productKey].selectDate;
+        const result = dates.map((item) => {
+            return fromUnixTime(item);
+        });
 
-      return (
-          <label>
+        return result;
+    };
+
+    return (
+        <label>
           Выберите дату
-              <DatePicker
-                  dateFormat = 'dd MMMM yyyy'
-                  includeDates = { this._includeDates() }
-                  locale = 'ru-RU'
-                  selected = { selectDate }
-                  onChange = { this._changeDate }
-              />
-          </label>
-      );
-  }
-}
-export default connect('totalData', Calendar);
+            <DatePicker
+                dateFormat = 'dd MMMM yyyy'
+                includeDates = { _includeDates() }
+                locale = 'ru-RU'
+                selected = { selectDate }
+                onChange = { _changeDate }
+            />
+        </label>
+    );
+};

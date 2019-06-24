@@ -12,9 +12,10 @@ export default (store) => {
         return { totalData };
     });
     store.on('totalData/updateCartItem', async ({ totalData }, data) => {
-        
+
         const cart = store.get().cart;
         const sessionId = store.get().session;
+
         totalData[data.productKey] = data;
 
         const products = cart.map((cartItem) => {

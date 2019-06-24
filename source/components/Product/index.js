@@ -5,7 +5,7 @@ import fromUnixTime from 'date-fns/fromUnixTime';
 import connect from 'storeon/react/connect';
 
 // Components
-import Calendar from '../Calendar';
+import { Calendar } from '../Calendar';
 import Directions from '../Directions';
 import { Time } from '../Time';
 import { Tickets } from '../Tickets';
