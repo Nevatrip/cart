@@ -4,7 +4,7 @@ import fromUnixTime from 'date-fns/fromUnixTime';
 import connect from 'storeon/react/connect';
 
 // Components
-import Product from '../../components/Product';
+import {Product} from '../../components/Product';
 import ProductPreview from '../../components/ProductPreview';
 
 // Instruments
