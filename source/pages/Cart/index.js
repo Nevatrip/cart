@@ -12,16 +12,13 @@ import { api } from '../../REST';
 import Styles from './styles.m.css';
 
 class Cart extends Component {
-    
 
     componentDidMount () {
         const { dispatch, sessionId } = this.props;
-        
-        
+
         dispatch('session/id', sessionId);
         dispatch('cart/get');
     }
-
 
     _checkOut = async () => {
         const { user } = this.props;
