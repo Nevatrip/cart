@@ -7,8 +7,8 @@ import connect from 'storeon/react/connect';
 // Components
 import Calendar from '../Calendar';
 import Directions from '../Directions';
-import Time from '../Time';
-import Tickets from '../Tickets';
+import { Time } from '../Time';
+import { Tickets } from '../Tickets';
 
 // Instruments
 import { api } from '../../REST';

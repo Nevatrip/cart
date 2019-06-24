@@ -1,71 +1,58 @@
 // Core
-import React, { Component } from 'react';
+import React from 'react';
 import { format } from 'date-fns';
-import connect from 'storeon/react/connect';
+import useStoreon from 'storeon/react';
 
-class Time extends Component {
+export const Time = (props) => {
 
-    _changeTime = (event) => {
-        const {
-            _selectedTime,
-            dispatch,
-            productKey,
-            totalData,
-        } = this.props;
+    const { dispatch, totalData } = useStoreon('totalData');
+    const { timesAll, productKey } = props;
 
-        const currentItem = totalData[productKey];
+    if (totalData === {}) {
+        return null;
+    }
+
+    const currentItem = totalData[productKey];
+
+    const _changeTime = (event) => {
 
         currentItem.selectTimeKey = event.target.value;
         currentItem.selectTime = Number(event.target.dataset.time);
 
-        // _selectedTime(selectTimeKey, selectTime);
-        // dispatch('totalData/updateCartItem');
         dispatch('totalData/updateCart', currentItem);
+    };
 
-    }
-
-    render () {
-        const { timesAll, cartItem, totalData, productKey } = this.props;
-
-        if (totalData === {}) {
-            return null;
-        }
-        const currentItem = totalData[productKey];
-
-        
-        const renderTimes =  timesAll.map((item, index) => {
-
-            return (
-                <li data-key = { item._key } key = { item._key }>
-                    <label>
-                        <input
-                            checked = { currentItem.selectTimeKey ? currentItem.selectTimeKey === item._key : index === 0 }
-                            data-time = { item.start }
-                            name = { `time-${productKey}` }
-                            type = 'radio'
-                            value = { item._key }
-                            onChange = { this._changeTime }
-                        />
-                        {format(
-                            new Date(item.startLabel),
-                            'HH:mm',
-                            new Date()
-                        )}
-                    </label>
-                </li>
-            );
-        });
+    const renderTimes =  timesAll.map((item, index) => {
 
         return (
-            <div>
-                Выберите время
-                <ul>
-
-                    {renderTimes}
-                </ul>
-            </div>
-
+            <li data-key = { item._key } key = { item._key }>
+                <label>
+                    <input
+                        checked = { currentItem.selectTimeKey ? currentItem.selectTimeKey === item._key : index === 0 }
+                        data-time = { item.start }
+                        name = { `time-${productKey}` }
+                        type = 'radio'
+                        value = { item._key }
+                        onChange = { _changeTime }
+                    />
+                    {format(
+                        new Date(item.startLabel),
+                        'HH:mm',
+                        new Date()
+                    )}
+                </label>
+            </li>
         );
-    }
-}
-export default connect('totalData', Time);
+    });
+
+    return (
+        <div>
+            Выберите время
+            <ul>
+                {renderTimes}
+            </ul>
+        </div>
+
+    );
+
+};

@@ -1,18 +1,16 @@
 // Core
-import React, { Component } from 'react';
-import connect from 'storeon/react/connect';
+import React from 'react';
+import useStoreon from 'storeon/react';
 
 // Components
 import Counter from '../Counter';
 
-class Tickets extends Component {
+export const Tickets = (props) => {
 
-    _selectedTicket = (ticket) => {
-        const {
-            dispatch,
-            productKey,
-            totalData,
-        } = this.props;
+    const { dispatch, totalData } = useStoreon('totalData');
+    const { productKey, tickets } = props;
+
+    const _selectedTicket = (ticket) => {
 
         const ticketKey = Object.keys(ticket)[0];
         const currentItem = totalData[productKey];
@@ -20,10 +18,9 @@ class Tickets extends Component {
         currentItem.selectTicket[ticketKey] = ticket[ticketKey];
         dispatch('totalData/updateCart', currentItem);
 
-    }
+    };
 
-    _renderTickets = () => {
-        const { tickets } = this.props;
+    const _renderTickets = () => {
 
         const result = tickets.map((item) => {
 
@@ -32,7 +29,7 @@ class Tickets extends Component {
                     <dt>{item.name || '???'}, {item.price} ₽</dt>
                     <dd>
                         <Counter
-                            _selectedTicket = { this._selectedTicket }
+                            _selectedTicket = { _selectedTicket }
                             prise = { item.price }
                             ticketKey = { item._key }
                             typeTicket = { item.name }
@@ -43,15 +40,12 @@ class Tickets extends Component {
         });
 
         return result;
-    }
+    };
 
-    render () {
+    return (
+        <dl>
+            {_renderTickets()}
+        </dl>
+    );
 
-        return (
-            <dl>
-                {this._renderTickets()}
-            </dl>
-        );
-    }
-}
-export default connect('totalData', Tickets);
+};
