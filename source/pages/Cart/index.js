@@ -12,22 +12,24 @@ import { api } from '../../REST';
 import Styles from './styles.m.css';
 
 class Cart extends Component {
-    constructor (props) {
-        super(props);
-        this.state = {
-            cart:      [],
-            products:  {},
-            totalData: {},
-        };
+    // constructor (props) {
+    //     super(props);
+    //     this.state = {
+    //         cart:      [],
+    //         products:  {},
+    //         totalData: {},
+    //     };
 
-        const { dispatch, sessionId } = this.props;
+    //     const { dispatch, sessionId } = this.props;
 
-        dispatch('session/id', sessionId);
-    }
+    //     dispatch('session/id', sessionId);
+    // }
 
     componentDidMount () {
-        const { dispatch } = this.props;
-
+        const { dispatch, sessionId } = this.props;
+        
+        
+        dispatch('session/id', sessionId);
         dispatch('cart/get');
         // this._createdCart(sessionId);
     }

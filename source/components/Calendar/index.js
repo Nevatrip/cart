@@ -23,7 +23,6 @@ class Calendar extends Component {
 
   _includeDates = () => {
       const { dates } = this.props;
-
       const result = dates.map((item) => {
           return fromUnixTime(item);
       });

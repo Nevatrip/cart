@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { format } from 'date-fns';
 import fromUnixTime from 'date-fns/fromUnixTime';
 import connect from 'storeon/react/connect';
-import { store } from '../../init/store';
 
 // Components
 import Calendar from '../Calendar';
@@ -38,8 +37,6 @@ class Product extends Component {
 
         this._getTime();
         this._convertObj();
-        // this._initTimes();
-        // this._initTotalData();
 
     }
 
@@ -67,102 +64,42 @@ class Product extends Component {
         this.setState({ directionsAll: directionsObj });
     }
 
-    _initTimes = () => {
-        const { dispatch, selectDate, selectDirection, productId } = this.props;
-
-        const timeData = {
-            selectDate,
-            selectDirection,
-            productId,
-        };
-
-        dispatch('times/get', timeData, () => {
-            this._initTotalData();
-        });
-        // console.log('this.props.times', this.props.times);
-        // console.log('store', dispatch('times/get', timeData));
-
-    }
-
-    _initTotalData = () => {
-
-        console.log('this.props.times', this.props.times);
-        const itemCart = {
-            selectDirection:      this.props.selectDirection,
-            selectDirectionTitle: this.props.selectDirectionTitle,
-            selectDate:           this.props.selectDate,
-            selectTicket:         {},
-            selectTimeKey:        '',
-            selectTime:           '',
-            productKey:           '',
-            name:                 '',
-            indexItem:            this.props.indexItem,
-        };
-    }
-
     _getTime = async () => {
-        const { dispatch, productId, selectDate, productKey, _setTotalData, name, selectDirection } = this.props;
+        const {
+            dispatch,
+            productId,
+            selectDate,
+            productKey,
+            name,
+            selectDirection,
+            selectDirectionTitle,
+            indexItem,
+        } = this.props;
 
         const cartItem = {
             selectDirection,
-            selectDirectionTitle: this.props.selectDirectionTitle,
+            selectDirectionTitle,
             selectDate,
-            selectTicket:         {},
-            selectTimeKey:        '',
-            selectTime:           '',
-            productKey:           '',
-            name:                 '',
-            indexItem:            this.props.indexItem,
+            selectTicket:  {},
+            selectTimeKey: '',
+            selectTime:    '',
+            productKey,
+            name,
+            indexItem,
         };
 
-        const timeZoneOffset = selectDate.getTimezoneOffset();
-
-        console.log(selectDate.getMinutes()+timeZoneOffset);
         const date =  format(selectDate, 'yyyy-MM-dd', new Date());
         const time = await api.product.getProductTime(productId, selectDirection, date);
-
-        // const time
-
-        console.log(new Date(selectDate).getTimezoneOffset());
-        console.log(time, selectDirection, date);
 
         const selectTime = time[0].start;
         const selectTimeKey = time[0]._key;
 
         cartItem.selectTime = selectTime;
         cartItem.selectTimeKey = selectTimeKey;
-        cartItem.productKey = productKey;
-        cartItem.name = name;
 
         this.setState({ times: time });
         dispatch('totalData/get', cartItem);
 
-        // dispatch('times/addState', time);
-
-    }
-
-    //     _selectedTime = (selectTimeKey, selectTime) => {
-
-    //         const { cartItem } = this.state;
-    //         const { dispatch, _updateCartItem } = this.props;
-
-    //         cartItem.selectTime = selectTime;
-    //         cartItem.selectTimeKey = selectTimeKey;
-    //         // _updateCartItem(cartItem);
-    //         // dispatch('totalData/updateCartItem', cartItem);
-
-    // // _updateCartItem(cartItem);
-    //     }
-
-    _selectedTicket = (ticket) => {
-        const { cartItem } = this.state;
-        const { _updateCartItem } = this.props;
-        const ticketKey = Object.keys(ticket)[0];
-
-        cartItem.selectTicket[ticketKey] = ticket[ticketKey];
-        this.setState({ cartItem }, () => {
-            _updateCartItem(cartItem);
-        });
     }
 
     _changeProductData = (direction) => {
@@ -182,12 +119,11 @@ class Product extends Component {
         const { productKey, _deleteProduct } = this.props;
 
         console.log('productKey', productKey);
-        // _deleteProduct(productKey);
+        _deleteProduct(productKey);
     }
 
     render () {
         const { name, productKey, totalData } = this.props;
-        // console.log('store', store.get());
         const currentItem = totalData[productKey];
 
         if (currentItem === void 0) {
@@ -195,17 +131,11 @@ class Product extends Component {
         }
 
         const {
-            cartItem,
             dates,
             directionsAll,
             times,
             tickets,
-            cartItem: { selectDirection },
         } = this.state;
-
-        // if (cartItem.selectTime === '') {
-        //     return null;
-        // }
 
         return (
             <fieldset>
@@ -225,21 +155,21 @@ class Product extends Component {
                         />
                 }
                 {
-                    this.state.times.length === 0 ? null :
+                    this.state.times.length === 0 ?
+                        null :
                         <Time
-                        _selectedTime = { this._selectedTime }
-                        cartItem = { cartItem }
-                        productKey = { productKey }
-                        timesAll = { times }
-                    />
+                            _selectedTime = { this._selectedTime }
+                            productKey = { productKey }
+                            timesAll = { times }
+                        />
                 }
-                {/* <Tickets
-                    _selectedTicket = { this._selectedTicket }
+                <Tickets
+                    productKey = { productKey }
                     tickets = { tickets }
-                /> */}
+                />
                 <button onClick = { this._deleteProduct } >× Удалить товар</button>
             </fieldset>
         );
     }
 }
-export default connect('cartItem', 'times', 'totalData', Product);
+export default connect('totalData', Product);

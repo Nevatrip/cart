@@ -1,13 +1,29 @@
 // Core
 import React, { Component } from 'react';
+import connect from 'storeon/react/connect';
 
 // Components
 import Counter from '../Counter';
 
-export default class Tickets extends Component {
+class Tickets extends Component {
+
+    _selectedTicket = (ticket) => {
+        const {
+            dispatch,
+            productKey,
+            totalData,
+        } = this.props;
+
+        const ticketKey = Object.keys(ticket)[0];
+        const currentItem = totalData[productKey];
+
+        currentItem.selectTicket[ticketKey] = ticket[ticketKey];
+        dispatch('totalData/updateCart', currentItem);
+
+    }
 
     _renderTickets = () => {
-        const { tickets, _selectedTicket } = this.props;
+        const { tickets } = this.props;
 
         const result = tickets.map((item) => {
 
@@ -16,7 +32,7 @@ export default class Tickets extends Component {
                     <dt>{item.name || '???'}, {item.price} ₽</dt>
                     <dd>
                         <Counter
-                            _selectedTicket = { _selectedTicket }
+                            _selectedTicket = { this._selectedTicket }
                             prise = { item.price }
                             ticketKey = { item._key }
                             typeTicket = { item.name }
@@ -38,3 +54,4 @@ export default class Tickets extends Component {
         );
     }
 }
+export default connect('totalData', Tickets);
