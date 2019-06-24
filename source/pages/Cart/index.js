@@ -12,18 +12,7 @@ import { api } from '../../REST';
 import Styles from './styles.m.css';
 
 class Cart extends Component {
-    // constructor (props) {
-    //     super(props);
-    //     this.state = {
-    //         cart:      [],
-    //         products:  {},
-    //         totalData: {},
-    //     };
-
-    //     const { dispatch, sessionId } = this.props;
-
-    //     dispatch('session/id', sessionId);
-    // }
+    
 
     componentDidMount () {
         const { dispatch, sessionId } = this.props;
@@ -31,54 +20,11 @@ class Cart extends Component {
         
         dispatch('session/id', sessionId);
         dispatch('cart/get');
-        // this._createdCart(sessionId);
     }
 
-    _setTotalData = (cartItem) => {
-        const { totalData } = this.state;
-
-        totalData[cartItem.productKey] = cartItem;
-        this.setState({ totalData });
-    }
-
-    _updateCartItem = (data) => {
-        const { cart, totalData } = this.state;
-
-        totalData[data.productKey] = data;
-
-        const products = cart.map((cartItem) => {
-            const {
-                selectDirection,
-                selectTime,
-                selectTimeKey,
-                selectTicket,
-            } = totalData[cartItem.key];
-
-            const tickets = {};
-
-            Object.values(selectTicket).forEach((ticket) => {
-                tickets[ticket.ticketKey] = ticket.count;
-            });
-
-            return {
-                productId: cartItem._id,
-                options:   {
-                    direction: selectDirection,
-                    date:      selectTime,
-                    time:      selectTimeKey,
-                    tickets,
-                },
-            };
-        });
-
-        api.cart.updateCart(this.props.sessionId, products);
-
-        this.setState({ totalData });
-        // dispatch('totalData/updateCartItem');
-    }
 
     _checkOut = async () => {
-        const { user } = this.state;
+        const { user } = this.props;
 
         const order = {
             sessionId: this.props.sessionId,
@@ -191,7 +137,7 @@ class Cart extends Component {
                     <ul className = { Styles.list }>{this._renderProduct()}</ul>
                     <div className = { Styles.aside }>
                         <ul className = { Styles.listPreview }>
-                            {/* {this._renderProductPreview()} */}
+                            {this._renderProductPreview()}
                         </ul>
                         <div className = { 'cart__user' }>
                             <div>
