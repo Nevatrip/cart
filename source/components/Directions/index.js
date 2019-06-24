@@ -1,18 +1,20 @@
 // Core
-import React, { Component } from 'react';
-import connect from 'storeon/react/connect';
+import React from 'react';
+import useStoreon from 'storeon/react';
 
-class Directions extends Component {
+export const Directions = (props) => {
 
-    _changeDirection = (event) => {
-        const {
-            dispatch,
-            productKey,
-            totalData,
-            _changeProductData,
-        } = this.props;
+    const { dispatch, totalData } = useStoreon('totalData');
+    const { productKey, _changeProductData, directionsAll } = props;
 
-        const currentItem = totalData[productKey];
+    if (totalData === {}) {
+        return null;
+    }
+
+    const currentItem = totalData[productKey];
+    const selectDirection = totalData.selectDirection;
+
+    const _changeDirection = (event) => {
 
         const selectIndex = event.target.options.selectedIndex;
         const titleDirection = event.target.children[selectIndex].dataset.title;
@@ -20,41 +22,30 @@ class Directions extends Component {
         currentItem.selectDirection = event.target.value;
         currentItem.selectDirectionTitle = titleDirection;
 
-
         dispatch('totalData/updateCart', currentItem);
         _changeProductData(event.target.value);
-    }
+    };
 
-    render () {
-        const { directionsAll, totalData } = this.props;
-
-        if (totalData === {}) {
-            return null;
-        }
-        const selectDirection = totalData.selectDirection;
-        const renderDirections =  Object.values(directionsAll).map((item) => {
-
-            return (
-                <option
-                    data-key = { item._key }
-                    data-title = { item.title }
-                    key = { item._key }
-                    defaultValue = { item._key === selectDirection }
-                    value = { item._key }>
-                    {item.title}
-                </option>
-            );
-        });
+    const renderDirections =  Object.values(directionsAll).map((item) => {
 
         return (
-            <label>
-                Выберите направление
-                <select text = 'true' onChange = { this._changeDirection }>
-                    {renderDirections}
-                </select>
-            </label>
-
+            <option
+                data-key = { item._key }
+                data-title = { item.title }
+                defaultValue = { item._key === selectDirection }
+                key = { item._key }
+                value = { item._key }>
+                {item.title}
+            </option>
         );
-    }
-}
-export default connect('totalData', Directions);
+    });
+
+    return (
+        <label>
+            Выберите направление
+            <select text = 'true' onChange = { _changeDirection }>
+                {renderDirections}
+            </select>
+        </label>
+    );
+};
