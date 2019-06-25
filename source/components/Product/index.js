@@ -1,8 +1,6 @@
 // Core
 import React, { useState, useEffect, useMemo } from 'react';
 import { format } from 'date-fns';
-import fromUnixTime from 'date-fns/fromUnixTime';
-import connect from 'storeon/react/connect';
 import useStoreon from 'storeon/react';
 
 // Components
@@ -103,17 +101,14 @@ export const Product = (props) => {
   }, []);
 
   const _changeProductData = (direction) => {
-    // const { directionsAll } = this.state;
 
     const currentDirection = state.directionsAll[direction];
 
-    this._selectedDate(fromUnixTime(currentDirection.dates[0]));
+    state.dates = currentDirection.dates;
+    state.tickets = currentDirection.tickets;
 
     return (
-      _setState({
-        dates:   currentDirection.dates,
-        tickets: currentDirection.tickets,
-      })
+      _setState(state)
     );
   };
 
@@ -145,7 +140,6 @@ export const Product = (props) => {
         state.times.length === 0 ?
           null :
           <Time
-            // _selectedTime = { _selectedTime }
             productKey = { productKey }
             timesAll = { state.times }
           />
@@ -157,5 +151,4 @@ export const Product = (props) => {
       <button onClick = { _deleteProductCart } >× Удалить товар</button>
     </fieldset>
   );
-
 };
