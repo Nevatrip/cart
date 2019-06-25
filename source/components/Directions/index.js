@@ -1,6 +1,7 @@
 // Core
 import React from 'react';
 import useStoreon from 'storeon/react';
+import fromUnixTime from 'date-fns/fromUnixTime';
 
 export const Directions = (props) => {
 
@@ -19,9 +20,14 @@ export const Directions = (props) => {
     const selectIndex = event.target.options.selectedIndex;
     const titleDirection = event.target.children[selectIndex].dataset.title;
 
+    const currentDirection = directionsAll[event.target.value];
+
+    // console.log('currentDirection', currentDirection.dates[0]);
+
     currentItem.selectDirection = event.target.value;
     currentItem.selectDirectionTitle = titleDirection;
-
+    currentItem.selectDate = fromUnixTime(currentDirection.dates[0]);
+    console.log('test',currentItem.selectDate)
     dispatch('totalData/updateCart', currentItem);
     _changeProductData(event.target.value);
   };
