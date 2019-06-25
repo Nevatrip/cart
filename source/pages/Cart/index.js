@@ -103,6 +103,7 @@ class Cart extends Component {
     );
 
     return resultArray.map((cartItem) => {
+      // console.log('cartItem.selectTime',cartItem.selectTime)
       return (
         <li key = { cartItem.productKey }>
           <ProductPreview

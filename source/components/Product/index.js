@@ -30,12 +30,6 @@ export const Product = (props) => {
     _deleteProduct,
   } = props;
 
-  // const currentItem = totalData[productKey];
-
-  // if (currentItem === void 0) {
-  //     return null;
-  // }
-
   const initialState = {
     dates,
     tickets,
