@@ -65,8 +65,6 @@ class Cart extends Component {
             directions.find((dir) => dir._key === options.direction) ||
             directions[0];
 
-        console.log(options.date, direction.dates[0]);
-
         return (
           <li key = { key }>
             <Product
@@ -84,6 +82,7 @@ class Cart extends Component {
                   ? options.date
                   : direction.dates[0]
               ) }
+              
               selectDirection = { direction._key }
               selectDirectionTitle = { direction.title }
               tickets = { direction.tickets }
@@ -128,9 +127,9 @@ class Cart extends Component {
       <div className = { Styles.cart }>
         <ul className = { Styles.list }>{this._renderProduct()}</ul>
         <div className = { Styles.aside }>
-          {/*
+          
           <ul className = { Styles.listPreview }>{this._renderProductPreview()}</ul>
-          */}
+         
           <div className = { 'cart__user' }>
             <div>
               <label>
