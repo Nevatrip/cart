@@ -9,37 +9,37 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import StylishReporter from 'webpack-stylish';
 
 export const initializeEnvVariables = (variables) => ({
-    plugins: [new DefinePlugin(variables)],
+  plugins: [new DefinePlugin(variables)],
 });
 
 export const setupContextReplacement = () => ({
-    plugins: [new ContextReplacementPlugin(/moment\/locale$/, /ru/)],
+  plugins: [new ContextReplacementPlugin(/moment\/locale$/, /ru/)],
 });
 
 export const setupHotModuleReplacement = () => ({
-    plugins: [new HotModuleReplacementPlugin()],
+  plugins: [new HotModuleReplacementPlugin()],
 });
 
 export const setupBuildAnalysis = () => ({
-    plugins: [
-        new BundleAnalyzerPlugin({
-            analyzerMode:      'disabled',
-            generateStatsFile: true,
-            statsFilename:     'build-stats.json',
-            openAnalyzer:      false,
-        })
-    ],
+  plugins: [
+    new BundleAnalyzerPlugin({
+      analyzerMode:      'disabled',
+      generateStatsFile: true,
+      statsFilename:     'build-stats.json',
+      openAnalyzer:      false,
+    })
+  ],
 });
 
 export const cleanBuildDirectory = () => ({
-    plugins: [
-        new CleanWebpackPlugin(build, {
-            allowExternal: true,
-        })
-    ],
+  plugins: [
+    new CleanWebpackPlugin(build, {
+      allowExternal: true,
+    })
+  ],
 });
 
 export const setupStyledReporting = () => ({
-    stats:   'none',
-    plugins: [new StylishReporter()],
+  stats:   'none',
+  plugins: [new StylishReporter()],
 });

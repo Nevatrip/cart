@@ -8,13 +8,13 @@ import { store } from './init/store';
 
 export default class App extends Component {
 
-    render () {
-        return (
-            <>
-                <StoreContext.Provider value = { store }>
-                    <Cart sessionId = { this.props.sessionId } />
-                </StoreContext.Provider>
-            </>
-        );
-    }
+  render () {
+    return (
+      <>
+        <StoreContext.Provider value = { store }>
+          <Cart sessionId = { this.props.sessionId } />
+        </StoreContext.Provider>
+      </>
+    );
+  }
 }

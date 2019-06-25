@@ -1,15 +1,15 @@
-const user = {
-    fullName: '',
-    email:    '',
-    phone:    '',
-};
-
 export default (store) => {
-    store.on('@init', () => ({ user }));
+  store.on('@init', () => ({
+    user: {
+      fullName: '',
+      email:    '',
+      phone:    '',
+    },
+  }));
 
-    store.on('user/change', ({ user }, newUserData) => {
-        user[newUserData];
+  store.on('user/change', ({ user }, newUserData) => {
+    user[newUserData];
 
-        return { user };
-    });
+    return { user };
+  });
 };

@@ -8,12 +8,12 @@ import session from './session';
 import user from './user';
 
 export const store = createStore(
-    [
-        cart,
-        products,
-        totalData,
-        session,
-        user,
-        process.env.NODE_ENV !== 'production' && require('storeon/devtools')
-    ]
+  [
+    cart,
+    products,
+    totalData,
+    session,
+    user,
+    process.env.NODE_ENV !== 'production' && require('storeon/devtools')
+  ]
 );

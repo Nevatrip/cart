@@ -8,6 +8,6 @@ import './theme/init.css';
 import App from './App';
 
 render(
-    <App sessionId = 'test-test-test' />,
-    document.getElementById('app')
+  <App sessionId = 'test-test-test' />,
+  document.getElementById('app')
 );

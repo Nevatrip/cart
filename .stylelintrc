@@ -6,4 +6,4 @@ ignoreFiles:
 - coverage/
 
 rules:
-    indentation: 4
+  indentation: 2

@@ -10,43 +10,36 @@ import useStoreon from 'storeon/react';
 import 'react-datepicker/dist/react-datepicker.css';
 
 export const Calendar = (props) => {
+  const { dispatch, totalData } = useStoreon('totalData');
+  const { productKey, dates } = props;
 
-    const { dispatch, totalData } = useStoreon('totalData');
-    const { productKey, dates } = props;
+  if (totalData === {}) {
+    return null;
+  }
 
-    if (totalData === {}) {
-        return null;
-    }
+  const currentItem = totalData[productKey];
+  const selectDate  = totalData[productKey].selectDate;
 
-    const currentItem = totalData[productKey];
-    const selectDate  = totalData[productKey].selectDate;
+  const _changeDate = (date) => {
+    currentItem.selectDate = date;
 
-    const _changeDate = (date) => {
+    dispatch('totalData/updateCart', currentItem);
+  };
 
-        currentItem.selectDate = date;
+  const _includeDates = () => {
+    return dates.map((item) => fromUnixTime(item));
+  };
 
-        dispatch('totalData/updateCart', currentItem);
-    };
-
-    const _includeDates = () => {
-
-        const result = dates.map((item) => {
-            return fromUnixTime(item);
-        });
-
-        return result;
-    };
-
-    return (
-        <label>
-          Выберите дату
-            <DatePicker
-                dateFormat = 'dd MMMM yyyy'
-                includeDates = { _includeDates() }
-                locale = 'ru-RU'
-                selected = { selectDate }
-                onChange = { _changeDate }
-            />
-        </label>
-    );
+  return (
+    <label>
+      Выберите дату
+      <DatePicker
+        dateFormat = 'dd MMMM yyyy'
+        includeDates = { _includeDates() }
+        locale = 'ru-RU'
+        selected = { selectDate }
+        onChange = { _changeDate }
+      />
+    </label>
+  );
 };

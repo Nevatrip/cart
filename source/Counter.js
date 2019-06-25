@@ -4,15 +4,15 @@ import React, { Component } from 'react';
 import connect from 'storeon/react/connect';
 
 class Counter extends Component {
-    render () {
-        const { dispatch, count } = this.props;
+  render () {
+    const { dispatch, count } = this.props;
 
-        return (
-            <button onClick = { () => dispatch('inc') }>
-                {count}
-            </button>
-        );
-    }
+    return (
+      <button onClick = { () => dispatch('inc') }>
+        {count}
+      </button>
+    );
+  }
 
 }
 
@@ -27,7 +27,6 @@ export default connect('count', Counter);
 //             {count}
 //         </button>
 //     );
-
 
 // };
 

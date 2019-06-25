@@ -7,45 +7,45 @@ import Counter from '../Counter';
 
 export const Tickets = (props) => {
 
-    const { dispatch, totalData } = useStoreon('totalData');
-    const { productKey, tickets } = props;
+  const { dispatch, totalData } = useStoreon('totalData');
+  const { productKey, tickets } = props;
 
-    const _selectedTicket = (ticket) => {
+  const _selectedTicket = (ticket) => {
 
-        const ticketKey = Object.keys(ticket)[0];
-        const currentItem = totalData[productKey];
+    const ticketKey = Object.keys(ticket)[0];
+    const currentItem = totalData[productKey];
 
-        currentItem.selectTicket[ticketKey] = ticket[ticketKey];
-        dispatch('totalData/updateCart', currentItem);
+    currentItem.selectTicket[ticketKey] = ticket[ticketKey];
+    dispatch('totalData/updateCart', currentItem);
 
-    };
+  };
 
-    const _renderTickets = () => {
+  const _renderTickets = () => {
 
-        const result = tickets.map((item) => {
+    const result = tickets.map((item) => {
 
-            return (
-                <div key = { item._key } style = { { display: 'flex' } } >
-                    <dt>{item.name || '???'}, {item.price} ₽</dt>
-                    <dd>
-                        <Counter
-                            _selectedTicket = { _selectedTicket }
-                            prise = { item.price }
-                            ticketKey = { item._key }
-                            typeTicket = { item.name }
-                        />
-                    </dd>
-                </div>
-            );
-        });
+      return (
+        <div key = { item._key } style = { { display: 'flex' } } >
+          <dt>{item.name || '???'}, {item.price} ₽</dt>
+          <dd>
+            <Counter
+              _selectedTicket = { _selectedTicket }
+              prise = { item.price }
+              ticketKey = { item._key }
+              typeTicket = { item.name }
+            />
+          </dd>
+        </div>
+      );
+    });
 
-        return result;
-    };
+    return result;
+  };
 
-    return (
-        <dl>
-            {_renderTickets()}
-        </dl>
-    );
+  return (
+    <dl>
+      {_renderTickets()}
+    </dl>
+  );
 
 };
