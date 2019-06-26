@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import StoreContext from 'storeon/react/context';
 //Pages
-import Cart from './pages/Cart';
+import { Cart } from './pages/Cart';
 
 import { store } from './init/store';
 

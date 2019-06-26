@@ -1,51 +1,53 @@
 // Core
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import fromUnixTime from 'date-fns/fromUnixTime';
-import connect from 'storeon/react/connect';
+import useStoreon from 'storeon/react';
 
 // Components
 import { Product } from '../../components/Product';
-import ProductPreview from '../../components/ProductPreview';
+import { ProductPreview } from '../../components/ProductPreview';
 
 // Instruments
 import { api } from '../../REST';
 import Styles from './styles.m.css';
 
-class Cart extends Component {
-  componentDidMount () {
-    const { dispatch, sessionId } = this.props;
+export const Cart = (props) => {
+  const { dispatch, user, cart, totalData } = useStoreon('user', 'cart', 'totalData', 'session');
+  const { sessionId } = props;
+  const { fullName, email, phone } = user;
+
+  useEffect(() => {
 
     dispatch('session/id', sessionId);
     dispatch('cart/get');
-  }
 
-  _checkOut = async () => {
-    const { user } = this.props;
+  }, []);
 
-    const order = {
-      sessionId: this.props.sessionId,
-      user,
-    };
-
-    console.log('order', order);
-
-    const response = await api.order.newOrder(order);
-
-    if ((((response || {}).payment || {}).Model || {}).Url) {
-      // window.location.href = response.payment.Model.Url;
-    }
-  };
-
-  _setUserData = (event) => {
-    const { dispatch, user } = this.props;
+  const _setUserData = (event) => {
 
     user[event.target.name] = event.target.value;
 
     dispatch('user/change', user);
   };
+  const _checkOut = async () => {
 
-  _renderProduct = () => {
-    const { cart } = this.props;
+    const order = {
+      sessionId,
+      user,
+      totalData,
+    };
+
+    console.log('order', order);
+
+    const response = await api.order.newOrder(order);
+    console.log('response', response);
+
+    // if ((((response || {}).payment || {}).Model || {}).Url) {
+    //   // window.location.href = response.payment.Model.Url;
+    // }
+  };
+
+  const _renderProduct = () => {
 
     const result = cart.length
       ? cart.map(({ _id, key, title, directions, options }, index) => {
@@ -56,9 +58,6 @@ class Cart extends Component {
         return (
           <li key = { key }>
             <Product
-              _deleteProduct = { this._deleteProduct }
-              _setTotalData = { this._setTotalData }
-              _updateCartItem = { this._updateCartItem }
               dates = { direction.dates }
               directionsAll = { directions }
               indexItem = { index }
@@ -70,7 +69,6 @@ class Cart extends Component {
                   ? options.date
                   : direction.dates[0]
               ) }
-
               selectDirection = { direction._key }
               selectDirectionTitle = { direction.title }
               tickets = { direction.tickets }
@@ -82,16 +80,13 @@ class Cart extends Component {
 
     return result;
   };
-
-  _renderProductPreview = () => {
-    const { totalData } = this.props;
+  const _renderProductPreview = () => {
 
     const resultArray = Object.values(totalData).sort((a, b) =>
       a.indexItem > b.indexItem ? 1 : -1
     );
 
     return resultArray.map((cartItem) => {
-      // console.log('cartItem.selectTime',cartItem.selectTime)
       return (
         <li key = { cartItem.productKey }>
           <ProductPreview
@@ -107,64 +102,48 @@ class Cart extends Component {
     });
   };
 
-  render () {
-    const {
-      user: { fullName, email, phone },
-    } = this.props;
-
-    return this.props.cart ? (
-      <div className = { Styles.cart }>
-        <ul className = { Styles.list }>{this._renderProduct()}</ul>
-        <div className = { Styles.aside }>
-
-          <ul className = { Styles.listPreview }>{this._renderProductPreview()}</ul>
-
-          <div className = { 'cart__user' }>
-            <div>
-              <label>
-                Ф. И. О.:
-                <input
-                  name = 'fullName'
-                  value = { fullName }
-                  onChange = { this._setUserData }
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                Email:
-                <input
-                  name = 'email'
-                  value = { email }
-                  onChange = { this._setUserData }
-                />
-              </label>
-            </div>
-            <div>
-              <label>
-                Телефон:
-                <input
-                  name = 'phone'
-                  value = { phone }
-                  onChange = { this._setUserData }
-                />
-              </label>
-            </div>
-            <button type = 'button' onClick = { this._checkOut }>
-              Купить
-            </button>
+  return cart ? (
+    <div className = { Styles.cart }>
+      <ul className = { Styles.list }>{_renderProduct()}</ul>
+      <div className = { Styles.aside }>
+        <ul className = { Styles.listPreview }>{_renderProductPreview()}</ul>
+        <div className = { 'cart__user' }>
+          <div>
+            <label>
+                    Ф. И. О.:
+              <input
+                name = 'fullName'
+                value = { fullName }
+                onChange = { _setUserData }
+              />
+            </label>
           </div>
+          <div>
+            <label>
+                    Email:
+              <input
+                name = 'email'
+                value = { email }
+                onChange = { _setUserData }
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+                    Телефон:
+              <input
+                name = 'phone'
+                value = { phone }
+                onChange = { _setUserData }
+              />
+            </label>
+          </div>
+          <button type = 'button' onClick = { _checkOut }>
+                  Купить
+          </button>
         </div>
       </div>
-    ) :
-      'Загрузка…'
-    ;
-  }
-}
-export default connect(
-  'user',
-  'cart',
-  'totalData',
-  'session',
-  Cart
-);
+    </div>
+  ) :
+    'Загрузка…';
+};

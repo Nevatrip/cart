@@ -3,7 +3,7 @@ import React from 'react';
 import fromUnixTime from 'date-fns/fromUnixTime';
 import format from 'date-fns/format';
 
-const ProductPreview = (props) => {
+export const ProductPreview = (props) => {
   const { name, selectDirectionTitle, selectTicket, selectTime, selectDate } = props;
 
   const date = format(selectDate, 'yyyy-MMMM-dd');
@@ -40,5 +40,3 @@ const ProductPreview = (props) => {
     </>
   );
 };
-
-export default ProductPreview;

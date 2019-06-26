@@ -20,7 +20,7 @@ export const api = {
       return result;
     },
     async deleteItem (sessionId, key) {
-      const response = await fetch(
+      await fetch(
         `${MAIN_URL}/shoppingCarts/${sessionId}/products/${key}`,
         {
           method:  'DELETE',
