@@ -97,7 +97,6 @@ export const Product = (props) => {
   const _changeProductData = (direction) => {
 
     const currentDirection = state.directionsAll[direction];
-
     state.dates = currentDirection.dates;
     state.tickets = currentDirection.tickets;
 

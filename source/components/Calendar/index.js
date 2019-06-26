@@ -13,13 +13,12 @@ export const Calendar = (props) => {
   const { dispatch, totalData } = useStoreon('totalData');
   const { productKey, dates } = props;
 
-  
   const currentItem = totalData[productKey];
 
   if (currentItem === void 0) {
     return null;
   }
-console.log('currentItem.selectDate', currentItem.selectDate)
+
   const _changeDate = (date) => {
     currentItem.selectDate = date;
 
