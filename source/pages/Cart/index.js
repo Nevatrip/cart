@@ -52,7 +52,7 @@ export const Cart = (props) => {
     const result = cart.length
       ? cart.map(({ _id, key, title, directions, options }, index) => {
         const direction =
-            directions.find((dir) => dir._key === options.direction) ||
+            directions.find((dir) => dir._key === (options || {}).direction) ||
             directions[0];
 
         return (
@@ -65,7 +65,7 @@ export const Cart = (props) => {
               productId = { _id }
               productKey = { key }
               selectDate = { fromUnixTime(
-                options.date && options.date > direction.dates[0]
+                options && options.date > direction.dates[0]
                   ? options.date
                   : direction.dates[0]
               ) }
