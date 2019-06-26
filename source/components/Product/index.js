@@ -27,7 +27,6 @@ export const Product = (props) => {
     directionsAll,
     dates,
     tickets,
-    _deleteProduct,
   } = props;
 
   const initialState = {
@@ -107,12 +106,8 @@ export const Product = (props) => {
   };
 
   const _deleteProductCart = () => {
-    // const { productKey, _deleteProduct } = this.props;
-
-    // console.log('productKey', productKey);
+    
     dispatch('cart/delItem', productKey);
-
-    // _deleteProduct(productKey);
   };
 
   return (
