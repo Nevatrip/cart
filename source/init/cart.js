@@ -20,7 +20,12 @@ export default (store) => {
     );
 
     productsResponse.forEach((product) => {
+
       products[product._id] = product;
+    });
+
+    cartItems.forEach((item) => {
+      products[item.productId].key = item.key;
     });
 
     const createCart = await cartItems.map((item) => ({
@@ -40,11 +45,20 @@ export default (store) => {
   store.on('cart/delItem', async ({ cart }, productKey) => {
 
     const sessionId = store.get().session;
+    const products = store.get().products;
 
     await api.cart.deleteItem(sessionId, productKey);
+
+    for (const key in products) {
+      if (products[key].key === productKey) {
+        delete products[key];
+      }
+    }
 
     const cartUpdate = cart.filter((product) => product.key !== productKey);
 
     store.dispatch('cart/addState', cartUpdate);
+    store.dispatch('products/get', products);
+
   });
 };

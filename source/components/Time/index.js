@@ -8,9 +8,7 @@ export const Time = (props) => {
   const { dispatch, totalData } = useStoreon('totalData');
   const { timesAll, productKey } = props;
 
-  // console.log('productKey', productKey);
-  // console.log('timesAll', timesAll);
-
+  
   if (totalData === {}) {
     return null;
   }
@@ -29,7 +27,6 @@ export const Time = (props) => {
   };
 
   const renderTimes =  timesAll.map((item, index) => {
-    // console.log('item', item)
     return (
       <li data-key = { item._key } key = { item._key }>
         <label>

@@ -90,7 +90,6 @@ export const Product = (props) => {
   useEffect(() => {
     _convertObj();
     _getTime();
-
   }, []);
 
   const _changeProductData = (direction) => {
@@ -106,7 +105,6 @@ export const Product = (props) => {
   };
 
   const _deleteProductCart = () => {
-    
     dispatch('cart/delItem', productKey);
   };
 
