@@ -5,7 +5,7 @@ export default (store) => {
   store.on('@init', () => ({ totalData: {} }));
 
   store.on('totalData/get', ({ totalData }, data) => ({ totalData: data }));
-  
+
   // store.on('totalData/updateCartItem', async ({ totalData }, data) => {
 
   //   const cart = store.get().cart;
@@ -48,5 +48,8 @@ export default (store) => {
 
     return { totalData };
   });
+  
+
+  
 
 };

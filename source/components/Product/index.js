@@ -14,7 +14,7 @@ import { api } from '../../REST';
 
 export const Product = (props) => {
 
-  const { dispatch, totalData } = useStoreon('totalData');
+  const { dispatch, totalData } = useStoreon('totalData', 'cart');
 
   const {
     productId,
@@ -97,6 +97,7 @@ export const Product = (props) => {
   const _changeProductData = (direction) => {
 
     const currentDirection = state.directionsAll[direction];
+
     state.dates = currentDirection.dates;
     state.tickets = currentDirection.tickets;
 
@@ -108,8 +109,10 @@ export const Product = (props) => {
   const _deleteProductCart = () => {
     // const { productKey, _deleteProduct } = this.props;
 
-    console.log('productKey', productKey);
-    _deleteProduct(productKey);
+    // console.log('productKey', productKey);
+    dispatch('cart/delItem', productKey);
+
+    // _deleteProduct(productKey);
   };
 
   return (

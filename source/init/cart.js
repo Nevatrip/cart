@@ -35,4 +35,15 @@ export default (store) => {
   store.on('cart/addState', (state, cart) => {
     return { cart };
   });
+
+  store.on('cart/delItem', async ({ cart }, productKey) => {
+
+    const sessionId = store.get().session;
+
+    await api.cart.deleteItem(sessionId, productKey);
+
+    const cartUpdate = cart.filter((product) => product.key !== productKey);
+
+    store.dispatch('cart/addState', cartUpdate);
+  });
 };

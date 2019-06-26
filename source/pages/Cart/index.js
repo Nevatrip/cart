@@ -44,18 +44,6 @@ class Cart extends Component {
     dispatch('user/change', user);
   };
 
-  _deleteProduct = (key) => {
-    // return key;
-    const totalData = this.state.totalData;
-    const cart = this.state.cart.filter((product) => product.key !== key);
-
-    delete totalData[key];
-
-    this.setState({ cart, totalData }, () => {
-      api.cart.deleteItem(this.props.sessionId, key);
-    });
-  };
-
   _renderProduct = () => {
     const { cart } = this.props;
 
@@ -82,7 +70,7 @@ class Cart extends Component {
                   ? options.date
                   : direction.dates[0]
               ) }
-              
+
               selectDirection = { direction._key }
               selectDirectionTitle = { direction.title }
               tickets = { direction.tickets }
@@ -128,9 +116,9 @@ class Cart extends Component {
       <div className = { Styles.cart }>
         <ul className = { Styles.list }>{this._renderProduct()}</ul>
         <div className = { Styles.aside }>
-          
+
           <ul className = { Styles.listPreview }>{this._renderProductPreview()}</ul>
-         
+
           <div className = { 'cart__user' }>
             <div>
               <label>

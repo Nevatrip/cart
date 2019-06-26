@@ -31,9 +31,9 @@ export const api = {
         }
       );
 
-      const result = await response.json();
+      // const result = await response.json();
 
-      return result;
+      // return result;
     },
     async updateCart (sessionId, products) {
       await fetch(
