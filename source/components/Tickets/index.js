@@ -6,18 +6,20 @@ import useStoreon from 'storeon/react';
 import Counter from '../Counter';
 
 export const Tickets = (props) => {
-
   const { dispatch, totalData } = useStoreon('totalData');
   const { productKey, tickets } = props;
 
   const _selectedTicket = (ticket) => {
-
     const ticketKey = Object.keys(ticket)[0];
     const currentItem = totalData[productKey];
+    const ticketObject = ticket[ticketKey];
 
-    currentItem.selectTicket[ticketKey] = ticket[ticketKey];
+    if (ticketObject.count > 0) {
+      currentItem.selectTicket[ticketKey] = ticket[ticketKey];
+    } else {
+      delete currentItem.selectTicket[ticketKey];
+    }
     dispatch('totalData/updateCart', currentItem);
-
   };
 
   const _renderTickets = () => {
