@@ -3,6 +3,7 @@ import React from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import ru from 'date-fns/locale/ru';
 import fromUnixTime from 'date-fns/fromUnixTime';
+import format from 'date-fns/format';
 registerLocale('ru-RU', ru);
 import useStoreon from 'storeon/react';
 
@@ -29,10 +30,14 @@ export const Calendar = (props) => {
     return dates.map((item) => fromUnixTime(item));
   };
 
+  const date = format(currentItem.selectDate, 'dd MMMM yyyy', { locale: ru });
+
   return (
     <label>
       Выберите дату
+      <input type = 'text' value = { date } />
       <DatePicker
+        inline
         dateFormat = 'dd MMMM yyyy'
         includeDates = { _includeDates() }
         locale = 'ru-RU'

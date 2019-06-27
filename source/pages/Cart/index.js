@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import fromUnixTime from 'date-fns/fromUnixTime';
 import useStoreon from 'storeon/react';
-import { store } from '../../init/store';
 
 // Components
 import { Product } from '../../components/Product';
@@ -10,7 +9,6 @@ import { ProductPreview } from '../../components/ProductPreview';
 import Catcher from '../../components/Catcher';
 
 // Instruments
-import { api } from '../../REST';
 import Styles from './styles.m.css';
 
 export const Cart = (props) => {
