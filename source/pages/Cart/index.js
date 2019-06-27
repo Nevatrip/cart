@@ -47,8 +47,8 @@ export const Cart = (props) => {
     const result = cart.length
       ? cart.map(({ _id, key, title, directions, options }, index) => {
         const direction =
-            directions.find((dir) => dir._key === (options || {}).direction) ||
-            directions[0];
+            (directions.find((dir) => dir._key === (options || {}).direction) ||
+            directions)[0];
 
         return (
           <li key = { key }>
