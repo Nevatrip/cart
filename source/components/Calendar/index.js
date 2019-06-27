@@ -9,7 +9,7 @@ import useStoreon from 'storeon/react';
 
 // Styles
 import 'react-datepicker/dist/react-datepicker.css';
-
+import Styles from './styles';
 export const Calendar = (props) => {
   const { dispatch, totalData } = useStoreon('totalData');
   const { productKey, dates } = props;
@@ -33,21 +33,26 @@ export const Calendar = (props) => {
   const date = format(currentItem.selectDate, 'dd MMMM yyyy', { locale: ru });
 
   return (
-    <label>
+    <>
+      <label>
       Выберите дату
-      <input
-        readOnly
-        type = 'text'
-        value = { date }
-      />
-      <DatePicker
-        inline
-        dateFormat = 'dd MMMM yyyy'
-        includeDates = { _includeDates() }
-        locale = 'ru-RU'
-        selected = { currentItem.selectDate }
-        onChange = { _changeDate }
-      />
-    </label>
+        <input
+          readOnly
+          type = 'text'
+          value = { date }
+        />
+      </label>
+      <div className = { Styles.calendarWrapper }>
+        <DatePicker
+          inline
+          calendarClassName = { Styles.calendar }
+          dateFormat = 'dd MMMM yyyy'
+          includeDates = { _includeDates() }
+          locale = 'ru-RU'
+          selected = { currentItem.selectDate }
+          onChange = { _changeDate }
+        />
+      </div>
+    </>
   );
 };

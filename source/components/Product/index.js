@@ -12,6 +12,7 @@ import { Tickets } from '../Tickets';
 // Instruments
 import { api } from '../../REST';
 import { getActualTime } from '../../instruments/helpers';
+import Styles from './styles.m.css';
 
 export const Product = (props) => {
 
@@ -110,33 +111,36 @@ export const Product = (props) => {
   return (
     <fieldset>
       <legend>{ name }</legend>
-      <Calendar
-        dates = { state.dates }
-        productKey = { productKey }
-      />
-      <br />
-      {
-        Object.values(state.directionsAll).length <= 1 ? // Проверка на количество направлений экскурсии //
-          null :
-          <Directions
-            _changeProductData = { _changeProductData }
-            directionsAll = { state.directionsAll }
-            productKey = { productKey }
-          />
-      }
-      {
-        state.times.length === 0 ?
-          null :
-          <Time
-            productKey = { productKey }
-            timesAll = { state.times }
-          />
-      }
-      <Tickets
-        productKey = { productKey }
-        tickets = { state.tickets }
-      />
-      <button onClick = { _deleteProductCart } >× Удалить товар</button>
+      <div className = { Styles.productWrapper } >
+
+        <Calendar
+          dates = { state.dates }
+          productKey = { productKey }
+        />
+        <br />
+        {
+          Object.values(state.directionsAll).length <= 1 ? // Проверка на количество направлений экскурсии //
+            null :
+            <Directions
+              _changeProductData = { _changeProductData }
+              directionsAll = { state.directionsAll }
+              productKey = { productKey }
+            />
+        }
+        {
+          state.times.length === 0 ?
+            null :
+            <Time
+              productKey = { productKey }
+              timesAll = { state.times }
+            />
+        }
+        <Tickets
+          productKey = { productKey }
+          tickets = { state.tickets }
+        />
+        <button onClick = { _deleteProductCart } >× Удалить товар</button>
+      </div>
     </fieldset>
   );
 };

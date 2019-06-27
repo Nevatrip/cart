@@ -56,7 +56,7 @@ export const Cart = (props) => {
 
         return (
           <Catcher key = { key }>
-            <li >
+            <li className = { Styles.product }>
               <Product
                 dates = { direction.dates }
                 directionsAll = { directions }

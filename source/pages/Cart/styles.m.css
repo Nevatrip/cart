@@ -1,12 +1,15 @@
 .cart {
-    display: flex;
+  display: flex;
 }
 .listPreview,
 .list {
-    flex: 1;
-    list-style: none;
+  flex: 1;
+  list-style: none;
 
 }
 .aside {
-    width: 33% 
+  width: 33% 
+}
+.product{
+  width: 500px;
 }
