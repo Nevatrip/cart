@@ -106,7 +106,20 @@ export const Product = (props) => {
 
   const _deleteProductCart = () => {
     dispatch('cart/delItem', productKey);
+    console.log(state);
+
+    // return (
+    //   _setState({})
+    // );
   };
+  useEffect(() => {
+    const clicked = () => console.log('click');
+    window.addEventListener('click', clicked);
+
+    return () => {
+      window.removeEventListener('click', clicked)
+    }
+ }, [])
 
   return (
     <fieldset>

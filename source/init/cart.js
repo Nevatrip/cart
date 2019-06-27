@@ -1,5 +1,6 @@
 // Instruments
 import { api } from '../REST';
+import { async } from 'q';
 
 export default (store) => {
   store.on('@init', () => ({ cart: [] }));
@@ -35,7 +36,6 @@ export default (store) => {
 
     store.dispatch('cart/addState', createCart);
     store.dispatch('products/get', products);
-
   });
 
   store.on('cart/addState', (state, cart) => {
@@ -46,8 +46,11 @@ export default (store) => {
 
     const sessionId = store.get().session;
     const products = store.get().products;
+    const totalData = store.get().totalData;
 
-    await api.cart.deleteItem(sessionId, productKey);
+    delete totalData[productKey];
+
+    // await api.cart.deleteItem(sessionId, productKey);
 
     for (const key in products) {
       if (products[key].key === productKey) {
@@ -59,6 +62,11 @@ export default (store) => {
 
     store.dispatch('cart/addState', cartUpdate);
     store.dispatch('products/get', products);
+    store.dispatch('totalData/get', totalData);
+    store.on('@changed', async () => {
+      console.log('object')
+      await api.cart.deleteItem(sessionId, productKey);
+    })();
 
   });
 };

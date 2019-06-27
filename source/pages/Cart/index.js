@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import fromUnixTime from 'date-fns/fromUnixTime';
 import useStoreon from 'storeon/react';
-import {store} from '../../init/store';
+import { store } from '../../init/store';
 
 // Components
 import { Product } from '../../components/Product';
@@ -17,13 +17,15 @@ export const Cart = (props) => {
   const { dispatch, user, cart, totalData } = useStoreon('user', 'cart', 'totalData', 'session');
   const { sessionId } = props;
   const { fullName, email, phone } = user;
-  console.log(store.get());
-  console.log(store.on());
 
   useEffect(() => {
 
     dispatch('session/id', sessionId);
     dispatch('cart/get');
+
+    return () => {
+
+    };
   }, []);
 
   const _setUserData = (event) => {

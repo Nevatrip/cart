@@ -19,7 +19,6 @@ export default class Catcher extends Component {
       });
     }
     render () {
-      console.log('catcher');
 
       if (this.state.error) {
         return (
