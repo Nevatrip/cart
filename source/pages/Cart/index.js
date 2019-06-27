@@ -2,10 +2,12 @@
 import React, { useEffect } from 'react';
 import fromUnixTime from 'date-fns/fromUnixTime';
 import useStoreon from 'storeon/react';
+import { store } from '../../init/store';
 
 // Components
 import { Product } from '../../components/Product';
 import { ProductPreview } from '../../components/ProductPreview';
+import Catcher from '../../components/Catcher';
 
 // Instruments
 import { api } from '../../REST';
@@ -19,6 +21,8 @@ export const Cart = (props) => {
   useEffect(() => {
     dispatch('session/id', sessionId);
     dispatch('cart/get');
+
+    return () => {}; // ???
   }, []);
 
   const _setUserData = (event) => {
@@ -27,7 +31,7 @@ export const Cart = (props) => {
     dispatch('user/change', user);
   };
 
-  const _checkOut = async () => {
+  const _checkOut = /*async*/ () => {
     const order = {
       sessionId,
       user,
@@ -37,6 +41,8 @@ export const Cart = (props) => {
     // const response = await api.order.newOrder(order);
 
     console.log('order', order);
+
+    // const response = await api.order.newOrder(order);
 
     // if ((((response || {}).payment || {}).Model || {}).Url) {
     //   // window.location.href = response.payment.Model.Url;
@@ -51,24 +57,27 @@ export const Cart = (props) => {
             directions)[0];
 
         return (
-          <li key = { key }>
-            <Product
-              dates = { direction.dates }
-              directionsAll = { directions }
-              indexItem = { index }
-              name = { title.ru.name }
-              productId = { _id }
-              productKey = { key }
-              selectDate = { fromUnixTime(
-                options && options.date > direction.dates[0]
-                  ? options.date
-                  : direction.dates[0]
-              ) }
-              selectDirection = { direction._key }
-              selectDirectionTitle = { direction.title }
-              tickets = { direction.tickets }
-            />
-          </li>
+          <Catcher key = { key }>
+            <li >
+              <Product
+                dates = { direction.dates }
+                directionsAll = { directions }
+                indexItem = { index }
+                name = { title.ru.name }
+                productId = { _id }
+                productKey = { key }
+                selectDate = { fromUnixTime(
+                  options && options.date > direction.dates[0]
+                    ? options.date
+                    : direction.dates[0]
+                ) }
+                selectDirection = { direction._key }
+                selectDirectionTitle = { direction.title }
+                tickets = { direction.tickets }
+              />
+            </li>
+          </Catcher>
+
         );
       })
       : 'Корзина пуста';

@@ -14,7 +14,7 @@ import { api } from '../../REST';
 
 export const Product = (props) => {
 
-  const { dispatch, totalData } = useStoreon('totalData', 'cart');
+  const { dispatch, totalData, cart } = useStoreon('totalData', 'cart');
 
   const {
     productId,
@@ -90,7 +90,6 @@ export const Product = (props) => {
   useEffect(() => {
     _convertObj();
     _getTime();
-
   }, []);
 
   const _changeProductData = (direction) => {
@@ -106,9 +105,21 @@ export const Product = (props) => {
   };
 
   const _deleteProductCart = () => {
-    
     dispatch('cart/delItem', productKey);
+    console.log(state);
+
+    // return (
+    //   _setState({})
+    // );
   };
+  useEffect(() => {
+    const clicked = () => console.log('click');
+    window.addEventListener('click', clicked);
+
+    return () => {
+      window.removeEventListener('click', clicked)
+    }
+ }, [])
 
   return (
     <fieldset>
