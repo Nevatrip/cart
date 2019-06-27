@@ -1,6 +1,5 @@
 // Instruments
 import { api } from '../REST';
-import { async } from 'q';
 
 export default (store) => {
   store.on('@init', () => ({ cart: [] }));
