@@ -35,7 +35,7 @@ export const Calendar = (props) => {
   return (
     <label>
       Выберите дату
-      <input type = 'text' value = { date } />
+      <input type = 'text' value = { date } onChange = { (e) => _changeDate(e.target.value) } />
       <DatePicker
         inline
         dateFormat = 'dd MMMM yyyy'
