@@ -50,8 +50,6 @@ export default (store) => {
 
     delete totalData[productKey];
 
-    // await api.cart.deleteItem(sessionId, productKey);
-
     for (const key in products) {
       if (products[key].key === productKey) {
         delete products[key];
@@ -63,10 +61,8 @@ export default (store) => {
     store.dispatch('cart/addState', cartUpdate);
     store.dispatch('products/get', products);
     store.dispatch('totalData/get', totalData);
-    store.on('@changed', async () => {
-      console.log('object')
-      await api.cart.deleteItem(sessionId, productKey);
-    })();
+
+    await api.cart.deleteItem(sessionId, productKey);
 
   });
 };
