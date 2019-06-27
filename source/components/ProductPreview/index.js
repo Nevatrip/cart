@@ -10,8 +10,6 @@ export const ProductPreview = (props) => {
   const _renderPriceTicket = () => {
     return (
       Object.values(selectTicket).map((item, index) => {
-        console.log(item);
-        
         return (
           <li key = { index }>
             <div>
