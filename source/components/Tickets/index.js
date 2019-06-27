@@ -30,7 +30,7 @@ export const Tickets = (props) => {
           <dd>
             <Counter
               _selectedTicket = { _selectedTicket }
-              prise = { item.price }
+              price = { item.price }
               ticketKey = { item._key }
               typeTicket = { item.name }
             />

@@ -8,14 +8,14 @@ const Counter = (props) => {
 
   const [state, _setState] = useState(initialState);
 
-  const _counterPrise = (count) => {
-    const { prise, ticketKey, typeTicket, _selectedTicket } = props;
-    const priseCount = Number(prise) * count;
+  const _counterPrice = (count) => {
+    const { price, ticketKey, typeTicket, _selectedTicket } = props;
+    const priceCount = Number(price) * count;
 
     const ticketQt = {
       [ticketKey]: {
-        prise:        priseCount,
-        currentPrise: prise,
+        price:        priceCount,
+        currentPrice: price,
         count,
         typeTicket,
         ticketKey,
@@ -24,10 +24,11 @@ const Counter = (props) => {
 
     _selectedTicket(ticketQt);
   };
+
   const _increment = () => {
     const count = state.count + 1;
 
-    _counterPrise(count);
+    _counterPrice(count);
 
     return (
       _setState({ count })
@@ -40,7 +41,7 @@ const Counter = (props) => {
     }
     const count = state.count - 1;
 
-    _counterPrise(count);
+    _counterPrice(count);
 
     return (
       _setState({ count })
@@ -50,7 +51,7 @@ const Counter = (props) => {
   const _setCount = (event) => {
     const count = event.target.value;
 
-    _counterPrise(count);
+    _counterPrice(count);
 
     return _setState({ count });
   };

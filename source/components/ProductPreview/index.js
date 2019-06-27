@@ -7,13 +7,15 @@ export const ProductPreview = (props) => {
   const { name, selectDirectionTitle, showDirection, selectTicket, selectTime, selectDate } = props;
   const date = format(selectDate, 'dd MMMM yyyy', { locale: ru });
 
-  const _renderPriseTicket = () => {
+  const _renderPriceTicket = () => {
     return (
       Object.values(selectTicket).map((item, index) => {
+        console.log(item);
+        
         return (
           <li key = { index }>
             <div>
-              {`${item.typeTicket}: ${item.currentPrise} ₽ × ${item.count} = ${item.prise} ₽`}
+              {`${item.typeTicket}: ${item.currentPrice} ₽ × ${item.count} = ${item.price} ₽`}
             </div>
           </li>
         );
@@ -30,7 +32,7 @@ export const ProductPreview = (props) => {
           <li>Время: {selectTime}</li>
           {showDirection && <li>Направление: {selectDirectionTitle}</li>}
         </ul>
-        <div>Билеты: {_renderPriseTicket()}</div>
+        <div>Билеты: {_renderPriceTicket()}</div>
       </fieldset>
     </>
   );
