@@ -24,29 +24,14 @@ const Counter = (props) => {
     _selectedTicket(ticketQt);
   };
 
-  const _increment = () => {
-    const count = state.count + 1;
+  const _change = (value) => {
+    const count = state.count + value;
 
     _counterPrice(count);
 
-    return (
-      _setState({ count })
-
-    );
+    return _setState({ count });
   };
-  const _decrement = () => {
-    if (state.count === 0) {
-      return null;
-    }
-    const count = state.count - 1;
 
-    _counterPrice(count);
-
-    return (
-      _setState({ count })
-
-    );
-  };
   const _setCount = (event) => {
     const count = event.target.value;
 
@@ -57,9 +42,9 @@ const Counter = (props) => {
 
   return (
     <>
-      <button onClick = { _decrement }>-</button>
+      <button disabled = { state.count <= 0 } onClick = { () => _change(-1) }>-</button>
       <input min = { 0 } value = { state.count } onChange = { _setCount } />
-      <button onClick = { _increment }>+</button>
+      <button onClick = { () => _change(1) }>+</button>
     </>
   );
 };
