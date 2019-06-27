@@ -21,7 +21,7 @@ export const Calendar = (props) => {
   }
 
   const _changeDate = (date) => {
-    currentItem.selectDate = date;
+    currentItem.date = date;
 
     dispatch('totalData/updateCart', currentItem);
   };
@@ -30,7 +30,7 @@ export const Calendar = (props) => {
     return dates.map((item) => fromUnixTime(item));
   };
 
-  const date = format(currentItem.selectDate, 'dd MMMM yyyy', { locale: ru });
+  const date = format(currentItem.date, 'dd MMMM yyyy', { locale: ru });
 
   return (
     <>
@@ -49,7 +49,7 @@ export const Calendar = (props) => {
           dateFormat = 'dd MMMM yyyy'
           includeDates = { _includeDates() }
           locale = 'ru-RU'
-          selected = { currentItem.selectDate }
+          selected = { currentItem.date }
           onChange = { _changeDate }
         />
       </div>

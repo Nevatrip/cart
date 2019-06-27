@@ -20,7 +20,7 @@ export const Product = (props) => {
 
   const {
     productId,
-    selectDate,
+    date,
     productKey,
     name,
     selectDirection,
@@ -41,7 +41,7 @@ export const Product = (props) => {
   const cartItem = {
     selectDirection,
     selectDirectionTitle,
-    selectDate,
+    date,
     selectTicket:  {},
     selectTimeKey: '',
     selectTime:    '',
@@ -67,8 +67,8 @@ export const Product = (props) => {
   };
 
   const _getTime = async () => {
-    const date = format(selectDate, 'yyyy-MM-dd', new Date());
-    const times = await api.product.getProductTime(productId, selectDirection, date);
+    const selectedDate = format(date, 'yyyy-MM-dd', new Date());
+    const times = await api.product.getProductTime(productId, selectDirection, selectedDate);
 
     state.times = times;
 

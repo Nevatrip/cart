@@ -22,7 +22,7 @@ export const Directions = (props) => {
 
     currentItem.selectDirection = event.target.value;
     currentItem.selectDirectionTitle = titleDirection;
-    currentItem.selectDate = fromUnixTime(currentDirection.dates[0]);
+    currentItem.date = fromUnixTime(currentDirection.dates[0]);
     dispatch('totalData/updateCart', currentItem);
     _changeProductData(event.target.value);
   };

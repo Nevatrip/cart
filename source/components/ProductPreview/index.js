@@ -4,8 +4,8 @@ import format from 'date-fns/format';
 import ru from 'date-fns/locale/ru';
 
 export const ProductPreview = (props) => {
-  const { name, selectDirectionTitle, showDirection, selectTicket, selectTime, selectDate } = props;
-  const date = format(selectDate, 'dd MMMM yyyy', { locale: ru });
+  const { name, selectDirectionTitle, showDirection, selectTicket, selectTime, date } = props;
+  const selectedDate = format(date, 'dd MMMM yyyy', { locale: ru });
 
   const _renderPriceTicket = () => {
     return (
@@ -26,7 +26,7 @@ export const ProductPreview = (props) => {
       <fieldset>
         <legend>{name}</legend>
         <ul>
-          <li>Дата: {date}</li>
+          <li>Дата: {selectedDate}</li>
           <li>Время: {selectTime}</li>
           {showDirection && <li>Направление: {selectDirectionTitle}</li>}
         </ul>

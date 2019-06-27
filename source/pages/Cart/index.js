@@ -58,17 +58,17 @@ export const Cart = (props) => {
           <Catcher key = { key }>
             <li className = { Styles.product }>
               <Product
+                date = { fromUnixTime(
+                  options && options.date > direction.dates[0]
+                    ? options.date
+                    : direction.dates[0]
+                ) }
                 dates = { direction.dates }
                 directionsAll = { directions }
                 indexItem = { index }
                 name = { title.ru.name }
                 productId = { _id }
                 productKey = { key }
-                selectDate = { fromUnixTime(
-                  options && options.date > direction.dates[0]
-                    ? options.date
-                    : direction.dates[0]
-                ) }
                 selectDirection = { direction._key }
                 selectDirectionTitle = { direction.title }
                 tickets = { direction.tickets }
@@ -92,8 +92,8 @@ export const Cart = (props) => {
       return (
         <li key = { cartItem.productKey }>
           <ProductPreview
+            date = { cartItem.date }
             name = { cartItem.name }
-            selectDate = { cartItem.selectDate }
             selectDirectionTitle = { cartItem.selectDirectionTitle }
             selectTicket = { cartItem.selectTicket }
             selectTime = { cartItem.selectTime }
