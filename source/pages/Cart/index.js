@@ -91,6 +91,7 @@ export const Cart = (props) => {
             selectTicket = { cartItem.selectTicket }
             selectTime = { cartItem.selectTime }
             selectTimeKey = { cartItem.selectTimeKey }
+            showDirection = { false }
           />
         </li>
       );

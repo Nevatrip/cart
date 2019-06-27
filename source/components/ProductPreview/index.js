@@ -30,7 +30,7 @@ export const ProductPreview = (props) => {
         <ul>
           <li>Дата: { date }</li>
           <li>Время: {time}</li>
-          <li>Направление: {selectDirectionTitle}</li>
+          {showDirection && <li>Направление: {selectDirectionTitle}</li>}
         </ul>
         <div>
           Билеты: {_renderPriseTicket()}
