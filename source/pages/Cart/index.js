@@ -103,36 +103,22 @@ export const Cart = (props) => {
       <div className = { Styles.aside }>
         <ul className = { Styles.listPreview }>{_renderProductPreview()}</ul>
         <div className = { 'cart__user' }>
-          <div>
-            <label>
-                    Ф. И. О.:
-              <input
-                name = 'fullName'
-                value = { fullName }
-                onChange = { _setUserData }
-              />
-            </label>
-          </div>
-          <div>
-            <label>
-                    Email:
-              <input
-                name = 'email'
-                value = { email }
-                onChange = { _setUserData }
-              />
-            </label>
-          </div>
-          <div>
-            <label>
-                    Телефон:
-              <input
-                name = 'phone'
-                value = { phone }
-                onChange = { _setUserData }
-              />
-            </label>
-          </div>
+          {
+            [
+              { name: 'fullName', value: fullName, label: 'Ф. И. О.' },
+              { name: 'email', value: email, label: 'Email' },
+              { name: 'phone', value: phone, label: 'Телефон' }
+            ].map((field) => (<div key = { field.name }>
+              <label>
+                { field.label }
+                <input
+                  name = { field.name }
+                  value = { field.value }
+                  onChange = { _setUserData }
+                />
+              </label>
+            </div>))
+          }
           <button type = 'button' onClick = { _checkOut }>
             Купить
           </button>
