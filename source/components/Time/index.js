@@ -12,22 +12,17 @@ export const Time = (props) => {
   if (totalData === {} || timesAll.length === 0) {
     return null;
   }
-  if (timesAll.length === 0) {
-    return null;
-  }
 
-  const currentItem = totalData[productKey];
-
-  const _changeTime = (event) => {
-
-    currentItem.selectTimeKey = event.target.value;
-    currentItem.selectTime = Number(event.target.dataset.time);
+  const _changeTime = (key, time) => {
+    currentItem.selectTime = time;
+    currentItem.selectTimeKey = key;
 
     dispatch('totalData/updateCart', currentItem);
   };
 
   const renderTimes = timesAll.map(({ _key, startLabel }, index) => {
     const time = getActualTime(new Date(startLabel));
+    const renderTime = format(time, 'HH:mm', new Date());
 
     return (
       <li data-key = { _key } key = { _key }>
@@ -38,12 +33,12 @@ export const Time = (props) => {
                 ? currentItem.selectTimeKey === _key
                 : index === 0
             }
-            data-time = { time }
             name = { `time-${productKey}` }
             type = 'radio'
             value = { _key }
+            onChange = { () => _changeTime(_key, renderTime) }
           />
-          {format(time, 'HH:mm', new Date())}
+          {renderTime}
         </label>
       </li>
     );
@@ -51,7 +46,7 @@ export const Time = (props) => {
 
   return (
     <div>
-            Выберите время
+      Выберите время
       <ul>
         {renderTimes}
       </ul>

@@ -1,13 +1,15 @@
 // Core
 import React from 'react';
-import fromUnixTime from 'date-fns/fromUnixTime';
 import format from 'date-fns/format';
+import ru from 'date-fns/locale/ru';
 
 export const ProductPreview = (props) => {
-  const { name, selectDirectionTitle, selectTicket, selectTime, selectDate } = props;
+  const { name, selectDirectionTitle, showDirection, selectTicket, selectTime, selectDate } = props;
 
-  const date = format(selectDate, 'yyyy-MMMM-dd');
-  const time = format(fromUnixTime(selectTime), 'HH-mm');
+  console.log('productPreview', selectTime);
+
+  const date = format(selectDate, 'dd MMMM yyyy', { locale: ru });
+  // const time = format(selectTime, 'HH:mm');
 
   const _renderPriseTicket = () => {
     return (
@@ -26,16 +28,13 @@ export const ProductPreview = (props) => {
   return (
     <>
       <fieldset>
-        <legend>{ name }</legend>
+        <legend>{name}</legend>
         <ul>
-          <li>Дата: { date }</li>
-          <li>Время: {time}</li>
+          <li>Дата: {date}</li>
+          <li>Время: {selectTime}</li>
           {showDirection && <li>Направление: {selectDirectionTitle}</li>}
         </ul>
-        <div>
-          Билеты: {_renderPriseTicket()}
-        </div>
-
+        <div>Билеты: {_renderPriseTicket()}</div>
       </fieldset>
     </>
   );

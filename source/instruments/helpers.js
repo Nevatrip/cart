@@ -10,4 +10,4 @@ export const getActualTime = (time, offset = 180) => {
   time.setMinutes(time.getMinutes() + timeOffset + offset);
 
   return time;
-}
+};
