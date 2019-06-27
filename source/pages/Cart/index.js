@@ -17,30 +17,26 @@ export const Cart = (props) => {
   const { fullName, email, phone } = user;
 
   useEffect(() => {
-
     dispatch('session/id', sessionId);
     dispatch('cart/get');
-
   }, []);
 
   const _setUserData = (event) => {
-
     user[event.target.name] = event.target.value;
 
     dispatch('user/change', user);
   };
-  const _checkOut = async () => {
 
+  const _checkOut = async () => {
     const order = {
       sessionId,
       user,
       totalData,
     };
 
-    console.log('order', order);
+    // const response = await api.order.newOrder(order);
 
-    const response = await api.order.newOrder(order);
-    console.log('response', response);
+    console.log('order', order);
 
     // if ((((response || {}).payment || {}).Model || {}).Url) {
     //   // window.location.href = response.payment.Model.Url;
@@ -48,7 +44,6 @@ export const Cart = (props) => {
   };
 
   const _renderProduct = () => {
-
     const result = cart.length
       ? cart.map(({ _id, key, title, directions, options }, index) => {
         const direction =
@@ -80,8 +75,8 @@ export const Cart = (props) => {
 
     return result;
   };
-  const _renderProductPreview = () => {
 
+  const _renderProductPreview = () => {
     const resultArray = Object.values(totalData).sort((a, b) =>
       a.indexItem > b.indexItem ? 1 : -1
     );
@@ -139,7 +134,7 @@ export const Cart = (props) => {
             </label>
           </div>
           <button type = 'button' onClick = { _checkOut }>
-                  Купить
+            Купить
           </button>
         </div>
       </div>
