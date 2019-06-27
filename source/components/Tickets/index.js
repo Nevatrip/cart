@@ -21,15 +21,14 @@ export const Tickets = (props) => {
   };
 
   const _renderTickets = () => {
-
-    const result = tickets.map((item) => {
-
+    return tickets.map((item) => {
       return (
         <div key = { item._key } style = { { display: 'flex' } } >
           <dt>{item.name || '???'}, {item.price} ₽</dt>
           <dd>
             <Counter
               _selectedTicket = { _selectedTicket }
+              count = { item.count }
               price = { item.price }
               ticketKey = { item._key }
               typeTicket = { item.name }
@@ -38,8 +37,6 @@ export const Tickets = (props) => {
         </div>
       );
     });
-
-    return result;
   };
 
   return (

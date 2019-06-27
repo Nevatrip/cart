@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 const Counter = (props) => {
   const initialState = {
-    count: 0,
+    count: props.count || 0,
   };
 
   const [state, _setState] = useState(initialState);
@@ -11,7 +11,6 @@ const Counter = (props) => {
   const _counterPrice = (count) => {
     const { price, ticketKey, typeTicket, _selectedTicket } = props;
     const priceCount = Number(price) * count;
-
     const ticketQt = {
       [ticketKey]: {
         price:        priceCount,
