@@ -1,6 +1,6 @@
 // Core
 import React, { useState, useEffect } from 'react';
-import { format } from 'date-fns';
+import { format, fromUnixTime } from 'date-fns';
 import useStoreon from 'storeon/react';
 
 // Components
@@ -11,6 +11,7 @@ import { Tickets } from '../Tickets';
 
 // Instruments
 import { api } from '../../REST';
+import { getActualTime } from '../../instruments/helpers';
 
 export const Product = (props) => {
 
@@ -51,7 +52,6 @@ export const Product = (props) => {
   const [state, _setState] = useState(initialState);
 
   const _convertObj = () => {
-
     const directionsObj = {};
 
     directionsAll.forEach((item) => {
@@ -66,17 +66,16 @@ export const Product = (props) => {
   };
 
   const _getTime = async () => {
-
     const date =  format(selectDate, 'yyyy-MM-dd', new Date());
-    const time = await api.product.getProductTime(productId, selectDirection, date);
+    const times = await api.product.getProductTime(productId, selectDirection, date);
 
-    state.times = time;
+    state.times = times;
 
-    const selectTime = time[0].start;
-    const selectTimeKey = time[0]._key;
+    const time = getActualTime(fromUnixTime(times[0].start));
+    const formatTime = format(time, 'HH:mm', new Date());
 
-    cartItem.selectTime = selectTime;
-    cartItem.selectTimeKey = selectTimeKey;
+    cartItem.selectTime = formatTime;
+    cartItem.selectTimeKey = times[0]._key;
 
     totalData[cartItem.productKey] = cartItem;
 
@@ -112,14 +111,16 @@ export const Product = (props) => {
     //   _setState({})
     // );
   };
+
   useEffect(() => {
     const clicked = () => console.log('click');
+
     window.addEventListener('click', clicked);
 
     return () => {
-      window.removeEventListener('click', clicked)
-    }
- }, [])
+      window.removeEventListener('click', clicked);
+    };
+  }, []);
 
   return (
     <fieldset>

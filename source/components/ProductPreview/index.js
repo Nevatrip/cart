@@ -5,11 +5,7 @@ import ru from 'date-fns/locale/ru';
 
 export const ProductPreview = (props) => {
   const { name, selectDirectionTitle, showDirection, selectTicket, selectTime, selectDate } = props;
-
-  console.log('productPreview', selectTime);
-
   const date = format(selectDate, 'dd MMMM yyyy', { locale: ru });
-  // const time = format(selectTime, 'HH:mm');
 
   const _renderPriseTicket = () => {
     return (
