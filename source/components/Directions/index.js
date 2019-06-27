@@ -16,10 +16,8 @@ export const Directions = (props) => {
   const selectDirection = totalData.selectDirection;
 
   const _changeDirection = (event) => {
-
     const selectIndex = event.target.options.selectedIndex;
     const titleDirection = event.target.children[selectIndex].dataset.title;
-
     const currentDirection = directionsAll[event.target.value];
 
     currentItem.selectDirection = event.target.value;
@@ -29,8 +27,7 @@ export const Directions = (props) => {
     _changeProductData(event.target.value);
   };
 
-  const renderDirections =  Object.values(directionsAll).map((item) => {
-
+  const renderDirections = Object.values(directionsAll).map((item) => {
     return (
       <option
         data-key = { item._key }
@@ -45,7 +42,7 @@ export const Directions = (props) => {
 
   return (
     <label>
-            Выберите направление
+      Выберите направление
       <select text = 'true' onChange = { _changeDirection }>
         {renderDirections}
       </select>

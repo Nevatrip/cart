@@ -16,7 +16,7 @@ import Styles from './styles.m.css';
 
 export const Product = (props) => {
 
-  const { dispatch, totalData, cart } = useStoreon('totalData', 'cart');
+  const { dispatch, totalData } = useStoreon('totalData');
 
   const {
     productId,
@@ -67,7 +67,7 @@ export const Product = (props) => {
   };
 
   const _getTime = async () => {
-    const date =  format(selectDate, 'yyyy-MM-dd', new Date());
+    const date = format(selectDate, 'yyyy-MM-dd', new Date());
     const times = await api.product.getProductTime(productId, selectDirection, date);
 
     state.times = times;
