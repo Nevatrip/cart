@@ -27,7 +27,7 @@ export const Time = (props) => {
   };
 
   const renderTimes =  timesAll.map((item, index) => {
-    console.log('item', item);
+    // console.log('item', item);
 
     const timeOffset = new Date().getTimezoneOffset();
     const time = new Date(item.startLabel);

@@ -14,7 +14,7 @@ import { api } from '../../REST';
 
 export const Product = (props) => {
 
-  const { dispatch, totalData } = useStoreon('totalData', 'cart');
+  const { dispatch, totalData, cart } = useStoreon('totalData', 'cart');
 
   const {
     productId,
