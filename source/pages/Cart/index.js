@@ -2,10 +2,12 @@
 import React, { useEffect } from 'react';
 import fromUnixTime from 'date-fns/fromUnixTime';
 import useStoreon from 'storeon/react';
+import {store} from '../../init/store';
 
 // Components
 import { Product } from '../../components/Product';
 import { ProductPreview } from '../../components/ProductPreview';
+import Catcher from '../../components/Catcher';
 
 // Instruments
 import { api } from '../../REST';
@@ -15,12 +17,13 @@ export const Cart = (props) => {
   const { dispatch, user, cart, totalData } = useStoreon('user', 'cart', 'totalData', 'session');
   const { sessionId } = props;
   const { fullName, email, phone } = user;
+  console.log(store.get());
+  console.log(store.on());
 
   useEffect(() => {
 
     dispatch('session/id', sessionId);
     dispatch('cart/get');
-
   }, []);
 
   const _setUserData = (event) => {
@@ -40,6 +43,7 @@ export const Cart = (props) => {
     console.log('order', order);
 
     const response = await api.order.newOrder(order);
+
     console.log('response', response);
 
     // if ((((response || {}).payment || {}).Model || {}).Url) {
@@ -56,24 +60,27 @@ export const Cart = (props) => {
             directions[0];
 
         return (
-          <li key = { key }>
-            <Product
-              dates = { direction.dates }
-              directionsAll = { directions }
-              indexItem = { index }
-              name = { title.ru.name }
-              productId = { _id }
-              productKey = { key }
-              selectDate = { fromUnixTime(
-                options && options.date > direction.dates[0]
-                  ? options.date
-                  : direction.dates[0]
-              ) }
-              selectDirection = { direction._key }
-              selectDirectionTitle = { direction.title }
-              tickets = { direction.tickets }
-            />
-          </li>
+          <Catcher key = { key }>
+            <li >
+              <Product
+                dates = { direction.dates }
+                directionsAll = { directions }
+                indexItem = { index }
+                name = { title.ru.name }
+                productId = { _id }
+                productKey = { key }
+                selectDate = { fromUnixTime(
+                  options && options.date > direction.dates[0]
+                    ? options.date
+                    : direction.dates[0]
+                ) }
+                selectDirection = { direction._key }
+                selectDirectionTitle = { direction.title }
+                tickets = { direction.tickets }
+              />
+            </li>
+          </Catcher>
+
         );
       })
       : 'Корзина пуста';
