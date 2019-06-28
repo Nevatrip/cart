@@ -8,43 +8,25 @@ const Counter = (props) => {
 
   const [state, _setState] = useState(initialState);
 
-  const _counterPrice = (count) => {
+  const _set = (count) => {
     const { price, ticketKey, typeTicket, _selectedTicket } = props;
-    const priceCount = Number(price) * count;
-    const ticketQt = {
-      [ticketKey]: {
-        price:        priceCount,
-        currentPrice: price,
-        count,
-        typeTicket,
-        ticketKey,
-      },
-    };
 
-    _selectedTicket(ticketQt);
-  };
-
-  const _change = (value) => {
-    const count = state.count + value;
-
-    _counterPrice(count);
-
-    return _setState({ count });
-  };
-
-  const _setCount = (event) => {
-    const count = event.target.value;
-
-    _counterPrice(count);
+    _selectedTicket({
+      sum: Number(price) * count,
+      price,
+      count,
+      typeTicket,
+      ticketKey,
+    });
 
     return _setState({ count });
   };
 
   return (
     <>
-      <button disabled = { state.count <= 0 } onClick = { () => _change(-1) }>-</button>
-      <input min = { 0 } value = { state.count } onChange = { _setCount } />
-      <button onClick = { () => _change(1) }>+</button>
+      <button disabled = { state.count <= 0 } onClick = { () => _set(state.count - 1) }>-</button>
+      <input min = { 0 } value = { state.count } onChange = { (event) => _set(event.target.value) } />
+      <button onClick = { () => _set(state.count + 1) }>+</button>
     </>
   );
 };
