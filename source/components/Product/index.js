@@ -23,8 +23,8 @@ export const Product = (props) => {
     date,
     productKey,
     name,
-    selectDirection,
-    selectDirectionTitle,
+    direction,
+    directionTitle,
     indexItem,
     directionsAll,
     dates,
@@ -39,12 +39,12 @@ export const Product = (props) => {
   };
 
   const cartItem = {
-    selectDirection,
-    selectDirectionTitle,
+    direction,
+    directionTitle,
     date,
-    selectTicket:  {},
-    selectTimeKey: '',
-    selectTime:    '',
+    selectedTicket: {},
+    event:          '',
+    selectedTime:   '',
     productKey,
     name,
     indexItem,
@@ -68,15 +68,15 @@ export const Product = (props) => {
 
   const _getTime = async () => {
     const selectedDate = format(date, 'yyyy-MM-dd', new Date());
-    const times = await api.product.getProductTime(productId, selectDirection, selectedDate);
+    const times = await api.product.getProductTime(productId, direction, selectedDate);
 
     state.times = times;
 
     const time = getActualTime(fromUnixTime(times[0].start));
     const formatTime = format(time, 'HH:mm', new Date());
 
-    cartItem.selectTime = formatTime;
-    cartItem.selectTimeKey = times[0]._key;
+    cartItem.selectedTime = formatTime;
+    cartItem.event = times[0]._key;
 
     totalData[cartItem.productKey] = cartItem;
 
@@ -92,9 +92,8 @@ export const Product = (props) => {
     _getTime();
   }, []);
 
-  const _changeProductData = (direction) => {
-
-    const currentDirection = state.directionsAll[direction];
+  const _changeProductData = (selectedDirection) => {
+    const currentDirection = state.directionsAll[selectedDirection];
 
     state.dates = currentDirection.dates;
     state.tickets = currentDirection.tickets;

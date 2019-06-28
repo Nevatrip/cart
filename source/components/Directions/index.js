@@ -13,15 +13,15 @@ export const Directions = (props) => {
   }
 
   const currentItem = totalData[productKey];
-  const selectDirection = totalData.selectDirection;
+  const direction = totalData.direction;
 
   const _changeDirection = (event) => {
     const selectIndex = event.target.options.selectedIndex;
     const titleDirection = event.target.children[selectIndex].dataset.title;
     const currentDirection = directionsAll[event.target.value];
 
-    currentItem.selectDirection = event.target.value;
-    currentItem.selectDirectionTitle = titleDirection;
+    currentItem.direction = event.target.value;
+    currentItem.directionTitle = titleDirection;
     currentItem.date = fromUnixTime(currentDirection.dates[0]);
     dispatch('totalData/updateCart', currentItem);
     _changeProductData(event.target.value);
@@ -32,7 +32,7 @@ export const Directions = (props) => {
       <option
         data-key = { item._key }
         data-title = { item.title }
-        defaultValue = { item._key === selectDirection }
+        defaultValue = { item._key === direction }
         key = { item._key }
         value = { item._key }>
         {item.title}

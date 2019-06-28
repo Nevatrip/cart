@@ -14,10 +14,11 @@ export const Time = (props) => {
   }
 
   const _changeTime = (key, time) => {
-    currentItem.selectTime = time;
-    currentItem.selectTimeKey = key;
+    currentItem.selectedTime = time;
+    currentItem.event = key;
 
     dispatch('totalData/updateCart', currentItem);
+    dispatch('cart/update');
   };
 
   const renderTimes = timesAll.map(({ _key, startLabel }, index) => {
@@ -29,8 +30,8 @@ export const Time = (props) => {
         <label>
           <input
             checked = {
-              currentItem.selectTimeKey
-                ? currentItem.selectTimeKey === _key
+              currentItem.event
+                ? currentItem.event === _key
                 : index === 0
             }
             name = { `time-${productKey}` }

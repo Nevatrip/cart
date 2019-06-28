@@ -65,13 +65,13 @@ export const Cart = (props) => {
                     : direction.dates[0]
                 ) }
                 dates = { direction.dates }
+                direction = { direction._key }
                 directionsAll = { directions }
+                directionTitle = { direction.title }
                 indexItem = { index }
                 name = { title.ru.name }
                 productId = { _id }
                 productKey = { key }
-                selectDirection = { direction._key }
-                selectDirectionTitle = { direction.title }
                 tickets = { direction.tickets }
               />
             </li>
@@ -94,11 +94,11 @@ export const Cart = (props) => {
         <li key = { cartItem.productKey }>
           <ProductPreview
             date = { cartItem.date }
+            directionTitle = { cartItem.directionTitle }
+            event = { cartItem.event }
             name = { cartItem.name }
-            selectDirectionTitle = { cartItem.selectDirectionTitle }
-            selectTicket = { cartItem.selectTicket }
-            selectTime = { cartItem.selectTime }
-            selectTimeKey = { cartItem.selectTimeKey }
+            selectedTicket = { cartItem.selectedTicket }
+            selectedTime = { cartItem.selectedTime }
             showDirection = { false }
           />
         </li>

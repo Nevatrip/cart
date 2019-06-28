@@ -4,7 +4,7 @@ import { api } from '../REST';
 export default (store) => {
   store.on('@init', () => ({ totalData: {} }));
 
-  store.on('totalData/get', ({ totalData }, data) => ({ totalData: data }));
+  store.on('totalData/get', (prevState, data) => ({ totalData: data }));
 
   // store.on('totalData/updateCartItem', async ({ totalData }, data) => {
 
@@ -15,24 +15,24 @@ export default (store) => {
 
   //   const products = cart.map((cartItem) => {
   //     const {
-  //       selectDirection,
-  //       selectTime,
-  //       selectTimeKey,
-  //       selectTicket,
+  //       direction,
+  //       selectedTime,
+  //       event,
+  //       selectedTicket,
   //     } = totalData[cartItem.key];
 
   //     const tickets = {};
 
-  //     Object.values(selectTicket).forEach((ticket) => {
+  //     Object.values(selectedTicket).forEach((ticket) => {
   //       tickets[ticket.ticketKey] = ticket.count;
   //     });
 
   //     return {
   //       productId: cartItem._id,
   //       options:   {
-  //         direction: selectDirection,
-  //         date:      selectTime,
-  //         time:      selectTimeKey,
+  //         direction: direction,
+  //         date:      selectedTime,
+  //         time:      event,
   //         tickets,
   //       },
   //     };
@@ -48,8 +48,4 @@ export default (store) => {
 
     return { totalData };
   });
-  
-
-  
-
 };
