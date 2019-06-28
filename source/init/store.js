@@ -1,12 +1,19 @@
-// // Core
-// import { createStore } from 'redux';
+// Core
+import createStore from 'storeon';
 
-// // Roots
-// import { rootReducer } from './rootReducer';
-// import { rootSaga } from './rootSaga';
+import cart from './cart';
+import products from './products';
+import totalData from './totalData';
+import session from './session';
+import user from './user';
 
-// // Enhancer
-// import { enhancedStore, sagaMiddleware } from './middleware/core';
-
-// export const store = createStore(rootReducer, enhancedStore);
-// sagaMiddleware.run(rootSaga);
+export const store = createStore(
+  [
+    cart,
+    products,
+    totalData,
+    session,
+    user,
+    process.env.NODE_ENV !== 'production' && require('storeon/devtools')
+  ]
+);

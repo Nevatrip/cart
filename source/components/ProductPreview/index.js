@@ -1,43 +1,37 @@
 // Core
 import React from 'react';
-import fromUnixTime from 'date-fns/fromUnixTime';
 import format from 'date-fns/format';
+import ru from 'date-fns/locale/ru';
 
-const ProductPreview = (props) => {
-    const { name, selectDirectionTitle, selectTicket, selectTime } = props;
-    const date = format(fromUnixTime(selectTime), 'yyyy-MMMM-dd');
-    const time = format(fromUnixTime(selectTime), 'HH-mm');
+export const ProductPreview = (props) => {
+  const { name, directionTitle, showDirection, selectedTicket, selectedTime, date } = props;
+  const selectedDate = format(date, 'dd MMMM yyyy', { locale: ru });
 
-    const _renderPriseTicket = () => {
-        return (
-            Object.values(selectTicket).map((item, index) => {
-                return (
-                    <li key = { index }>
-                        <div>
-                            {`${item.typeTicket}: ${item.currentPrise} ₽ × ${item.count} = ${item.prise} ₽`}
-                        </div>
-                    </li>
-                );
-            })
-        );
-    };
-
+  const _renderPriceTicket = () => {
     return (
-        <>
-            <fieldset>
-                <legend>{ name }</legend>
-                <ul>
-                    <li>Дата: { date }</li>
-                    <li>Время: {time}</li>
-                    <li>Направление: {selectDirectionTitle}</li>
-                </ul>
-                <div>
-                    Билеты: {_renderPriseTicket()}
-                </div>
-
-            </fieldset>
-        </>
+      Object.values(selectedTicket).map((item, index) => {
+        return (
+          <li key = { index }>
+            <div>
+              {`${item.typeTicket}: ${item.price} ₽ × ${item.count} = ${item.sum} ₽`}
+            </div>
+          </li>
+        );
+      })
     );
-};
+  };
 
-export default ProductPreview;
+  return (
+    <>
+      <fieldset>
+        <legend>{name}</legend>
+        <ul>
+          <li>Дата: {selectedDate}</li>
+          <li>Время: {selectedTime}</li>
+          {showDirection && <li>Направление: {directionTitle}</li>}
+        </ul>
+        <div>Билеты: {_renderPriceTicket()}</div>
+      </fieldset>
+    </>
+  );
+};

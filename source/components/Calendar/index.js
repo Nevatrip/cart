@@ -1,44 +1,59 @@
 // Core
-import React, { Component } from 'react';
+import React from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import ru from 'date-fns/locale/ru';
 import fromUnixTime from 'date-fns/fromUnixTime';
+import format from 'date-fns/format';
 registerLocale('ru-RU', ru);
+import useStoreon from 'storeon/react';
 
 // Styles
 import 'react-datepicker/dist/react-datepicker.css';
+import Styles from './styles';
+export const Calendar = (props) => {
+  const { dispatch, totalData } = useStoreon('totalData');
+  const { productKey, dates } = props;
 
-export default class Calendar extends Component {
-  _changeDate = (date) => {
-      const { _selectedDate } = this.props;
+  const currentItem = totalData[productKey];
 
-      _selectedDate(date);
+  if (currentItem === void 0) {
+    return null;
   }
 
-  _includeDates = () => {
-      const { dates } = this.props;
+  const _changeDate = (date) => {
+    currentItem.date = date;
 
-      const result = dates.map((item) => {
-          return fromUnixTime(item);
-      });
+    dispatch('totalData/updateCart', currentItem);
+    dispatch('cart/update');
+  };
 
-      return result;
-  }
+  const _includeDates = () => {
+    return dates.map((item) => fromUnixTime(item));
+  };
 
-  render () {
-      const { selectDate } = this.props.cartItem;
+  const date = format(currentItem.date, 'dd MMMM yyyy', { locale: ru });
 
-      return (
-          <label>
-          Выберите дату
-              <DatePicker
-                  dateFormat = 'dd MMMM yyyy'
-                  includeDates = { this._includeDates() }
-                  locale = 'ru-RU'
-                  selected = { selectDate }
-                  onChange = { this._changeDate }
-              />
-          </label>
-      );
-  }
-}
+  return (
+    <>
+      <label>
+      Выберите дату
+        <input
+          readOnly
+          type = 'text'
+          value = { date }
+        />
+      </label>
+      <div className = { Styles.calendarWrapper }>
+        <DatePicker
+          inline
+          calendarClassName = { Styles.calendar }
+          dateFormat = 'dd MMMM yyyy'
+          includeDates = { _includeDates() }
+          locale = 'ru-RU'
+          selected = { currentItem.date }
+          onChange = { _changeDate }
+        />
+      </div>
+    </>
+  );
+};

@@ -1,201 +1,145 @@
 // Core
-import React, { Component } from 'react';
-import { format } from 'date-fns';
-import fromUnixTime from 'date-fns/fromUnixTime';
+import React, { useState, useEffect } from 'react';
+import { format, fromUnixTime } from 'date-fns';
+import useStoreon from 'storeon/react';
 
 // Components
-import Calendar from '../Calendar';
-import Directions from '../Directions';
-import Time from '../Time';
-import Tickets from '../Tickets';
+import { Calendar } from '../Calendar';
+import { Directions } from '../Directions';
+import { Time } from '../Time';
+import { Tickets } from '../Tickets';
 
 // Instruments
 import { api } from '../../REST';
+import { getActualTime } from '../../instruments/helpers';
+import Styles from './styles.m.css';
 
-export default class Product extends Component {
+export const Product = (props) => {
 
-    state = {
-        dates:         this.props.dates,
-        directionsAll: {},
-        tickets:       this.props.tickets,
-        times:         [],
-        cartItem:      {
-            selectDirection:      this.props.selectDirection,
-            selectDirectionTitle: this.props.selectDirectionTitle,
-            selectDate:           this.props.selectDate,
-            selectTicket:         {},
-            selectTimeKey:        '',
-            selectTime:           '',
-            productKey:           '',
-            name:                 '',
-            indexItem:            this.props.indexItem,
-        },
-    }
+  const { dispatch, totalData } = useStoreon('totalData');
 
-    componentDidMount () {
-        this._getTime();
-        this._convertObj();
-    }
+  const {
+    productId,
+    date,
+    productKey,
+    name,
+    direction,
+    directionTitle,
+    indexItem,
+    directionsAll,
+    dates,
+    tickets,
+  } = props;
 
-    shouldComponentUpdate (nextProps, nextState) {
-        if (this.state.dates !== nextState.dates ||
-            this.state.tickets !== nextState.tickets ||
-            this.state.times !== nextState.times ||
-            this.state.directionsAll !== nextState.directionsAll ||
-            this.state.cartItem !== nextState.cartItem ||
-            this.props !== nextProps) {
-            return true;
+  const initialState = {
+    dates,
+    tickets,
+    directionsAll: {},
+    times:         [],
+  };
+
+  const cartItem = {
+    direction,
+    directionTitle,
+    date,
+    selectedTicket: {},
+    event:          '',
+    selectedTime:   '',
+    productKey,
+    name,
+    indexItem,
+  };
+
+  const [state, _setState] = useState(initialState);
+
+  const _convertObj = () => {
+    const directionsObj = {};
+
+    directionsAll.forEach((item) => {
+      directionsObj[item._key] = item;
+    });
+
+    state.directionsAll = directionsObj;
+
+    return (
+      _setState(state)
+    );
+  };
+
+  const _getTime = async () => {
+    const selectedDate = format(date, 'yyyy-MM-dd', new Date());
+    const times = await api.product.getProductTime(productId, direction, selectedDate);
+
+    state.times = times;
+
+    const time = getActualTime(fromUnixTime(times[0].start));
+    const formatTime = format(time, 'HH:mm', new Date());
+
+    cartItem.selectedTime = formatTime;
+    cartItem.event = times[0]._key;
+
+    totalData[cartItem.productKey] = cartItem;
+
+    dispatch('totalData/get', totalData);
+
+    return (
+      _setState(state)
+    );
+  };
+
+  useEffect(() => {
+    _convertObj();
+    _getTime();
+  }, []);
+
+  const _changeProductData = (selectedDirection) => {
+    const currentDirection = state.directionsAll[selectedDirection];
+
+    state.dates = currentDirection.dates;
+    state.tickets = currentDirection.tickets;
+
+    return (
+      _setState(state)
+    );
+  };
+
+  const _deleteProductCart = () => {
+    dispatch('cart/delItem', productKey);
+  };
+
+  return (
+    <fieldset>
+      <legend>{ name }</legend>
+      <div className = { Styles.productWrapper } >
+
+        <Calendar
+          dates = { state.dates }
+          productKey = { productKey }
+        />
+        <br />
+        {
+          Object.values(state.directionsAll).length <= 1 ? // Проверка на количество направлений экскурсии //
+            null :
+            <Directions
+              _changeProductData = { _changeProductData }
+              directionsAll = { state.directionsAll }
+              productKey = { productKey }
+            />
         }
-
-        return false;
-    }
-
-    _convertObj = () => {
-        const { directionsAll } = this.props;
-
-        const directionsObj = {};
-
-        directionsAll.forEach((item) => {
-            directionsObj[item._key] = item;
-        });
-        this.setState({ directionsAll: directionsObj });
-    }
-
-    _getTime = async () => {
-        const { productId, productKey, _setTotalData, name } = this.props;
-        const { cartItem } = this.state;
-
-        const date =  format(cartItem.selectDate, 'yyyy-MM-dd', new Date());
-        const time = await api.product.getProductTime(productId, cartItem.selectDirection, date);
-
-        const selectTime = time[0].start;
-        const selectTimeKey = time[0]._key;
-
-        cartItem.selectTime = selectTime;
-        cartItem.selectTimeKey = selectTimeKey;
-        cartItem.productKey = productKey;
-        cartItem.name = name;
-
-        this.setState({ cartItem, times: time }, () => {
-            _setTotalData(cartItem);
-        });
-
-    }
-
-    _selectedTime = (selectTimeKey, selectTime) => {
-
-        const { cartItem } = this.state;
-        const { _updateCartItem } = this.props;
-
-        cartItem.selectTime = selectTime;
-        cartItem.selectTimeKey = selectTimeKey;
-        _updateCartItem(cartItem);
-
-    }
-
-    _selectedTicket = (ticket) => {
-        const { cartItem } = this.state;
-        const { _updateCartItem } = this.props;
-        const ticketKey = Object.keys(ticket)[0];
-
-        cartItem.selectTicket[ticketKey] = ticket[ticketKey];
-        this.setState({ cartItem }, () => {
-            _updateCartItem(cartItem);
-        });
-    }
-
-    _selectedDirection = (direction, titleDirection) => {
-        const { cartItem } = this.state;
-        const { _updateCartItem } = this.props;
-
-        cartItem.selectDirection = direction;
-        cartItem.selectDirectionTitle = titleDirection;
-        this.setState({ cartItem }, () => {
-            this._changeProductData(direction);
-            _updateCartItem(cartItem);
-
-        });
-    }
-
-    _changeProductData = (direction) => {
-        const { directionsAll } = this.state;
-
-        const currentDirection = directionsAll[direction];
-
-        this._selectedDate(fromUnixTime(currentDirection.dates[0]));
-
-        this.setState({
-            dates:   currentDirection.dates,
-            tickets: currentDirection.tickets,
-        });
-    }
-
-    _selectedDate = (date) => {
-        const { cartItem } = this.state;
-        const { _updateCartItem } = this.props;
-
-        cartItem.selectDate = date;
-        this.setState({ cartItem }, () => {
-            this._getTime();
-            _updateCartItem(cartItem);
-        });
-    }
-
-    _deleteProduct = () => {
-        const { productKey, _deleteProduct } = this.props;
-
-        _deleteProduct(productKey);
-    }
-
-    render () {
-        const { name } = this.props;
-
-        const {
-            cartItem,
-            dates,
-            directionsAll,
-            times,
-            tickets,
-            cartItem: { selectDirection },
-        } = this.state;
-
-        if (cartItem.selectTime === '') {
-            return null;
+        {
+          state.times.length === 0 ?
+            null :
+            <Time
+              productKey = { productKey }
+              timesAll = { state.times }
+            />
         }
-
-        return (
-            <fieldset>
-                <legend>{ name }</legend>
-                <Calendar
-                    _selectedDate = { this._selectedDate }
-                    cartItem = { cartItem }
-                    dates = { dates }
-                />
-                <br />
-                {
-                    Object.values(directionsAll).length <= 1 ? // Проверка на количество направлений экскурсии //
-                        null :
-                        <Directions
-                            _selectedDirection = { this._selectedDirection }
-                            cartItem = { cartItem }
-                            directionsAll = { directionsAll }
-                            selectDirection = { selectDirection }
-                        />
-                }
-                {
-                    this.state.times &&
-                    <Time
-                        _selectedTime = { this._selectedTime }
-                        cartItem = { cartItem }
-                        timesAll = { times }
-                    />
-                }
-                <Tickets
-                    _selectedTicket = { this._selectedTicket }
-                    tickets = { tickets }
-                />
-                <button onClick = { this._deleteProduct } >× Удалить товар</button>
-            </fieldset>
-        );
-    }
-}
+        <Tickets
+          productKey = { productKey }
+          tickets = { state.tickets }
+        />
+        <button onClick = { _deleteProductCart } >× Удалить товар</button>
+      </div>
+    </fieldset>
+  );
+};

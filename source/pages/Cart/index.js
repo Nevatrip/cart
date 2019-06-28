@@ -1,259 +1,137 @@
 // Core
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import fromUnixTime from 'date-fns/fromUnixTime';
+import useStoreon from 'storeon/react';
+import { api } from '../../REST';
 
 // Components
-import Product from '../../components/Product';
-import ProductPreview from '../../components/ProductPreview';
+import { Product } from '../../components/Product';
+import { ProductPreview } from '../../components/ProductPreview';
+import Catcher from '../../components/Catcher';
 
 // Instruments
-import { api } from '../../REST';
 import Styles from './styles.m.css';
 
-export default class Cart extends Component {
+export const Cart = (props) => {
+  const { dispatch, user, cart, totalData } = useStoreon('user', 'cart', 'totalData', 'session');
+  const { sessionId } = props;
+  const { fullName, email, phone } = user;
 
-    state = {
-        cart:      [],
-        products:  {},
-        totalData: {},
-        user:      {
-            fullname: '',
-            email:    '',
-            phone:    '',
-        },
-    }
-    componentDidMount () {
-        const { sessionId } = this.props;
+  useEffect(() => {
+    dispatch('session/id', sessionId);
+    dispatch('cart/get');
 
-        this._createdCart(sessionId);
-    }
+    return () => {}; // ???
+  }, []);
 
-    _createdCart = async (sessionId) => {
-        const cartItems = (await api.cart.newCart(sessionId)).products;
+  const _setUserData = (event) => {
+    user[event.target.name] = event.target.value;
 
-        const products = {};
+    dispatch('user/change', user);
+  };
 
-        cartItems.forEach((item) => {
-            products[item.productId] = item.productId;
-        });
+  const _checkOut = async () => {
+    const order = {
+      sessionId,
+      user,
+    };
 
-        /*
-        cart = {
-            '1949faec-c728-40de-a700-ca5b666ba765': '1949faec-c728-40de-a700-ca5b666ba765',
-            '41b1283d-2ad1-4894-b03e-368042e5d301': '41b1283d-2ad1-4894-b03e-368042e5d301'
-        }
-        */
+    const response = await api.order.newOrder(order);
 
-        // const productsInCart = new Set(...productsInCartAll );
+    console.log('order', response);
 
-        const productsResponse = await Promise.all(
-            Object.keys(products).map((item) => {
-                return api.product.getProductData(item);
-            })
-        );
+    // if ((((response || {}).payment || {}).Model || {}).Url) {
+    //   // window.location.href = response.payment.Model.Url;
+    // }
+  };
 
-        productsResponse.forEach((product) => {
-            products[product._id] = product;
-        });
-
-        /*
-        cart = {
-            '1949faec-c728-40de-a700-ca5b666ba765': {…},
-            '41b1283d-2ad1-4894-b03e-368042e5d301': {…}'
-        }
-        */
-
-        const cart = cartItems.map((item) => ({
-            ...item,
-            ...products[item.productId],
-        }));
-
-        // eslint-disable-next-line no-debugger
-        // debugger;
-
-        this.setState({ cart, products });
-
-    }
-    _setTotalData = (cartItem) => {
-        const { totalData } = this.state;
-
-        totalData[cartItem.productKey] = cartItem;
-
-        this.setState({ totalData });
-    }
-    _updateCartItem = (data) => {
-        const { cart, totalData } = this.state;
-
-        totalData[data.productKey] = data;
-
-        const products = cart.map((cartItem) => {
-            const {
-                selectDirection,
-                selectTime,
-                selectTimeKey,
-                selectTicket,
-            } = totalData[cartItem.key];
-
-            const tickets = {};
-
-            Object.values(selectTicket).forEach((ticket) => {
-                tickets[ticket.ticketKey] = ticket.count;
-            });
-
-            return {
-                productId: cartItem._id,
-                options:   {
-                    direction: selectDirection,
-                    date:      selectTime,
-                    time:      selectTimeKey,
-                    tickets,
-                },
-            };
-        });
-
-        api.cart.updateCart(this.props.sessionId, products);
-
-        this.setState({ totalData });
-    }
-    _checkOut = async () => {
-        const { user } = this.state;
-
-        const order = {
-            sessionId: this.props.sessionId,
-            user,
-        };
-
-        const response = await api.order.newOrder(order);
-
-        if ((((response || {}).payment || {}).Model || {}).Url) {
-            window.location.href = response.payment.Model.Url;
-        }
-    }
-    _setUserData = (event) => {
-        const user = { ...this.state.user };
-
-        user[event.target.name] = event.target.value;
-        this.setState({ user });
-    }
-    _deleteProduct = (key) => {
-        const totalData = this.state.totalData;
-        const cart = this.state.cart.filter(
-            (product) => product.key !== key
-        );
-
-        delete totalData[key];
-
-        this.setState({ cart, totalData }, () => {
-            api.cart.deleteItem(this.props.sessionId, key);
-        });
-    }
-
-    _renderProduct = () => {
-        const { cart } = this.state;
-
-        const result = cart.length
-            ? cart.map((product, index) => {
-                const direction = product.directions.find((dir) => dir._key === (product.options || {}).direction) || product.directions[0];
-
-                return (
-                    <li key = { product.key }>
-                        <Product
-                            _deleteProduct = { this._deleteProduct }
-                            _setTotalData = { this._setTotalData }
-                            _updateCartItem = { this._updateCartItem }
-                            dates = { direction.dates }
-                            directionsAll = { product.directions }
-                            indexItem = { index }
-                            name = { product.title.ru.name }
-                            productId = { product._id }
-                            productKey = { product.key }
-                            selectDate = { fromUnixTime((product.options || {}).date || direction.dates[0]) }
-                            selectDirection = { direction._key }
-                            selectDirectionTitle = { direction.title }
-                            tickets = { direction.tickets }
-                        />
-                    </li>
-                );
-            })
-            : 'Корзина пуста';
-
-        return result;
-
-    }
-    _renderProductPreview = () => {
-        const { totalData } = this.state;
-
-        const resultArray = Object.values(totalData).sort((a, b) =>
-            a.indexItem > b.indexItem ? 1 : -1
-        );
+  const _renderProduct = () => {
+    const result = cart.length
+      ? cart.map(({ _id, key, title, directions, options }, index) => {
+        const direction =
+          directions.find(
+            ({ _key }) => _key === (options || {}).direction
+          ) || directions[0];
 
         return (
-            resultArray.map((cartItem) => {
+          <Catcher key = { key }>
+            <li className = { Styles.product }>
+              <Product
+                date = { fromUnixTime(
+                  options && options.date > direction.dates[0]
+                    ? options.date
+                    : direction.dates[0]
+                ) }
+                dates = { direction.dates }
+                direction = { direction._key }
+                directionsAll = { directions }
+                directionTitle = { direction.title }
+                indexItem = { index }
+                name = { title.ru.name }
+                productId = { _id }
+                productKey = { key }
+                tickets = { direction.tickets }
+              />
+            </li>
+          </Catcher>
 
-                return (
-                    <li key = { cartItem.productKey }>
-                        <ProductPreview
-                            name = { cartItem.name }
-                            selectDate = { cartItem.selectDate }
-                            selectDirectionTitle = { cartItem.selectDirectionTitle }
-                            selectTicket = { cartItem.selectTicket }
-                            selectTime = { cartItem.selectTime }
-                            selectTimeKey = { cartItem.selectTimeKey }
-                        />
-                    </li>
-
-                );
-            })
         );
+      })
+      : 'Корзина пуста';
 
-    }
+    return result;
+  };
 
-    render () {
-        const {
-            user: {
-                fullname,
-                email,
-                phone,
-            },
-        } = this.state;
+  const _renderProductPreview = () => {
+    const resultArray = Object.values(totalData).sort((a, b) =>
+      a.indexItem > b.indexItem ? 1 : -1
+    );
 
-        return (
-            <>
-                <div className = { Styles.cart }>
-                    <ul className = { Styles.list } >
-                        { this._renderProduct() }
-                    </ul>
+    return resultArray.map((cartItem) => {
+      return (
+        <li key = { cartItem.productKey }>
+          <ProductPreview
+            date = { cartItem.date }
+            directionTitle = { cartItem.directionTitle }
+            event = { cartItem.event }
+            name = { cartItem.name }
+            selectedTicket = { cartItem.selectedTicket }
+            selectedTime = { cartItem.selectedTime }
+            showDirection = { false }
+          />
+        </li>
+      );
+    });
+  };
 
-                    <div className = { Styles.aside } >
-                        <ul className = { Styles.listPreview }>
-                            {this._renderProductPreview()}
-                        </ul>
-                        <div className = { 'cart__user' }>
-                            <div>
-                                <label>Ф. И. О.:
-                                    <input name = 'fullname' value = { fullname } onChange = { this._setUserData } />
-                                </label>
-                            </div>
-                            <div>
-                                <label>Email:
-                                    <input name = 'email' value = { email } onChange = { this._setUserData } />
-                                </label>
-                            </div>
-                            <div>
-                                <label>Телефон:
-                                    <input name = 'phone' value = { phone } onChange = { this._setUserData } />
-                                </label>
-                            </div>
-                            <button
-                                type = 'button'
-                                onClick = { this._checkOut }>
-                                Купить
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-            </>
-        );
-    }
-}
+  return cart ? (
+    <div className = { Styles.cart }>
+      <ul className = { Styles.list }>{_renderProduct()}</ul>
+      <div className = { Styles.aside }>
+        <ul className = { Styles.listPreview }>{_renderProductPreview()}</ul>
+        <div className = { 'cart__user' }>
+          {
+            [
+              { name: 'fullName', value: fullName, label: 'Ф. И. О.' },
+              { name: 'email', value: email, label: 'Email' },
+              { name: 'phone', value: phone, label: 'Телефон' }
+            ].map((field) => (<div key = { field.name }>
+              <label>
+                { field.label }
+                <input
+                  name = { field.name }
+                  value = { field.value }
+                  onChange = { _setUserData }
+                />
+              </label>
+            </div>))
+          }
+          <button type = 'button' onClick = { _checkOut }>
+            Купить
+          </button>
+        </div>
+      </div>
+    </div>
+  ) :
+    'Загрузка…';
+};

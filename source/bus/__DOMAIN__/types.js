@@ -1,5 +1,5 @@
 export const types = {
-    // Sync
-    TYPE: 'TYPE',
+  // Sync
+  TYPE: 'TYPE',
 
 };

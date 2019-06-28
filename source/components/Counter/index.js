@@ -2,67 +2,33 @@
 import React, { useState } from 'react';
 
 const Counter = (props) => {
-    const initialState = {
-        count: props.value || 0,
-    };
+  const initialState = {
+    count: props.count || 0,
+  };
 
-    const [state, _setState] = useState(initialState);
+  const [state, _setState] = useState(initialState);
 
-    const _counterPrise = (count) => {
-        const { prise, ticketKey, typeTicket, _selectedTicket } = props;
-        const priseCount = Number(prise) * count;
+  const _set = (count) => {
+    const { price, ticketKey, typeTicket, _selectedTicket } = props;
 
-        const ticketQt = {
-            [ticketKey]: {
-                prise:        priseCount,
-                currentPrise: prise,
-                count,
-                typeTicket,
-                ticketKey,
-            },
-        };
+    _selectedTicket({
+      sum: Number(price) * count,
+      price,
+      count,
+      typeTicket,
+      ticketKey,
+    });
 
-        _selectedTicket(ticketQt);
-    };
+    return _setState({ count });
+  };
 
-    const _increment = () => {
-        const count = state.count + 1;
-
-        _counterPrise(count);
-
-        return (
-            _setState({ count })
-        );
-    };
-
-    const _decrement = () => {
-        if (state.count === 0) {
-            return null;
-        }
-        const count = state.count - 1;
-
-        _counterPrise(count);
-
-        return (
-            _setState({ count })
-        );
-    };
-
-    const _setCount = (event) => {
-        const count = event.target.value;
-
-        _counterPrise(count);
-
-        return _setState({ count });
-    };
-
-    return (
-        <>
-            <button onClick = { _decrement }>-</button>
-            <input min = { 0 } value = { state.count } onChange = { _setCount } />
-            <button onClick = { _increment }>+</button>
-        </>
-    );
+  return (
+    <>
+      <button disabled = { state.count <= 0 } onClick = { () => _set(state.count - 1) }>-</button>
+      <input min = { 0 } value = { state.count } onChange = { (event) => _set(event.target.value) } />
+      <button onClick = { () => _set(state.count + 1) }>+</button>
+    </>
+  );
 };
 
 export default Counter;

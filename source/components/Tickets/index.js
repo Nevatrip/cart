@@ -1,39 +1,48 @@
 // Core
-import React, { Component } from 'react';
+import React from 'react';
+import useStoreon from 'storeon/react';
 
 // Components
 import Counter from '../Counter';
 
-export default class Tickets extends Component {
+export const Tickets = (props) => {
+  const { dispatch, totalData } = useStoreon('totalData');
+  const { productKey, tickets } = props;
 
-    _renderTickets = () => {
-        const { tickets, _selectedTicket } = this.props;
+  const _selectedTicket = (ticket) => {
+    const currentItem = totalData[productKey];
 
-        const result = tickets.map((item) => {
-            return (
-                <div key = { item._key } style = { { display: 'flex' } } >
-                    <dt>{item.name || '???'}, {item.price} ₽</dt>
-                    <dd>
-                        <Counter
-                            _selectedTicket = { _selectedTicket }
-                            prise = { item.price }
-                            ticketKey = { item._key }
-                            typeTicket = { item.name }
-                            value = { item.count }
-                        />
-                    </dd>
-                </div>
-            );
-        });
-
-        return result;
+    if (ticket.count > 0) {
+      currentItem.selectedTicket[ticket.ticketKey] = ticket;
+    } else {
+      delete currentItem.selectedTicket[ticket.ticketKey];
     }
+    dispatch('totalData/updateCart', currentItem);
+    dispatch('cart/update');
+  };
 
-    render () {
-        return (
-            <dl>
-                {this._renderTickets()}
-            </dl>
-        );
-    }
-}
+  const _renderTickets = () => {
+    return tickets.map((item) => {
+      return (
+        <div key = { item._key } style = { { display: 'flex' } } >
+          <dt>{item.name || '???'}, {item.price} ₽</dt>
+          <dd>
+            <Counter
+              _selectedTicket = { _selectedTicket }
+              count = { item.count }
+              price = { item.price }
+              ticketKey = { item._key }
+              typeTicket = { item.name }
+            />
+          </dd>
+        </div>
+      );
+    });
+  };
+
+  return (
+    <dl>
+      {_renderTickets()}
+    </dl>
+  );
+};

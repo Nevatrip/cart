@@ -1,41 +1,51 @@
 // Core
-import React, { Component } from 'react';
+import React from 'react';
+import useStoreon from 'storeon/react';
+import fromUnixTime from 'date-fns/fromUnixTime';
 
-export default class Directions extends Component {
+export const Directions = (props) => {
 
-    _changeDirection = (event) => {
-        const { _selectedDirection } = this.props;
-        const selectIndex = event.target.options.selectedIndex;
-        const titleDirection = event.target.children[selectIndex].dataset.title;
+  const { dispatch, totalData } = useStoreon('totalData');
+  const { productKey, _changeProductData, directionsAll } = props;
 
-        _selectedDirection(event.target.value, titleDirection);
+  if (totalData === {}) {
+    return null;
+  }
 
-    }
+  const currentItem = totalData[productKey];
+  const direction = totalData.direction;
 
-    render () {
-        const { directionsAll, selectDirection } = this.props;
+  const _changeDirection = (event) => {
+    const selectIndex = event.target.options.selectedIndex;
+    const titleDirection = event.target.children[selectIndex].dataset.title;
+    const currentDirection = directionsAll[event.target.value];
 
-        const renderDirections =  Object.values(directionsAll).map((item) => {
+    currentItem.direction = event.target.value;
+    currentItem.directionTitle = titleDirection;
+    currentItem.date = fromUnixTime(currentDirection.dates[0]);
+    dispatch('totalData/updateCart', currentItem);
+    _changeProductData(event.target.value);
+  };
 
-            return (
-                <option
-                    data-key = { item._key }
-                    data-title = { item.title }
-                    key = { item._key }
-                    value = { item._key }>
-                    {item.title}
-                </option>
-            );
-        });
+  const renderDirections = Object.values(directionsAll).map((item) => {
+    return (
+      <option
+        data-key = { item._key }
+        data-title = { item.title }
+        defaultValue = { item._key === direction }
+        key = { item._key }
+        value = { item._key }>
+        {item.title}
+      </option>
+    );
+  });
 
-        return (
-            <label>
-                Выберите направление
-                <select defaultValue = { selectDirection } text = 'true' onChange = { this._changeDirection }>
-                    {renderDirections}
-                </select>
-            </label>
-
-        );
-    }
-}
+  return (
+    <label>
+      Выберите направление
+      <select text = 'true' onChange = { _changeDirection }>
+        {renderDirections}
+      </select>
+    </label>
+  );
+};
