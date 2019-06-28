@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import fromUnixTime from 'date-fns/fromUnixTime';
 import useStoreon from 'storeon/react';
+import { api } from '../../REST';
 
 // Components
 import { Product } from '../../components/Product';
@@ -29,18 +30,15 @@ export const Cart = (props) => {
     dispatch('user/change', user);
   };
 
-  const _checkOut = /*async*/ () => {
+  const _checkOut = async () => {
     const order = {
       sessionId,
       user,
-      totalData,
     };
 
-    // const response = await api.order.newOrder(order);
+    const response = await api.order.newOrder(order);
 
-    console.log('order', order);
-
-    // const response = await api.order.newOrder(order);
+    console.log('order', response);
 
     // if ((((response || {}).payment || {}).Model || {}).Url) {
     //   // window.location.href = response.payment.Model.Url;
