@@ -20,7 +20,6 @@ export default (store) => {
     );
 
     productsResponse.forEach((product) => {
-
       products[product._id] = product;
     });
 
@@ -37,12 +36,37 @@ export default (store) => {
     store.dispatch('products/get', products);
   });
 
-  store.on('cart/addState', (state, cart) => {
-    return { cart };
+  store.on('cart/addState', (state, cart) => ({ cart }));
+
+  store.on('cart/update', async ({ cart, totalData, session }) => {
+    const newCart = cart.map((product) => {
+      const {
+        direction,
+        event,
+        selectedTicket,
+      } = totalData[product.key];
+
+      const tickets = Object.values(selectedTicket).reduce((acc, ticket) => {
+        acc[ticket.ticketKey] = ticket.count;
+
+        return acc;
+      }, {});
+
+      product.options = {
+        direction,
+        event,
+        tickets,
+      };
+
+      return product;
+    });
+
+    await api.cart.updateCart(session, newCart);
+
+    return { newCart };
   });
 
   store.on('cart/delItem', async ({ cart }, productKey) => {
-
     const sessionId = store.get().session;
     const products = store.get().products;
     const totalData = store.get().totalData;
@@ -62,6 +86,5 @@ export default (store) => {
     store.dispatch('totalData/get', totalData);
 
     await api.cart.deleteItem(sessionId, productKey);
-
   });
 };

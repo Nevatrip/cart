@@ -24,6 +24,7 @@ export const Calendar = (props) => {
     currentItem.date = date;
 
     dispatch('totalData/updateCart', currentItem);
+    dispatch('cart/update');
   };
 
   const _includeDates = () => {

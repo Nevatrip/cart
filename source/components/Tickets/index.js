@@ -18,6 +18,7 @@ export const Tickets = (props) => {
       delete currentItem.selectedTicket[ticket.ticketKey];
     }
     dispatch('totalData/updateCart', currentItem);
+    dispatch('cart/update');
   };
 
   const _renderTickets = () => {
