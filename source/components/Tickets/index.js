@@ -45,5 +45,4 @@ export const Tickets = (props) => {
       {_renderTickets()}
     </dl>
   );
-
 };
