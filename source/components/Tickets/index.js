@@ -10,14 +10,12 @@ export const Tickets = (props) => {
   const { productKey, tickets } = props;
 
   const _selectedTicket = (ticket) => {
-    const ticketKey = Object.keys(ticket)[0];
     const currentItem = totalData[productKey];
-    const ticketObject = ticket[ticketKey];
 
-    if (ticketObject.count > 0) {
-      currentItem.selectTicket[ticketKey] = ticket[ticketKey];
+    if (ticket.count > 0) {
+      currentItem.selectedTicket[ticket.ticketKey] = ticket;
     } else {
-      delete currentItem.selectTicket[ticketKey];
+      delete currentItem.selectedTicket[ticket.ticketKey];
     }
     dispatch('totalData/updateCart', currentItem);
   };
