@@ -89,7 +89,7 @@ export const Cart = (props) => {
 
     return resultArray.map((cartItem) => {
       return (
-        <li key = { cartItem.productKey }>
+        <li key = { cartItem.productKey } className = 'listPreviewLi'>
           <ProductPreview
             date = { cartItem.date }
             directionTitle = { cartItem.directionTitle }
@@ -105,10 +105,11 @@ export const Cart = (props) => {
   };
 
   return cart ? (
-    <div className = { Styles.cart }>
-      <ul className = { Styles.list }>{_renderProduct()}</ul>
-      <div className = { Styles.aside }>
-        <ul className = { Styles.listPreview }>{_renderProductPreview()}</ul>
+    <div className = 'cart' >
+      <ul className = 'list' >{_renderProduct()}</ul>
+      <div className = 'aside' >
+        <ul className = 'listPreview' >{_renderProductPreview()}</ul>
+        <div className = 'asideSeparator' ></div>
         <div className = { 'cart__user' }>
           {
             [
@@ -127,6 +128,10 @@ export const Cart = (props) => {
               </label>
             </div>))
           }
+          <span className = 'checkbox'>
+            <input className = 'checkboxInput' type = 'checkbox' required = 'required' id = 'ofertaCheck'/>
+            <label className = 'caption checkboxCaption' for = 'ofertaCheck'>Согласен с условиями возврата</label>
+          </span>
           <button className =  'btn btn_block btn_primary' type = 'button' onClick = { _checkOut }>
             Купить
           </button>

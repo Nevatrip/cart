@@ -11,7 +11,7 @@ export const ProductPreview = (props) => {
     return (
       Object.values(selectedTicket).map((item, index) => {
         return (
-          <li key = { index }>
+          <li key = { index } className = 'listPreviewTicketsLi'>
             <div>
               {`${item.typeTicket}: ${item.price} ₽ × ${item.count} = ${item.sum} ₽`}
             </div>
@@ -23,14 +23,15 @@ export const ProductPreview = (props) => {
 
   return (
     <>
-      <fieldset>
-        <legend>{name}</legend>
-        <ul>
-          <li>Дата: {selectedDate}</li>
-          <li>Время: {selectedTime}</li>
-          {showDirection && <li>Направление: {directionTitle}</li>}
+      <span className = 'caption'>Ваш заказ</span>
+      <fieldset className = 'listPreviewFieldset'>
+        <legend className = 'listPreviewLegend'>{name}</legend>
+        <ul className = 'listPreviewData'>
+          <li className = 'listPreviewDataLi'>Дата: {selectedDate}</li>
+          <li className = 'listPreviewDataLi'>Время: {selectedTime}</li>
+          {showDirection && <li className = 'listPreviewDataLi'>Направление: {directionTitle}</li>}
         </ul>
-        <div>Билеты: {_renderPriceTicket()}</div>
+        <div className = 'listPreviewTickets'>Билеты: {_renderPriceTicket()}</div>
       </fieldset>
     </>
   );
