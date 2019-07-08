@@ -36,11 +36,12 @@ export const Calendar = (props) => {
   return (
     <>
       <label>
-      Выберите дату
+        <span className = 'caption'>Дата поездки</span>
         <input
           readOnly
           type = 'text'
           value = { date }
+          className = 'input'
         />
       </label>
       <div className = { Styles.calendarWrapper }>

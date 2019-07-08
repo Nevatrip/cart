@@ -42,7 +42,7 @@ export const Directions = (props) => {
 
   return (
     <label>
-      Выберите направление
+      <span className = 'caption'>Выберите направление</span>
       <select text = 'true' onChange = { _changeDirection }>
         {renderDirections}
       </select>

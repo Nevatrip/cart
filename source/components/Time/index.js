@@ -26,19 +26,21 @@ export const Time = (props) => {
     const renderTime = format(time, 'HH:mm', new Date());
 
     return (
-      <li data-key = { _key } key = { _key }>
-        <label>
-          <input
-            checked = {
-              currentItem.event
-                ? currentItem.event === _key
-                : index === 0
-            }
-            name = { `time-${productKey}` }
-            type = 'radio'
-            value = { _key }
-            onChange = { () => _changeTime(_key, renderTime) }
-          />
+      <li data-key = { _key } key = { _key } className = 'grid-list__item'>
+        <input
+          className = 'btn-radio'
+          checked = {
+            currentItem.event
+              ? currentItem.event === _key
+              : index === 0
+          }
+          name = { `time-${productKey}` }
+          id = { `time-${productKey}-${_key}` }
+          type = 'radio'
+          value = { _key }
+          onChange = { () => _changeTime(_key, renderTime) }
+        />
+        <label for = { `time-${productKey}-${_key}` } className = 'btn-radio__label'>
           {renderTime}
         </label>
       </li>
@@ -47,8 +49,8 @@ export const Time = (props) => {
 
   return (
     <div>
-      Выберите время
-      <ul>
+      <span className = 'caption'>Выберите время отправления</span>
+      <ul className = 'grid-list'>
         {renderTimes}
       </ul>
     </div>

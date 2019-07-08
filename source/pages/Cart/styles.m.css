@@ -1,15 +1,30 @@
+/*cart*/
 .cart {
+  position: relative;
   display: flex;
+  flex-direction: column;
+  width: 375px;
+  margin: 0 auto;
 }
-.listPreview,
-.list {
-  flex: 1;
-  list-style: none;
+/*cart*/
 
-}
-.aside {
-  width: 33% 
+/*list*/
+.list {
+  position: relative;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 .product{
-  width: 500px;
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+/*list*/
+
+.aside {
+
+}
+.product{
+
 }

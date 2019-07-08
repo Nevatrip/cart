@@ -108,8 +108,8 @@ export const Product = (props) => {
   };
 
   return (
-    <fieldset>
-      <legend>{ name }</legend>
+    <fieldset className = { Styles.productFieldset } >
+      <legend className = { Styles.productLegend } >{ name }</legend>
       <div className = { Styles.productWrapper } >
 
         <Calendar
