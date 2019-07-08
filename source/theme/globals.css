@@ -864,7 +864,13 @@ button:not(:disabled) {
     align-items: baseline;
     align-content: flex-start;
   }
-  .list{
-    width: 600px;
+  .aside{
+    width: 300px;
+  }
+  .colDesktop{
+    position: relative;
+    padding: 0 7.5px;
+    flex: 0 0 50%;
+    max-width: 50%;
   }
 }

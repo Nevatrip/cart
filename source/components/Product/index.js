@@ -112,33 +112,37 @@ export const Product = (props) => {
       <legend className = { Styles.productLegend } >{ name }</legend>
       <div className = { Styles.productWrapper } >
 
-        <Calendar
-          dates = { state.dates }
-          productKey = { productKey }
-        />
-        <br />
-        {
-          Object.values(state.directionsAll).length <= 1 ? // Проверка на количество направлений экскурсии //
-            null :
-            <Directions
-              _changeProductData = { _changeProductData }
-              directionsAll = { state.directionsAll }
-              productKey = { productKey }
-            />
-        }
-        {
-          state.times.length === 0 ?
-            null :
-            <Time
-              productKey = { productKey }
-              timesAll = { state.times }
-            />
-        }
-        <Tickets
-          productKey = { productKey }
-          tickets = { state.tickets }
-        />
-        <button className =  'btn btn_secondary' onClick = { _deleteProductCart } >× Удалить товар</button>
+        <div className='colDesktop'>
+          <Calendar
+            dates = { state.dates }
+            productKey = { productKey }
+          />
+          <br />
+        </div>
+        <div className='colDesktop'>
+          {
+            Object.values(state.directionsAll).length <= 1 ? // Проверка на количество направлений экскурсии //
+              null :
+              <Directions
+                _changeProductData = { _changeProductData }
+                directionsAll = { state.directionsAll }
+                productKey = { productKey }
+              />
+          }
+          {
+            state.times.length === 0 ?
+              null :
+              <Time
+                productKey = { productKey }
+                timesAll = { state.times }
+              />
+          }
+          <Tickets
+            productKey = { productKey }
+            tickets = { state.tickets }
+          />
+          <button className =  'btn btn_secondary btn_block' onClick = { _deleteProductCart } >× Удалить товар</button>
+        </div>
       </div>
     </fieldset>
   );
