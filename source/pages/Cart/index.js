@@ -40,9 +40,9 @@ export const Cart = (props) => {
 
     console.log('order', response);
 
-    // if ((((response || {}).payment || {}).Model || {}).Url) {
-    //   // window.location.href = response.payment.Model.Url;
-    // }
+    if ((((response || {}).payment || {}).Model || {}).Url) {
+      window.location.href = response.payment.Model.Url;
+    }
   };
 
   const _renderProduct = () => {
