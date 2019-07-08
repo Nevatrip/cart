@@ -35,6 +35,7 @@ export const cleanBuildDirectory = () => ({
   plugins: [
     new CleanWebpackPlugin({
       dangerouslyAllowCleanPatternsOutsideProject: true,
+      dry:                                         false,
     })
   ],
 });
