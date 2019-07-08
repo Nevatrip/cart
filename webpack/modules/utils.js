@@ -2,7 +2,7 @@
 import { build } from '../paths';
 
 // Plugins
-import CleanWebpackPlugin from 'clean-webpack-plugin';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import { DefinePlugin, ContextReplacementPlugin } from 'webpack';
 import { HotModuleReplacementPlugin } from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
@@ -33,8 +33,8 @@ export const setupBuildAnalysis = () => ({
 
 export const cleanBuildDirectory = () => ({
   plugins: [
-    new CleanWebpackPlugin(build, {
-      allowExternal: true,
+    new CleanWebpackPlugin({
+      dangerouslyAllowCleanPatternsOutsideProject: true,
     })
   ],
 });

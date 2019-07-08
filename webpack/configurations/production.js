@@ -29,9 +29,9 @@ export const generateProductionConfiguration = () =>
       output: {
         filename: 'js/[name].[chunkhash:5].js',
       },
-      devtool:      'source-map',
+      // devtool:      'source-map',
       optimization: {
-        minimize: false,
+        minimize: true,
       },
     },
   );

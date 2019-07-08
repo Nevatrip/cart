@@ -24,23 +24,24 @@ export const Time = (props) => {
   const renderTimes = timesAll.map(({ _key, startLabel }, index) => {
     const time = getActualTime(new Date(startLabel));
     const renderTime = format(time, 'HH:mm', new Date());
+    const idAttr = `time-${productKey}-${_key}-${index}`;
 
     return (
-      <li data-key = { _key } key = { _key } className = 'grid-list__item'>
+      <li className = 'grid-list__item' data-key = { _key } key = { idAttr }>
         <input
-          className = 'btn-radio'
           checked = {
             currentItem.event
               ? currentItem.event === _key
               : index === 0
           }
+          className = 'btn-radio'
+          id = { idAttr }
           name = { `time-${productKey}` }
-          id = { `time-${productKey}-${_key}` }
           type = 'radio'
           value = { _key }
           onChange = { () => _changeTime(_key, renderTime) }
         />
-        <label for = { `time-${productKey}-${_key}` } className = 'btn-radio__label'>
+        <label className = 'btn-radio__label' htmlFor = { idAttr }>
           {renderTime}
         </label>
       </li>
@@ -54,7 +55,5 @@ export const Time = (props) => {
         {renderTimes}
       </ul>
     </div>
-
   );
-
 };
