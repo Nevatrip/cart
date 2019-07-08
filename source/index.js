@@ -7,7 +7,9 @@ import './theme/init.css';
 // App
 import App from './App';
 
+const sessionId = window.location.hash || 'test-test-test';
+
 render(
-  <App sessionId = 'test-test-test' />,
+  <App sessionId = { sessionId } />,
   document.getElementById('app')
 );
