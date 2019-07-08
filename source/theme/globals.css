@@ -532,6 +532,11 @@ button:not(:disabled) {
   text-align: center;
   vertical-align: middle;
 }
+
+.btn-radio__label:hover{
+  background-color: rgba(79, 160, 208, 0.3);
+}
+
 .btn-radio:checked + .btn-radio__label{
   background-color: #4FA0D0;
   color: #FFFFFF;
@@ -555,6 +560,10 @@ button:not(:disabled) {
   border-radius: .25rem;
   transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
+.btn_block{
+  display: block;
+  width: 100%;
+}
 .btn:hover {
   color: #212529;
   text-decoration: none;
@@ -567,13 +576,25 @@ button:not(:disabled) {
   color: #6c757d;
   border-color: #6c757d;
 }
-.btn-outline-secondary:hover {
+.btn_secondary:hover {
   color: #fff;
   background-color: #6c757d;
   border-color: #6c757d;
 }
-.btn-outline-secondary:focus {
+.btn_secondary:focus {
   box-shadow: 0 0 0 0.2rem rgba(108,117,125,.5);
+}
+.btn_primary {
+  color: #000000;
+  background-color: #FFE056;
+  border-color: #FFE056;
+}
+.btn_primary:hover {
+  background-color: #e8b705;
+  border-color: #e8b705;
+}
+.btn_primary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 224, 86, 0.5);
 }
 .grid-list{
   position: relative;
@@ -678,3 +699,14 @@ button:not(:disabled) {
   color: #464B5D;
 }
 /*tickets*/
+
+/*user*/
+.cart__user{
+  position: relative;
+  margin: 0 15px 20px;
+}
+.form-label{
+  position: relative;
+  margin-bottom: 10px;
+}
+/*user*/

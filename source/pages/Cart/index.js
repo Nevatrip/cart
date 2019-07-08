@@ -116,9 +116,10 @@ export const Cart = (props) => {
               { name: 'email', value: email, label: 'Email' },
               { name: 'phone', value: phone, label: 'Телефон' }
             ].map((field) => (<div key = { field.name }>
-              <label>
-                { field.label }
+              <label className =  'form-label'>
+                <span className = 'caption'> { field.label } </span>
                 <input
+                  className =  'input'
                   name = { field.name }
                   value = { field.value }
                   onChange = { _setUserData }
@@ -126,7 +127,7 @@ export const Cart = (props) => {
               </label>
             </div>))
           }
-          <button type = 'button' onClick = { _checkOut }>
+          <button className =  'btn btn_block btn_primary' type = 'button' onClick = { _checkOut }>
             Купить
           </button>
         </div>
