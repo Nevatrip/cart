@@ -44,7 +44,7 @@ export const Tickets = (props) => {
   };
 
   return (
-    <div>
+    <div className =  'ticketsWrapper' >
       <span className =  'caption' >
         Выберите категории билетов
       </span>

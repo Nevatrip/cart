@@ -24,9 +24,9 @@ const Counter = (props) => {
 
   return (
     <>
-      <button disabled = { state.count <= 0 } onClick = { () => _set(state.count - 1) }>-</button>
-      <input min = { 0 } value = { state.count } onChange = { (event) => _set(event.target.value) } />
-      <button onClick = { () => _set(state.count + 1) }>+</button>
+      <button className = 'counterBtn' disabled = { state.count <= 0 } onClick = { () => _set(state.count - 1) }>–</button>
+      <input className = 'counterInput' min = { 0 } value = { state.count } onChange = { (event) => _set(event.target.value) } />
+      <button className = 'counterBtn' onClick = { () => _set(state.count + 1) }>+</button>
     </>
   );
 };

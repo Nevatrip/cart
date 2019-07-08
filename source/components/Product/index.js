@@ -138,7 +138,7 @@ export const Product = (props) => {
           productKey = { productKey }
           tickets = { state.tickets }
         />
-        <button onClick = { _deleteProductCart } >× Удалить товар</button>
+        <button className =  'btn btn_secondary' onClick = { _deleteProductCart } >× Удалить товар</button>
       </div>
     </fieldset>
   );
