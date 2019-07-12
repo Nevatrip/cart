@@ -16,6 +16,7 @@
   padding: 15px;
   background: #544B4B;
   color: #FFFFFF;
+  min-width: 100%;
 }
 .productLegend:before{
   content: '';

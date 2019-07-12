@@ -23,7 +23,6 @@ export const ProductPreview = (props) => {
 
   return (
     <>
-      <span className = 'caption'>Ваш заказ</span>
       <fieldset className = 'listPreviewFieldset'>
         <legend className = 'listPreviewLegend'>{name}</legend>
         <ul className = 'listPreviewData'>

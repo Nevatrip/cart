@@ -108,6 +108,7 @@ export const Cart = (props) => {
     <div className = 'cart' >
       <ul className = 'list' >{_renderProduct()}</ul>
       <div className = 'aside' >
+        <span className = 'caption'>Ваш заказ</span>
         <ul className = 'listPreview' >{_renderProductPreview()}</ul>
         <div className = 'asideSeparator' ></div>
         <div className = { 'cart__user' }>
